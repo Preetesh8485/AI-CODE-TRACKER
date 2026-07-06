@@ -1,4 +1,4 @@
-import { sendEmail } from "./sendEmail.js";
+import { sendEmail } from "./SendEmail.js";
 import { generateVerificationEmailTemplate } from "./emailTemplates.js";
 
 export const SendVerificationEmail = async (
