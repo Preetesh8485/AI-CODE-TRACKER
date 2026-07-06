@@ -1,4 +1,4 @@
-import ErrorHandler from "./errorMiddlewear.js";
+import ErrorHandler from "./errorMiddleware.js";
 
 export const validateBody = (req, res, next) => {
     if (["POST", "PUT", "PATCH"].includes(req.method)) {

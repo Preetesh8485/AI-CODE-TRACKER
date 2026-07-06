@@ -5,7 +5,6 @@ export const sendToken=(user,statusCode,message,res)=>{
             Date.now()+process.env.COOKIE_EXP*24*60*60*1000
         ),
         httpOnly:true,
-        secure:true,
         sameSite:"none",
     }).json({
         success:true,

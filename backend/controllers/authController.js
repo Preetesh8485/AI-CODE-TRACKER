@@ -1,5 +1,5 @@
 import { catchAsyncError } from "../middleware/CatchAsyncErrors.js"
-import { ErrorHandler } from "../middleware/errorMiddleware.js"
+import  ErrorHandler  from "../middleware/errorMiddleware.js"
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import { sendToken } from "../utils/sendToken.js";
@@ -89,7 +89,7 @@ export const logout=catchAsyncError(async(req,res,next)=>{
         message:"Logged out successfully!"
     })
 })
-export const getUser = catchAsynError(async (req, res, next) => {
+export const getUser = catchAsyncError(async (req, res, next) => {
     const user = req.user;
     res.status(200).json({
         success: true,
