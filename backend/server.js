@@ -6,6 +6,7 @@ import connectDB from "./config/db.js"
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 import authRouter from "./routes/authRoutes.js";
 import { validateBody } from "./middleware/validateBody.js";
+import phRouter from "./routes/platformhandlesRoutes.js";
 const app = express();
 const port=process.env.PORT||4000;
 connectDB();
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
   res.status(200).send("API working");
 });
 app.use('/api/auth',authRouter);
+app.use("/api/platform",phRouter);
 app.use(errorMiddleware);
 app.listen(port, () =>
   console.log(`Server running on PORT: ${port}`)
