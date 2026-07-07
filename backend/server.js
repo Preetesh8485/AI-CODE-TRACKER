@@ -15,8 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended:true}))
 app.use(validateBody);
-app.get("/api", (req, res) => {
-  console.log("Chrome reached GET /");
+app.get("/", (req, res) => {
   res.status(200).send("API working");
 });
 app.use('/api/auth',authRouter);

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
 const userSchema = new mongoose.Schema({
     Accountverification: {
         type: Boolean,
@@ -60,5 +61,14 @@ this.verificationToken=crypto.createHash("sha256").update(token).digest("hex");
 this.verificationTokenExpire=Date.now()+15*60*1000;
  return token;
 }
+userSchema.methods.generateToken = function () {
+  return jwt.sign(
+    { id: this._id },
+    process.env.JWT_SECRET_KEY,
+    {
+      expiresIn: process.env.JWT_EXPIRE || "7d",
+    }
+  );
+};
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 export default User;
