@@ -58,6 +58,38 @@ const dailySchema = new mongoose.Schema(
 dailySchema.index({ userId: 1, date: 1 }, { unique: true });
 dailySchema.index({ userId: 1, date: -1 });
 
+// Computed on read, never stored — always in sync with `platforms`.
+dailySchema.virtual("total").get(function () {
+  const result = { solved: 0, easy: 0, medium: 0, hard: 0 };
+  const { leetcode, gfg, codingNinjas } = this.platforms || {};
+
+  if (leetcode) {
+    result.solved += leetcode.solved || 0;
+    result.easy += leetcode.easy || 0;
+    result.medium += leetcode.medium || 0;
+    result.hard += leetcode.hard || 0;
+  }
+
+  if (gfg) {
+    result.solved += gfg.solved || 0;
+    result.easy += (gfg.easy || 0) + (gfg.school || 0) + (gfg.basic || 0);
+    result.medium += gfg.medium || 0;
+    result.hard += gfg.hard || 0;
+  }
+
+  if (codingNinjas) {
+    result.solved += codingNinjas.solved || 0;
+    result.easy += codingNinjas.easy || 0;
+    result.medium += codingNinjas.moderate || 0;
+    result.hard += (codingNinjas.hard || 0) + (codingNinjas.ninja || 0);
+  }
+
+  return result;
+});
+
+dailySchema.set("toJSON", { virtuals: true });
+dailySchema.set("toObject", { virtuals: true });
+
 const DailyStats =
   mongoose.models.DailyStats || mongoose.model("DailyStats", dailySchema);
 

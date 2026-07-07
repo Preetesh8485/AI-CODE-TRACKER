@@ -10,7 +10,9 @@ const getCode360Uuid = (value) => {
 
   return match ? match[1] : null;
 };
+
 export const updatehandles = catchAsyncError(async (req, res, next) => {
+    
     const { leetcode, gfg, codingNinjas } = req.body;
     const user = await User.findById(req.user._id);
     if (!user) {
