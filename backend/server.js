@@ -8,6 +8,7 @@ import authRouter from "./routes/authRoutes.js";
 import { validateBody } from "./middleware/validateBody.js";
 import phRouter from "./routes/platformhandlesRoutes.js";
 import { UpdateData } from "./utils/cronJobs.js";
+import Resumerouter from "./routes/resumeRoutes.js";
 const app = express();
 const port=process.env.PORT||4000;
 connectDB();
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 });
 app.use('/api/auth',validateBody,authRouter);
 app.use("/api/platform",phRouter);
+app.use("/api/resume",Resumerouter);
 app.use(errorMiddleware);
 app.listen(port, () =>
   console.log(`Server running on PORT: ${port}`)

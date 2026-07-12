@@ -4,6 +4,7 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import { sendToken } from "../utils/sendToken.js";
 import { SendVerificationEmail } from "../utils/sendverificationemail.js";
+import jwt from "jsonwebtoken";
 import crypto from "crypto"
 export const register = catchAsyncError(async (req, res, next) => {
     const { username, email, password } = req.body;
@@ -121,7 +122,7 @@ export const getUser = catchAsyncError(async (req, res, next) => {
     })
 })
 export const refreshToken=catchAsyncError(async(req,res,next)=>{
-    const{refreshToken}=req.cookie;
+    const{refreshToken}=req.cookies;
     if(!refreshToken){
         return next(new ErrorHandler("Refresh Token not found!",401));
     }

@@ -1,0 +1,87 @@
+import Resume from "../models/resume.js";
+import { catchAsyncError } from "../middleware/CatchAsyncErrors.js";
+import ErrorHandler from "../middleware/errorMiddleware.js";
+import { extractResumeText } from "../services/parser/index.js"
+import { uploadResumeTocloudinary } from "../utils/uploadResumeToCloudinary.js";
+import { deleteResumeFromCloudinary } from "../utils/deleteResumefromCloudinary.js";
+import { parseResume } from "../services/pythonservices.js";
+export const uploadResume = catchAsyncError(async (req, res, next) => {
+    if (!req.file) {
+        return next(new ErrorHandler("Please upload resume!", 400));
+    }
+    const userId = req.user._id;
+    const existingResume = await Resume.findOne({ userId });
+    if (existingResume) {
+        if (existingResume.publicId) {
+            await deleteResumeFromCloudinary(existingResume.publicId);
+        }
+
+        await Resume.findByIdAndDelete(existingResume._id);
+    }
+    let rawText = await extractResumeText(req.file);
+    rawText = rawText
+        .replace(/\r/g, "")
+        .replace(/\n{2,}/g, "\n\n")
+        .trim();
+    const aiResponse = await parseResume(rawText);
+
+    console.log(aiResponse);
+    const uploadedResume = await uploadResumeTocloudinary(
+        req.file.buffer,
+        req.file.originalname
+    );
+    const resume = await Resume.create({
+        userId,
+
+        fileName: req.file.originalname,
+
+        fileUrl: uploadedResume.secure_url,
+
+        publicId: uploadedResume.public_id,
+
+        fileType:
+            req.file.mimetype === "application/pdf"
+                ? "pdf"
+                : "docx",
+
+        rawText,
+    });
+
+    res.status(201).json({
+        success: true,
+        message: "Resume uploaded successfully.",
+        resume,
+    });
+})
+export const getResume = catchAsyncError(async (req, res, next) => {
+    const resume = await Resume.findOne({
+        userId: req.user._id,
+    });
+
+    if (!resume) {
+        return next(new ErrorHandler("Resume not found.", 404));
+    }
+
+    res.status(200).json({
+        success: true,
+        resume,
+    });
+});
+export const deleteResume = catchAsyncError(async (req, res, next) => {
+    const resume = await Resume.findOne({
+        userId: req.user._id,
+    });
+
+    if (!resume) {
+        return next(new ErrorHandler("Resume not found.", 404));
+    }
+
+    await deleteResumeFromCloudinary(resume.publicId);
+
+    await Resume.findByIdAndDelete(resume._id);
+
+    res.status(200).json({
+        success: true,
+        message: "Resume deleted successfully.",
+    });
+});
