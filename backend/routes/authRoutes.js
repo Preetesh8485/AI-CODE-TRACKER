@@ -1,10 +1,11 @@
 import express from "express";
-import { getUser, login, logout, register, verifyaccount } from "../controllers/authController.js";
+import { getUser, login, logout, register, verifyaccount ,refreshToken} from "../controllers/authController.js";
 import { isAuthenticated } from "../middleware/authMiddleware.js";
 const authRouter=express.Router();
 authRouter.post('/register',register);
 authRouter.post('/verify/:token',verifyaccount);
 authRouter.post('/login',login);
-authRouter.get('/logout',isAuthenticated,logout);
+authRouter.post('/logout',logout);
+authRouter.post("/refresh", refreshToken);
 authRouter.get('/me',isAuthenticated,getUser);
 export default authRouter;
