@@ -37,18 +37,10 @@ export const fetchPlatformStats = catchAsyncError(async (req, res, next) => {
   if (leetcode) {
     try {
       platforms.leetcode = await fetchLeetcodeStats(leetcode);
-
-      console.log("Leetcode Service Result:");
-      console.log(platforms.leetcode);
-
     } catch (error) {
-      console.log(error);
-      errors.leetcode = error.message;
+      errors.leetcode = error.message || "Could not fetch LeetCode stats";
     }
   }
-
-  console.log("Platforms Object:");
-  console.log(platforms);
 
   if (gfg) {
     errors.gfg = "GFG stats fetching is not connected yet";
@@ -77,14 +69,13 @@ export const fetchPlatformStats = catchAsyncError(async (req, res, next) => {
   for (const [platformName, stats] of Object.entries(platforms)) {
     updateFields[`platforms.${platformName}`] = stats;
   }
-  console.log("Update Fields:");
-  console.log(updateFields);
+
   const dailyStats = await DailyStats.findOneAndUpdate(
     { userId: req.user._id, date: today },
     { $set: updateFields },
     { returnDocument: "after", upsert: true, runValidators: true }
   );
-  console.log(JSON.stringify(dailyStats, null, 2));
+
   res.status(200).json({
     success: true,
     message: "Platform stats fetched successfully",
