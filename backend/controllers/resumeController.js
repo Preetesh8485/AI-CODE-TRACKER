@@ -4,7 +4,8 @@ import ErrorHandler from "../middleware/errorMiddleware.js";
 import { extractResumeText } from "../services/parser/index.js"
 import { uploadResumeTocloudinary } from "../utils/uploadResumeToCloudinary.js";
 import { deleteResumeFromCloudinary } from "../utils/deleteResumefromCloudinary.js";
-import { parseResume } from "../services/pythonservices.js";
+import { parseResumeWithAI } from "../services/pythonservices.js";
+
 export const uploadResume = catchAsyncError(async (req, res, next) => {
     if (!req.file) {
         return next(new ErrorHandler("Please upload resume!", 400));
@@ -23,9 +24,7 @@ export const uploadResume = catchAsyncError(async (req, res, next) => {
         .replace(/\r/g, "")
         .replace(/\n{2,}/g, "\n\n")
         .trim();
-    const aiResponse = await parseResume(rawText);
-
-    console.log(aiResponse);
+   const parsedData = await parseResumeWithAI(rawText);
     const uploadedResume = await uploadResumeTocloudinary(
         req.file.buffer,
         req.file.originalname
@@ -45,6 +44,7 @@ export const uploadResume = catchAsyncError(async (req, res, next) => {
                 : "docx",
 
         rawText,
+        parsedData,
     });
 
     res.status(201).json({
