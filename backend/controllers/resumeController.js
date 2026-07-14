@@ -35,7 +35,7 @@ export const uploadResume = catchAsyncError(async (req, res, next) => {
     const parsedData = await parseResumeWithAI(req.file, rawText);
     const uploadedResume = await uploadResumeTocloudinary(
         req.file.buffer,
-        req.file.originalname
+        userId.toString()
     );
     const resume = await Resume.create({
         userId,
