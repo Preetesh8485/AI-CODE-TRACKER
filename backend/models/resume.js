@@ -27,18 +27,18 @@ const resumeSchema = new mongoose.Schema({
 
     rawText: {
         type: String,
-        required: true
+        default: "",
     }
     ,
     parsedData: {
-        type: mongoose.Schema.Types.Mixed,
-        default: null,
-    },
+    type: mongoose.Schema.Types.Mixed,
+    default: null,
+},
 
     atsReport: {
-        type: mongoose.Schema.Types.Mixed,
-        default: null
-    },
+    type: mongoose.Schema.Types.Mixed,
+    default: null
+},
 }, {
     timestamps: true,
 })

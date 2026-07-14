@@ -1,7 +1,7 @@
 import Resume from "../models/resume.js";
 import { catchAsyncError } from "../middleware/CatchAsyncErrors.js";
 import ErrorHandler from "../middleware/errorMiddleware.js";
-import { extractResumeText } from "../services/parser/index.js"
+import { extractDocxText } from "../services/parser/docxParser.js";
 import { uploadResumeTocloudinary } from "../utils/uploadResumeToCloudinary.js";
 import { deleteResumeFromCloudinary } from "../utils/deleteResumefromCloudinary.js";
 import { parseResumeWithAI } from "../services/pythonservices.js";
@@ -19,12 +19,20 @@ export const uploadResume = catchAsyncError(async (req, res, next) => {
 
         await Resume.findByIdAndDelete(existingResume._id);
     }
-    let rawText = await extractResumeText(req.file);
-    rawText = rawText
-        .replace(/\r/g, "")
-        .replace(/\n{2,}/g, "\n\n")
-        .trim();
-   const parsedData = await parseResumeWithAI(rawText);
+    let rawText = "";
+
+    if (
+        req.file.mimetype ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ) {
+        rawText = await extractDocxText(req.file.buffer);
+
+        rawText = rawText
+            .replace(/\r/g, "")
+            .replace(/\n{2,}/g, "\n\n")
+            .trim();
+    }
+    const parsedData = await parseResumeWithAI(req.file, rawText);
     const uploadedResume = await uploadResumeTocloudinary(
         req.file.buffer,
         req.file.originalname

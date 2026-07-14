@@ -29,7 +29,7 @@
     "multer": "^2.2.0",
     "node-cron": "^4.2.1",
     "nodemon": "^3.1.14",
-    "pdf-parser": "^1.0.5",
+    "pdf-parse": "^2.4.5",
     "redis": "^6.0.0",
     "sib-api-v3-sdk": "^8.5.0",
     "streamifier": "^0.1.1",

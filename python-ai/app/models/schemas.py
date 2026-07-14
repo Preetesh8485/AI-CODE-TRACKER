@@ -44,6 +44,14 @@ class Education(BaseModel):
     dates: Optional[str] = None
 
     gpa: Optional[str] = None
+
+class Certification(BaseModel):
+    name: Optional[str] = None
+
+    issuer: Optional[str] = None
+
+    year: Optional[str] = None
+
 class ResumeSchema(BaseModel):
 
     personalInfo: PersonalInfo
@@ -58,7 +66,7 @@ class ResumeSchema(BaseModel):
 
     education: List[Education] = []
 
-    certifications: List[str] = []
+    certifications: List[Certification] = []
 
     achievements: List[str] = []
 

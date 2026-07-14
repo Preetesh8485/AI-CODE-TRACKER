@@ -7,10 +7,15 @@ Rules:
 1. Return ONLY valid JSON.
 2. Do NOT include markdown.
 3. Do NOT wrap the response in ```json.
-4. If a field is missing, use null or an empty array.
+4. If a field is missing, use null (for single values) or an empty array (for lists).
 5. Preserve the original wording whenever possible.
+6. Every item inside "experience", "projects", "education", and "certifications" MUST be an object with exactly the keys shown in the example below — do not add extra keys, do not use a plain string instead of an object.
+7. "achievements" and "interests" MUST be arrays of plain strings, not objects.
+8. The single object shown inside each of "experience", "projects", "education", and "certifications" below is ONLY a shape template. Replace it with one object per actual entry found in the resume (zero, one, or many) — never output the literal null placeholder values.
+9. Experience entries are often written as ONE header line combining role, company, and location with punctuation instead of labels — e.g. "Role — Company | Location" or "Role, Company (Location)". The segment BEFORE the first separator (dash, em dash, or comma) is the role/title. Do NOT drop it and do NOT merge it into the company field.
+10. Project entries are often written as ONE header line combining the title, a technology list, and link labels — e.g. "Title | Tech1, Tech2, Tech3 | Live Demo | GitHub". The segment BEFORE the first pipe is the title. A comma-separated list immediately after it is the technologies. Labels like "Live Demo", "GitHub", "View Certificate", "Portfolio", "Live Link" are hyperlink buttons, not data — never put them into any field, and never let their presence stop you from extracting the title or technologies before them.
 
-Return JSON in exactly this format:
+Return JSON in exactly this format (the arrays below show the required shape for each item; use as many items as the resume actually has):
 
 {
   "personalInfo": {
@@ -35,13 +40,41 @@ Return JSON in exactly this format:
     "concepts": []
   },
 
-  "experience": [],
+  "experience": [
+    {
+      "role": null,
+      "company": null,
+      "location": null,
+      "dates": null,
+      "techStack": [],
+      "description": []
+    }
+  ],
 
-  "projects": [],
+  "projects": [
+    {
+      "title": null,
+      "technologies": [],
+      "description": []
+    }
+  ],
 
-  "education": [],
+  "education": [
+    {
+      "institution": null,
+      "degree": null,
+      "dates": null,
+      "gpa": null
+    }
+  ],
 
-  "certifications": [],
+  "certifications": [
+    {
+      "name": null,
+      "issuer": null,
+      "year": null
+    }
+  ],
 
   "achievements": [],
 

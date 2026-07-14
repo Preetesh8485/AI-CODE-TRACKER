@@ -1,29 +1,41 @@
 import json
 import re
 
+from app.models.schemas import ResumeSchema
 from app.services.gemini_service import generate
 from app.utils.promptloader import load_prompt
-from app.models.schemas import ResumeSchema
+
 prompt_template = load_prompt("resume_prompt.txt")
+
 _FENCE_RE = re.compile(r"^```(?:json)?\s*|\s*```$", re.MULTILINE)
 
-def parse_resume(raw_text: str) -> dict:
 
-    prompt = f"""{prompt_template}
+def clean_response(text: str) -> str:
+    return _FENCE_RE.sub("", text).strip()
 
-Resume:
-{raw_text}
-"""
 
-    MAX_RETRIES = 3
+def parse_resume(
+    file_path: str | None = None,
+    raw_text: str | None = None,
+) -> dict:
 
-    for attempt in range(MAX_RETRIES):
+    if not file_path and not raw_text:
+        raise ValueError("Either file_path or raw_text must be provided.")
 
-        raw_response = generate(prompt)
+    prompt = prompt_template
 
-        cleaned = _FENCE_RE.sub("", raw_response).strip()
+    last_error = None
 
+    for attempt in range(3):
         try:
+            response = generate(
+                prompt=prompt,
+                file_path=file_path,
+                raw_text=raw_text,
+            )
+
+            cleaned = clean_response(response)
+
             data = json.loads(cleaned)
 
             validated = ResumeSchema.model_validate(data)
@@ -31,11 +43,11 @@ Resume:
             return validated.model_dump()
 
         except Exception as e:
+            last_error = e
 
-            print(f"Attempt {attempt + 1} failed:")
-
+            print(f"\nAttempt {attempt + 1}/3 Failed")
             print(e)
 
-            print(cleaned[:500])   # print first 500 chars for debugging
-
-    raise ValueError("Gemini failed to generate valid JSON after 3 attempts.")
+    raise ValueError(
+        f"Resume Parsing Failed\nLast Error: {last_error}"
+    )
