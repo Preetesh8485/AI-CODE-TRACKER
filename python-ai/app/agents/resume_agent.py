@@ -1,6 +1,6 @@
 import json
 import re
-
+from app.services.pdf_link_extractor import extract_links
 from app.models.schemas import ResumeSchema
 from app.services.gemini_service import generate
 from app.utils.promptloader import load_prompt
@@ -39,8 +39,19 @@ def parse_resume(
             data = json.loads(cleaned)
 
             validated = ResumeSchema.model_validate(data)
+            parsed=validated.model_dump()
+            if file_path:
+                links = extract_links(file_path)
 
-            return validated.model_dump()
+                personal = parsed.get("personalInfo", {})
+
+                personal["linkedin"] = links["linkedin"] or personal.get("linkedin")
+                personal["github"] = links["github"] or personal.get("github")
+                personal["portfolio"] = links["portfolio"] or personal.get("portfolio")
+
+                parsed["personalInfo"] = personal
+
+            return parsed
 
         except Exception as e:
             last_error = e
