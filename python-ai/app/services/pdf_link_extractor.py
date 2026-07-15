@@ -1,6 +1,23 @@
 import fitz
 
+def extract_pdf_text(pdf_path: str) -> str:
+    """
+    Extract all visible text from a PDF.
+    Used for Job Description PDF files.
+    """
 
+    doc = fitz.open(pdf_path)
+
+    try:
+        text = "\n".join(
+            page.get_text()
+            for page in doc
+        )
+
+        return text.strip()
+
+    finally:
+        doc.close()
 def extract_links(pdf_path: str):
     links = {
         "linkedin": None,

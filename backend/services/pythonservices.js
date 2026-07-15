@@ -33,3 +33,54 @@ export const parseResumeWithAI = async (file, rawText = "") => {
         throw err;
     }
 };
+
+export const analyzeATSWithAI = async (
+    resumeData,
+    jobDescription,
+    file
+) => {
+    const form = new FormData();
+
+    form.append(
+        "resume_data",
+        JSON.stringify(resumeData)
+    );
+
+    if (jobDescription) {
+        form.append(
+            "job_description",
+            jobDescription
+        );
+    }
+
+    if (file) {
+        form.append(
+            "file",
+            file.buffer,
+            {
+                filename: file.originalname,
+                contentType: file.mimetype,
+            }
+        );
+    }
+
+    try {
+        const { data } = await axios.post(
+            "http://127.0.0.1:8000/analyze-ats",
+            form,
+            {
+                headers: form.getHeaders(),
+            }
+        );
+
+        return data.result;
+
+    } catch (err) {
+        console.log(
+            "ATS AI Error:",
+            JSON.stringify(err.response?.data, null, 2)
+        );
+
+        throw err;
+    }
+};

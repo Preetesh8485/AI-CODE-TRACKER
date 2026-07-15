@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 from app.models.schemas import ResumeSchema
+from app.models.atsSchema import ATSReportSchema
+import json
 load_dotenv()
 
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
@@ -32,6 +34,37 @@ def generate(
         config=types.GenerateContentConfig(
             response_mime_type="application/json",
             response_schema=ResumeSchema,
+            temperature=0,
+        ),
+    )
+
+    return response.text
+
+
+def generate_ats(
+    prompt: str,
+    resume_data: dict,
+    job_description: str,
+):
+
+    content = f"""
+{prompt}
+
+RESUME DATA:
+
+{json.dumps(resume_data, indent=2)}
+
+JOB DESCRIPTION:
+
+{job_description}
+"""
+
+    response = client.models.generate_content(
+        model="gemini-3.5-flash",
+        contents=content,
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json",
+            response_schema=ATSReportSchema,
             temperature=0,
         ),
     )
