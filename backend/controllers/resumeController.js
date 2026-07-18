@@ -1,7 +1,7 @@
 import Resume from "../models/resume.js";
 import { catchAsyncError } from "../middleware/CatchAsyncErrors.js";
 import ErrorHandler from "../middleware/errorMiddleware.js";
-import { extractDocxText } from "../services/parser/docxParser.js";
+import { extractDocxText } from "../services/parser/docxparser.js";
 import { uploadResumeTocloudinary } from "../utils/uploadResumeToCloudinary.js";
 import { deleteResumeFromCloudinary } from "../utils/deleteResumefromCloudinary.js";
 import { parseResumeWithAI } from "../services/pythonservices.js";

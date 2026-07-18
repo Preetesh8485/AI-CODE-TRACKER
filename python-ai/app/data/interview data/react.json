@@ -1,0 +1,122 @@
+[
+  {
+    "topic": "Virtual DOM and Reconciliation",
+    "difficulty": "medium",
+    "concepts": ["diffing algorithm", "why virtual DOM avoids costly real DOM writes", "keys used to identify list items during diffing", "batched updates"],
+    "questionPatterns": ["How does React decide what to re-render when state changes?", "Why does React batch multiple state updates together?"],
+    "evaluationCriteria": ["explains diffing between old and new virtual DOM trees", "connects batching to performance (fewer real DOM writes)", "understands this isn't 'magic', it's a reconciliation algorithm"],
+    "followUpConcepts": ["Key Prop and List Rendering", "Performance Optimization"]
+  },
+  {
+    "topic": "useState vs useRef",
+    "difficulty": "easy",
+    "concepts": ["useState triggers re-render on change", "useRef persists value without re-rendering", "useRef for DOM references", "when to choose one over the other"],
+    "questionPatterns": ["Why wouldn't you use useState to store a value that shouldn't trigger a re-render?", "What's a practical use of useRef besides accessing a DOM node?"],
+    "evaluationCriteria": ["correctly explains the re-render trigger difference", "gives a non-DOM useRef example (storing previous value, interval ID)", "doesn't confuse the two"],
+    "followUpConcepts": ["useEffect Dependency Array", "Component Lifecycle"]
+  },
+  {
+    "topic": "useEffect Dependency Array",
+    "difficulty": "medium",
+    "concepts": ["empty array runs once on mount", "no array runs every render", "stale closures from missing dependencies", "cleanup function for unmounting/unsubscribing"],
+    "questionPatterns": ["Why did your useEffect keep using an old value of a state variable?", "When would you return a cleanup function from useEffect?"],
+    "evaluationCriteria": ["correctly diagnoses stale closure from missing dependency", "explains cleanup function use (unsubscribing, clearing intervals)", "understands the three dependency-array behaviors"],
+    "followUpConcepts": ["useState vs useRef", "Custom Hooks"]
+  },
+  {
+    "topic": "Component Lifecycle",
+    "difficulty": "medium",
+    "concepts": ["mount, update, unmount phases", "class lifecycle methods vs hook equivalents", "componentDidMount maps to useEffect with empty array", "componentWillUnmount maps to cleanup function"],
+    "questionPatterns": ["How would you replicate componentDidMount and componentWillUnmount using hooks?", "What lifecycle phase would you fetch data in, and why?"],
+    "evaluationCriteria": ["correctly maps class lifecycle methods to hook equivalents", "justifies data fetching in mount phase", "understands update phase triggers (props/state change)"],
+    "followUpConcepts": ["useEffect Dependency Array"]
+  },
+  {
+    "topic": "Controlled vs Uncontrolled Components",
+    "difficulty": "easy",
+    "concepts": ["controlled: value driven by React state", "uncontrolled: value read via ref", "tradeoffs: validation ease vs performance for large forms"],
+    "questionPatterns": ["What's the difference between a controlled and uncontrolled input?", "Why might a large form use uncontrolled inputs for performance?"],
+    "evaluationCriteria": ["correctly defines both patterns", "explains re-render cost of controlled inputs on every keystroke", "gives a valid reason to pick each"],
+    "followUpConcepts": ["useState vs useRef", "Performance Optimization"]
+  },
+  {
+    "topic": "React Context API",
+    "difficulty": "medium",
+    "concepts": ["avoiding prop drilling", "Provider and Consumer pattern", "re-render implications when context value changes", "not a full state management replacement"],
+    "questionPatterns": ["When would you reach for Context instead of prop drilling?", "What's a downside of overusing Context for frequently changing state?"],
+    "evaluationCriteria": ["correctly explains prop drilling avoidance", "identifies that all consumers re-render when context value changes", "recognizes Context isn't ideal for high-frequency updates"],
+    "followUpConcepts": ["Redux vs Context API", "Prop Drilling and Solutions"]
+  },
+  {
+    "topic": "Redux vs Context API",
+    "difficulty": "medium",
+    "concepts": ["Redux: predictable state via reducers/actions", "Context: simpler, built-in, less tooling", "Redux DevTools and middleware ecosystem", "when app complexity justifies Redux"],
+    "questionPatterns": ["Why did you choose Redux Toolkit over Context for state management in your project?", "What does Redux give you that Context doesn't?"],
+    "evaluationCriteria": ["gives a real justification tied to their own project, not just textbook", "mentions middleware/devtools/predictability as Redux advantages", "acknowledges Context is sufficient for simpler cases"],
+    "followUpConcepts": ["React Context API", "Redux Toolkit Thunks and Slices"]
+  },
+  {
+    "topic": "Redux Toolkit Thunks and Slices",
+    "difficulty": "medium",
+    "concepts": ["createSlice reduces boilerplate", "createAsyncThunk for async logic", "pending/fulfilled/rejected action states", "immutability handled via Immer under the hood"],
+    "questionPatterns": ["Walk me through how you handled an async API call with Redux Toolkit.", "How does Redux Toolkit let you write 'mutating' code that's actually immutable?"],
+    "evaluationCriteria": ["correctly describes thunk pending/fulfilled/rejected flow", "can explain Immer's role in enabling draft-style mutation syntax", "references their actual project experience"],
+    "followUpConcepts": ["Redux vs Context API"]
+  },
+  {
+    "topic": "Memoization: useMemo useCallback React.memo",
+    "difficulty": "medium",
+    "concepts": ["useMemo caches computed values", "useCallback caches function references", "React.memo prevents re-render if props unchanged", "premature memoization can hurt more than help"],
+    "questionPatterns": ["When would useCallback actually matter for performance?", "Why doesn't wrapping every component in React.memo automatically make an app faster?"],
+    "evaluationCriteria": ["correctly distinguishes useMemo (value) from useCallback (function reference)", "explains React.memo's shallow prop comparison", "acknowledges overuse adds overhead without benefit"],
+    "followUpConcepts": ["Virtual DOM and Reconciliation", "Performance Optimization"]
+  },
+  {
+    "topic": "Key Prop and List Rendering",
+    "difficulty": "easy",
+    "concepts": ["keys help React identify which items changed", "using array index as key can cause bugs", "keys must be stable and unique"],
+    "questionPatterns": ["Why is using array index as a key sometimes a bad idea?", "What goes wrong in a list if keys aren't stable?"],
+    "evaluationCriteria": ["explains index-as-key bug with reordering/insertion/deletion", "understands keys should be stable unique identifiers (like an id)", "connects this to reconciliation correctness"],
+    "followUpConcepts": ["Virtual DOM and Reconciliation"]
+  },
+  {
+    "topic": "Custom Hooks",
+    "difficulty": "medium",
+    "concepts": ["extracting reusable stateful logic", "must start with 'use' prefix", "composing built-in hooks inside a custom hook"],
+    "questionPatterns": ["Have you written a custom hook? Walk me through what it did and why.", "What are the rules around naming and using custom hooks?"],
+    "evaluationCriteria": ["gives a real example from their own project if they have one", "understands custom hooks are just composition of existing hooks", "knows the naming convention and why it matters (lint rules)"],
+    "followUpConcepts": ["useEffect Dependency Array", "Prop Drilling and Solutions"]
+  },
+  {
+    "topic": "Lifting State Up",
+    "difficulty": "easy",
+    "concepts": ["moving shared state to closest common ancestor", "passing state and setters down as props", "alternative to duplicated/desynced state"],
+    "questionPatterns": ["Two sibling components need to share state — how do you handle it?", "What problem does lifting state up solve?"],
+    "evaluationCriteria": ["correctly identifies moving state to common parent", "explains the problem it solves (state desync between siblings)", "recognizes when this doesn't scale (leads to Context/Redux)"],
+    "followUpConcepts": ["React Context API", "Prop Drilling and Solutions"]
+  },
+  {
+    "topic": "React Router and Protected Routes",
+    "difficulty": "medium",
+    "concepts": ["client-side routing without full page reload", "route guards for authentication", "redirecting unauthenticated users", "nested routes"],
+    "questionPatterns": ["How did you implement protected routes in your authentication project?", "What happens on a hard refresh with client-side routing, and how do you handle it?"],
+    "evaluationCriteria": ["describes a real protected-route pattern (wrapper component checking auth state)", "understands server needs to serve the SPA shell for any route on refresh", "references actual implementation if it's on their resume"],
+    "followUpConcepts": ["JWT Authentication"]
+  },
+  {
+    "topic": "Performance Optimization in React",
+    "difficulty": "hard",
+    "concepts": ["code splitting with lazy/Suspense", "virtualization for long lists", "avoiding unnecessary re-renders", "bundle size analysis"],
+    "questionPatterns": ["How would you improve the load time of a React app with a large bundle?", "How would you render a list of 10,000 items without freezing the UI?"],
+    "evaluationCriteria": ["mentions code splitting / lazy loading for bundle size", "mentions list virtualization for large lists", "shows awareness of measuring before optimizing (profiler, bundle analyzer)"],
+    "followUpConcepts": ["Memoization", "Virtual DOM and Reconciliation"]
+  },
+  {
+    "topic": "Prop Drilling and Solutions",
+    "difficulty": "easy",
+    "concepts": ["passing props through intermediate components that don't need them", "solutions: Context, state management libraries, component composition"],
+    "questionPatterns": ["What is prop drilling and why is it considered a problem?", "Besides Context, how else could you avoid prop drilling?"],
+    "evaluationCriteria": ["correctly defines prop drilling", "names Context and/or a state library as solutions", "can also mention composition (children props) as an underused alternative"],
+    "followUpConcepts": ["React Context API", "Lifting State Up"]
+  }
+]

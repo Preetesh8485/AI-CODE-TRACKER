@@ -1,0 +1,122 @@
+[
+  {
+    "topic": "SQL vs NoSQL",
+    "difficulty": "easy",
+    "concepts": ["schema rigidity vs flexibility", "vertical vs horizontal scaling tendencies", "relational joins vs embedded/denormalized data", "when each is the right choice"],
+    "questionPatterns": ["Why did you choose MongoDB over MySQL for your project?", "What kind of application would you NOT want to build on a NoSQL database?"],
+    "evaluationCriteria": ["gives a real justification for their own project's DB choice", "understands schema flexibility isn't automatically 'better'", "identifies a scenario needing strong relational integrity (e.g. financial systems) as a poor NoSQL fit"],
+    "followUpConcepts": ["MongoDB Schema Design", "Database Normalization"]
+  },
+  {
+    "topic": "MongoDB Schema Design",
+    "difficulty": "medium",
+    "concepts": ["embedding vs referencing", "denormalization for read performance", "schema design driven by query patterns, not entities", "strict mode and field dropping pitfalls"],
+    "questionPatterns": ["When would you embed a document versus reference it with an ObjectId in MongoDB?", "You mentioned platform-specific schemas to avoid strict-mode field dropping — walk me through that problem."],
+    "evaluationCriteria": ["correctly reasons about embed-vs-reference based on access patterns and document growth", "references their actual strict-mode/schema design experience", "understands MongoDB schema design should follow queries, unlike SQL's entity-first approach"],
+    "followUpConcepts": ["SQL vs NoSQL", "Aggregation Pipeline"]
+  },
+  {
+    "topic": "Indexing Strategies",
+    "difficulty": "medium",
+    "concepts": ["single-field vs compound indexes", "index selectivity", "covered queries", "tradeoff: faster reads, slower writes, more storage"],
+    "questionPatterns": ["How would you decide which fields to index in a frequently-queried collection?", "What's a compound index and when does field order in it matter?"],
+    "evaluationCriteria": ["explains selectivity as a factor in choosing what to index", "understands compound index field order affects which queries can use it", "acknowledges the write/storage cost tradeoff"],
+    "followUpConcepts": ["Database Indexing", "Query Optimization"]
+  },
+  {
+    "topic": "Aggregation Pipeline (MongoDB)",
+    "difficulty": "medium",
+    "concepts": ["stages: $match, $group, $sort, $project", "pipeline processes documents in sequence", "use case: computing daily stats across users"],
+    "questionPatterns": ["Walk me through an aggregation pipeline you've written, like computing daily stats.", "Why would you use $match early in a pipeline?"],
+    "evaluationCriteria": ["references a real aggregation they've written (e.g. their DailyStats/cron aggregation)", "understands stages execute in sequence, each transforming the output of the last", "knows $match early reduces the document set before expensive stages"],
+    "followUpConcepts": ["MongoDB Schema Design"]
+  },
+  {
+    "topic": "Normalization vs Denormalization",
+    "difficulty": "medium",
+    "concepts": ["normalization reduces redundancy, favors writes", "denormalization duplicates data, favors reads", "real tradeoff decision in a project"],
+    "questionPatterns": ["When would you deliberately duplicate data across documents instead of normalizing it?", "What's the risk of denormalized data going out of sync?"],
+    "evaluationCriteria": ["gives a genuine tradeoff example, not just definitions", "identifies the sync/consistency risk of duplicated data", "connects choice to actual read/write patterns of an app"],
+    "followUpConcepts": ["Database Normalization", "MongoDB Schema Design"]
+  },
+  {
+    "topic": "Joins vs Embedding and Referencing",
+    "difficulty": "medium",
+    "concepts": ["SQL joins combine normalized tables at query time", "MongoDB embeds related data or references via ObjectId + populate", "performance and consistency tradeoffs"],
+    "questionPatterns": ["How does fetching a user's related orders differ between a SQL join and a MongoDB populate?", "What's the cost of using populate heavily in Mongoose?"],
+    "evaluationCriteria": ["correctly contrasts join-at-query-time vs embed/reference approach", "understands populate performs additional queries (N+1-like cost) if overused", "gives a reasonable use case for referencing over embedding"],
+    "followUpConcepts": ["MongoDB Schema Design", "N+1 Query Problem"]
+  },
+  {
+    "topic": "Transactions in MongoDB",
+    "difficulty": "hard",
+    "concepts": ["multi-document ACID transactions since MongoDB 4.0", "session-based transaction API", "when embedding avoids needing transactions at all", "atomic upsert as a simpler alternative"],
+    "questionPatterns": ["When would you need a multi-document transaction in MongoDB versus relying on atomic single-document updates?", "You mentioned atomic upsert logic for resume uploads — why was that important?"],
+    "evaluationCriteria": ["references their actual atomic upsert fix for resume uploads", "understands single-document atomicity often avoids needing full transactions", "knows multi-document transactions exist but come with performance cost"],
+    "followUpConcepts": ["ACID Properties"]
+  },
+  {
+    "topic": "Replication vs Sharding",
+    "difficulty": "medium",
+    "concepts": ["replication: copies of data for availability/read scaling", "sharding: splitting data across servers for write/storage scaling", "different problems solved by each"],
+    "questionPatterns": ["What problem does replication solve that sharding doesn't, and vice versa?", "Would you shard a database to handle more read traffic?"],
+    "evaluationCriteria": ["correctly separates availability/read-scaling (replication) from horizontal data distribution (sharding)", "recognizes read scaling is usually better solved by replication or caching, not sharding", "no major conceptual confusion between the two"],
+    "followUpConcepts": ["CAP Theorem", "Database Sharding"]
+  },
+  {
+    "topic": "CAP Theorem",
+    "difficulty": "hard",
+    "concepts": ["consistency, availability, partition tolerance", "you can only fully guarantee two during a network partition", "where MongoDB and typical SQL databases fall on this spectrum"],
+    "questionPatterns": ["Explain the CAP theorem and where MongoDB sits on it by default.", "Why must you sacrifice either consistency or availability during a network partition?"],
+    "evaluationCriteria": ["correctly defines all three properties", "explains partition tolerance isn't optional in distributed systems, so it's really a C-vs-A tradeoff during partitions", "attempts to place a real database on the spectrum, even approximately"],
+    "followUpConcepts": ["Replication vs Sharding", "Data Consistency Models"]
+  },
+  {
+    "topic": "Connection Pooling",
+    "difficulty": "medium",
+    "concepts": ["reusing DB connections instead of opening one per request", "pool size tuning", "connection exhaustion under load"],
+    "questionPatterns": ["Why does opening a new database connection for every request hurt performance?", "What happens if your connection pool is too small under high traffic?"],
+    "evaluationCriteria": ["explains connection setup overhead being avoided by pooling", "understands requests queue or fail when the pool is exhausted", "shows awareness this is usually handled by the driver (e.g. Mongoose default pool)"],
+    "followUpConcepts": []
+  },
+  {
+    "topic": "N+1 Query Problem",
+    "difficulty": "medium",
+    "concepts": ["one query for a list, then one additional query per item", "solved via joins, populate with select, or batching", "performance impact at scale"],
+    "questionPatterns": ["What is the N+1 query problem and how would you fix it in a Mongoose-based API?", "How would you detect an N+1 problem in an existing codebase?"],
+    "evaluationCriteria": ["correctly explains the pattern (1 + N queries instead of 1-2)", "proposes a concrete fix (populate, batching, or a join)", "understands this scales badly as list size grows"],
+    "followUpConcepts": ["Joins vs Embedding and Referencing"]
+  },
+  {
+    "topic": "Database Migrations",
+    "difficulty": "easy",
+    "concepts": ["versioned schema changes", "why migrations matter more for SQL, less rigid for MongoDB", "handling schema evolution in a NoSQL app without formal migrations"],
+    "questionPatterns": ["How do you handle schema changes over time in a MongoDB-based app without a formal migration tool?", "Why are migrations more critical in a strict-schema SQL database?"],
+    "evaluationCriteria": ["understands schema flexibility in MongoDB reduces but doesn't eliminate the need for careful evolution", "proposes a reasonable strategy (default values, backfill scripts) for schema drift", "acknowledges SQL's rigidity necessitates formal migration tooling"],
+    "followUpConcepts": ["MongoDB Schema Design"]
+  },
+  {
+    "topic": "Caching Strategies (Redis)",
+    "difficulty": "medium",
+    "concepts": ["cache-aside pattern", "TTL-based expiration", "cache invalidation difficulty", "what data is a good caching candidate"],
+    "questionPatterns": ["What data in your app would be a good candidate for caching, and what wouldn't be?", "How do you avoid serving stale data from a cache?"],
+    "evaluationCriteria": ["identifies read-heavy, infrequently-changing data as good cache candidates", "mentions TTL or explicit invalidation on write as staleness mitigation", "shows awareness that cache invalidation is a genuinely hard problem"],
+    "followUpConcepts": ["Connection Pooling"]
+  },
+  {
+    "topic": "Query Optimization",
+    "difficulty": "medium",
+    "concepts": ["reading an execution plan (explain)", "identifying full collection/table scans", "adding indexes based on actual query patterns, not guesses"],
+    "questionPatterns": ["How would you diagnose why a MongoDB query is slow?", "What would you look for in an explain() output?"],
+    "evaluationCriteria": ["mentions using explain() or equivalent to inspect the query plan", "understands a full scan (COLLSCAN) is usually the red flag to look for", "proposes index changes based on actual query shape, not blind indexing"],
+    "followUpConcepts": ["Indexing Strategies"]
+  },
+  {
+    "topic": "Data Consistency Models",
+    "difficulty": "hard",
+    "concepts": ["strong vs eventual consistency", "read-your-writes consistency", "tradeoffs for user-facing features (e.g. seeing your own comment immediately)"],
+    "questionPatterns": ["What's the difference between strong and eventual consistency, and where does it matter for user experience?", "Would eventual consistency be acceptable for a 'likes' counter but not for a bank balance? Why?"],
+    "evaluationCriteria": ["correctly defines strong vs eventual consistency", "gives a sensible example of where eventual consistency is acceptable vs not", "connects this back to CAP theorem tradeoffs"],
+    "followUpConcepts": ["CAP Theorem"]
+  }
+]

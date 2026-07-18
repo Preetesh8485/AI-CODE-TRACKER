@@ -1,0 +1,122 @@
+[
+  {
+    "topic": "Closures",
+    "difficulty": "medium",
+    "concepts": ["lexical scoping", "function retains access to outer scope after it returns", "practical uses: data privacy, memoization, currying"],
+    "questionPatterns": ["Explain a closure with a real example you've written.", "How would you use a closure to create a private counter?"],
+    "evaluationCriteria": ["correctly explains lexical scope retention", "gives a working code example, not just definition", "names a practical use case"],
+    "followUpConcepts": ["Higher Order Functions", "Currying"]
+  },
+  {
+    "topic": "Event Loop and Call Stack",
+    "difficulty": "medium",
+    "concepts": ["call stack", "Web APIs / Node APIs", "callback queue", "microtask vs macrotask queue"],
+    "questionPatterns": ["Walk me through what happens when you call setTimeout(fn, 0).", "Why does a resolved Promise's .then() run before a setTimeout callback?"],
+    "evaluationCriteria": ["correctly traces call stack → Web API → queue → event loop", "distinguishes microtask (Promises) from macrotask (setTimeout) queues", "explains why microtasks drain first"],
+    "followUpConcepts": ["Promises vs Async/Await", "Microtasks vs Macrotasks"]
+  },
+  {
+    "topic": "Promises vs Async/Await",
+    "difficulty": "medium",
+    "concepts": ["Promise states (pending/fulfilled/rejected)", "async/await as syntactic sugar over Promises", "error handling differences (try/catch vs .catch)", "parallel execution with Promise.all"],
+    "questionPatterns": ["Why would you use Promise.all instead of awaiting requests sequentially?", "How do you handle errors in an async/await function?"],
+    "evaluationCriteria": ["correctly explains Promise.all runs requests in parallel", "shows proper try/catch usage around await", "understands async/await doesn't change underlying async behavior"],
+    "followUpConcepts": ["Event Loop and Call Stack", "Error Handling"]
+  },
+  {
+    "topic": "Prototypal Inheritance",
+    "difficulty": "medium",
+    "concepts": ["prototype chain", "Object.create", "class syntax as sugar over prototypes", "difference from classical inheritance"],
+    "questionPatterns": ["How does prototypal inheritance differ from classical inheritance?", "What happens when you access a property that doesn't exist on an object directly?"],
+    "evaluationCriteria": ["explains the prototype chain lookup correctly", "knows ES6 classes are syntactic sugar over prototypes", "can trace a property lookup through the chain"],
+    "followUpConcepts": ["Inheritance vs Composition", "this keyword binding"]
+  },
+  {
+    "topic": "var let const and Scoping",
+    "difficulty": "easy",
+    "concepts": ["function scope vs block scope", "hoisting behavior", "temporal dead zone", "reassignment vs mutation for const"],
+    "questionPatterns": ["Why does this loop with var log unexpected values in a setTimeout callback?", "What is the temporal dead zone?"],
+    "evaluationCriteria": ["correctly diagnoses the classic var-in-loop-closure bug", "explains block scope of let/const fixes it", "understands const prevents reassignment, not mutation"],
+    "followUpConcepts": ["Closures", "Event Loop and Call Stack"]
+  },
+  {
+    "topic": "this Keyword Binding",
+    "difficulty": "medium",
+    "concepts": ["implicit binding (method call)", "explicit binding (call/apply/bind)", "arrow functions inherit lexical this", "this in regular function loses context when detached"],
+    "questionPatterns": ["Why does 'this' become undefined when you pass a method as a callback?", "How does an arrow function's 'this' differ from a regular function's?"],
+    "evaluationCriteria": ["correctly explains context loss on detached method calls", "knows arrow functions capture enclosing lexical this", "can fix the bug with bind or arrow function"],
+    "followUpConcepts": ["Prototypal Inheritance", "Closures"]
+  },
+  {
+    "topic": "Debounce vs Throttle",
+    "difficulty": "medium",
+    "concepts": ["debounce delays execution until calls stop", "throttle limits execution to once per interval", "use cases: search input vs scroll handler"],
+    "questionPatterns": ["When would you use debounce vs throttle?", "Implement a simple debounce function."],
+    "evaluationCriteria": ["correctly distinguishes the two behaviors", "maps each to the right use case (debounce=search, throttle=scroll/resize)", "can write or reason through a basic implementation"],
+    "followUpConcepts": ["Closures", "Higher Order Functions"]
+  },
+  {
+    "topic": "Higher Order Functions",
+    "difficulty": "easy",
+    "concepts": ["functions that take/return functions", "map, filter, reduce as examples", "composition of functions"],
+    "questionPatterns": ["What makes a function a higher order function?", "How would you implement your own version of map using reduce?"],
+    "evaluationCriteria": ["gives a correct definition with example", "can reason through implementing map/filter with reduce", "understands functional composition benefit"],
+    "followUpConcepts": ["Closures", "Array Methods Internals"]
+  },
+  {
+    "topic": "Event Delegation",
+    "difficulty": "medium",
+    "concepts": ["event bubbling", "attaching one listener to a parent instead of many children", "event.target vs event.currentTarget", "performance benefit for dynamic lists"],
+    "questionPatterns": ["Why would you use event delegation for a dynamically generated list?", "What's the difference between event.target and event.currentTarget?"],
+    "evaluationCriteria": ["explains bubbling correctly", "connects delegation to handling dynamically added elements without re-binding", "correctly distinguishes target vs currentTarget"],
+    "followUpConcepts": ["Higher Order Functions"]
+  },
+  {
+    "topic": "Shallow vs Deep Copy",
+    "difficulty": "easy",
+    "concepts": ["reference vs value copying", "spread operator only shallow copies", "structuredClone or JSON methods for deep copy", "pitfalls with nested objects"],
+    "questionPatterns": ["Why did mutating a nested object still affect the original after using spread to copy it?", "How would you deep clone an object in JavaScript?"],
+    "evaluationCriteria": ["correctly diagnoses the shallow-copy pitfall", "names at least one deep clone approach (structuredClone, JSON parse/stringify with caveats, or a library)", "understands limitations of JSON-based cloning (no functions, dates become strings)"],
+    "followUpConcepts": ["Prototypal Inheritance"]
+  },
+  {
+    "topic": "Currying",
+    "difficulty": "medium",
+    "concepts": ["transforming a multi-arg function into a sequence of single-arg functions", "partial application", "use case: reusable configured functions"],
+    "questionPatterns": ["Write a curried version of a function that adds three numbers.", "What's a practical use case for currying in a real codebase?"],
+    "evaluationCriteria": ["can implement a basic curry with nested closures", "distinguishes currying from simple partial application if pressed", "gives a plausible real use case"],
+    "followUpConcepts": ["Closures", "Higher Order Functions"]
+  },
+  {
+    "topic": "Microtasks vs Macrotasks",
+    "difficulty": "hard",
+    "concepts": ["Promise callbacks are microtasks", "setTimeout/setInterval are macrotasks", "microtask queue fully drains before next macrotask", "execution order edge cases"],
+    "questionPatterns": ["Predict the console.log order for a mix of synchronous code, Promise.then, and setTimeout.", "Why can a chain of resolved Promises starve setTimeout from running?"],
+    "evaluationCriteria": ["correctly predicts execution order for a mixed sync/microtask/macrotask snippet", "explains the queue-draining behavior precisely", "connects this to potential UI-jank / starvation issues"],
+    "followUpConcepts": ["Event Loop and Call Stack", "Promises vs Async/Await"]
+  },
+  {
+    "topic": "Memory Leaks in JavaScript",
+    "difficulty": "hard",
+    "concepts": ["detached DOM references", "forgotten timers/intervals", "closures unintentionally retaining large objects", "global variable accumulation"],
+    "questionPatterns": ["What are common causes of memory leaks in a long-running single-page app?", "How would you go about diagnosing a memory leak in the browser?"],
+    "evaluationCriteria": ["names at least two realistic leak sources", "mentions using browser DevTools memory profiler / heap snapshots", "understands closures can unintentionally pin memory"],
+    "followUpConcepts": ["Closures", "Event Loop and Call Stack"]
+  },
+  {
+    "topic": "Array Methods Internals",
+    "difficulty": "medium",
+    "concepts": ["map returns new array", "filter vs find", "reduce as the most general fold operation", "mutating vs non-mutating methods"],
+    "questionPatterns": ["How would you implement reduce from scratch?", "Which array methods mutate the original array and which don't?"],
+    "evaluationCriteria": ["can reason through a basic reduce implementation", "correctly separates mutating (push, splice, sort) from non-mutating (map, filter, slice) methods", "explains find vs filter difference"],
+    "followUpConcepts": ["Higher Order Functions", "Shallow vs Deep Copy"]
+  },
+  {
+    "topic": "Error Handling",
+    "difficulty": "easy",
+    "concepts": ["try/catch/finally", "custom Error classes", "error handling in async code", "unhandled promise rejections"],
+    "questionPatterns": ["How would you create and use a custom error class in a Node.js API?", "What happens if a Promise rejection is never caught?"],
+    "evaluationCriteria": ["shows correct custom Error class extending Error", "understands unhandled rejections can crash a Node process", "explains proper async error propagation"],
+    "followUpConcepts": ["Promises vs Async/Await"]
+  }
+]

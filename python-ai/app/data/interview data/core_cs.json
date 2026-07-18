@@ -1,0 +1,162 @@
+[
+  {
+    "topic": "Process vs Thread",
+    "difficulty": "easy",
+    "concepts": ["separate memory space per process", "threads share memory within a process", "context switch cost differs", "IPC vs shared memory communication"],
+    "questionPatterns": ["What's the difference between a process and a thread?", "Why would you choose multithreading over multiprocessing for a given task?"],
+    "evaluationCriteria": ["mentions memory isolation vs sharing", "mentions context-switch overhead difference", "gives a concrete use case for each"],
+    "followUpConcepts": ["Deadlock", "Semaphore vs Mutex"]
+  },
+  {
+    "topic": "Deadlock",
+    "difficulty": "medium",
+    "concepts": ["mutual exclusion", "hold and wait", "no preemption", "circular wait", "prevention vs avoidance vs detection"],
+    "questionPatterns": ["What conditions must hold for a deadlock to occur?", "How would you prevent deadlock in a system with multiple shared resources?"],
+    "evaluationCriteria": ["names at least 3 of the 4 necessary conditions", "proposes a concrete prevention strategy (lock ordering, timeout)", "distinguishes prevention from detection"],
+    "followUpConcepts": ["Semaphore vs Mutex", "CPU Scheduling"]
+  },
+  {
+    "topic": "Virtual Memory and Paging",
+    "difficulty": "medium",
+    "concepts": ["page table", "page fault", "demand paging", "thrashing", "translation lookaside buffer (TLB)"],
+    "questionPatterns": ["Explain how virtual memory allows a process to use more memory than physically available.", "What is thrashing and what causes it?"],
+    "evaluationCriteria": ["explains page fault handling correctly", "connects thrashing to excessive paging under memory pressure", "mentions TLB's role in speeding up translation"],
+    "followUpConcepts": ["CPU Scheduling", "Process vs Thread"]
+  },
+  {
+    "topic": "CPU Scheduling Algorithms",
+    "difficulty": "medium",
+    "concepts": ["FCFS", "round robin", "priority scheduling", "starvation", "preemptive vs non-preemptive"],
+    "questionPatterns": ["Compare round robin and priority scheduling.", "How does starvation happen and how is it typically avoided?"],
+    "evaluationCriteria": ["correctly explains at least two scheduling algorithms", "mentions aging as a starvation fix", "distinguishes preemptive from non-preemptive correctly"],
+    "followUpConcepts": ["Deadlock", "Process vs Thread"]
+  },
+  {
+    "topic": "Semaphore vs Mutex",
+    "difficulty": "medium",
+    "concepts": ["mutex is binary + ownership", "semaphore is counting, no ownership", "signaling vs mutual exclusion", "producer-consumer use case"],
+    "questionPatterns": ["What's the difference between a semaphore and a mutex?", "When would you use a semaphore instead of a mutex?"],
+    "evaluationCriteria": ["correctly states mutex has ownership, semaphore doesn't", "gives a producer-consumer or resource-pool example for semaphore", "doesn't conflate the two"],
+    "followUpConcepts": ["Deadlock", "Process vs Thread"]
+  },
+  {
+    "topic": "TCP vs UDP",
+    "difficulty": "easy",
+    "concepts": ["connection-oriented vs connectionless", "reliability and ordering guarantees", "three-way handshake", "latency vs reliability tradeoff"],
+    "questionPatterns": ["Why would a video call use UDP instead of TCP?", "Walk me through the TCP three-way handshake."],
+    "evaluationCriteria": ["correctly maps reliability tradeoff to real use case", "describes SYN, SYN-ACK, ACK accurately", "explains why UDP has lower latency"],
+    "followUpConcepts": ["HTTP vs HTTPS and TLS Handshake", "DNS Resolution"]
+  },
+  {
+    "topic": "HTTP vs HTTPS and TLS Handshake",
+    "difficulty": "medium",
+    "concepts": ["symmetric vs asymmetric encryption", "certificate verification", "TLS handshake steps", "why HTTPS prevents MITM attacks"],
+    "questionPatterns": ["What happens during a TLS handshake?", "Why is HTTPS considered secure against man-in-the-middle attacks?"],
+    "evaluationCriteria": ["explains asymmetric key exchange followed by symmetric session encryption", "mentions certificate authority verification", "connects this to MITM prevention"],
+    "followUpConcepts": ["TCP vs UDP", "REST API Design Principles"]
+  },
+  {
+    "topic": "DNS Resolution",
+    "difficulty": "easy",
+    "concepts": ["recursive vs iterative resolution", "DNS caching and TTL", "root, TLD, authoritative servers", "CNAME vs A record"],
+    "questionPatterns": ["Walk me through what happens between typing a URL and the browser getting an IP address.", "What's DNS caching and why does it matter?"],
+    "evaluationCriteria": ["describes the resolver → root → TLD → authoritative chain reasonably", "mentions caching reduces repeated lookups", "distinguishes record types if asked"],
+    "followUpConcepts": ["TCP vs UDP", "Load Balancing"]
+  },
+  {
+    "topic": "Database Normalization",
+    "difficulty": "medium",
+    "concepts": ["1NF, 2NF, 3NF", "removing redundancy", "functional dependency", "when denormalization is preferred"],
+    "questionPatterns": ["Explain normalization up to 3NF with an example.", "When would you deliberately denormalize a schema?"],
+    "evaluationCriteria": ["gives a correct example progressing through normal forms", "explains redundancy reduction as the core goal", "names a valid denormalization tradeoff (read performance)"],
+    "followUpConcepts": ["ACID Properties", "Database Indexing"]
+  },
+  {
+    "topic": "ACID Properties",
+    "difficulty": "medium",
+    "concepts": ["atomicity", "consistency", "isolation", "durability", "real transaction example"],
+    "questionPatterns": ["Explain ACID with a bank transfer example.", "Which ACID property is most relevant to preventing double-spending?"],
+    "evaluationCriteria": ["correctly defines all four properties", "applies them to a concrete transaction scenario", "identifies atomicity/isolation as central to the double-spend example"],
+    "followUpConcepts": ["Transaction Isolation Levels", "Database Normalization"]
+  },
+  {
+    "topic": "Database Indexing",
+    "difficulty": "medium",
+    "concepts": ["B-Tree index structure", "read vs write tradeoff", "composite indexes", "when an index is NOT used by the query planner"],
+    "questionPatterns": ["How does an index speed up a query, and what does it cost you?", "Why might a query not use an existing index?"],
+    "evaluationCriteria": ["explains B-Tree lookup vs full table scan", "mentions write/insert overhead as the cost", "gives at least one reason an index gets skipped (low selectivity, function on column)"],
+    "followUpConcepts": ["Database Normalization", "Time and Space Complexity"]
+  },
+  {
+    "topic": "Transaction Isolation Levels",
+    "difficulty": "hard",
+    "concepts": ["read uncommitted", "read committed", "repeatable read", "serializable", "dirty read, non-repeatable read, phantom read"],
+    "questionPatterns": ["What's the difference between a dirty read and a phantom read?", "Which isolation level would you pick for a financial ledger and why?"],
+    "evaluationCriteria": ["correctly distinguishes dirty/non-repeatable/phantom reads", "maps isolation levels to which anomalies they prevent", "justifies a level choice with a tradeoff (consistency vs concurrency)"],
+    "followUpConcepts": ["ACID Properties", "Database Normalization"]
+  },
+  {
+    "topic": "Encapsulation and Abstraction",
+    "difficulty": "easy",
+    "concepts": ["hiding internal state", "exposing behavior via interface", "difference between the two concepts", "real code example"],
+    "questionPatterns": ["What's the difference between encapsulation and abstraction?", "Give an example of encapsulation from a project you've built."],
+    "evaluationCriteria": ["doesn't conflate encapsulation with abstraction", "gives a concrete example (private fields, getters/setters, or interface)", "connects to why it improves maintainability"],
+    "followUpConcepts": ["Inheritance vs Composition", "SOLID Principles"]
+  },
+  {
+    "topic": "Inheritance vs Composition",
+    "difficulty": "medium",
+    "concepts": ["is-a vs has-a relationship", "tight coupling from inheritance", "flexibility of composition", "composition over inheritance principle"],
+    "questionPatterns": ["Why do people say 'favor composition over inheritance'?", "Give an example where composition is a better choice than inheritance."],
+    "evaluationCriteria": ["explains is-a vs has-a correctly", "identifies tight coupling / fragile base class problem with deep inheritance", "gives a plausible real example"],
+    "followUpConcepts": ["Encapsulation and Abstraction", "SOLID Principles"]
+  },
+  {
+    "topic": "Polymorphism",
+    "difficulty": "easy",
+    "concepts": ["compile-time (overloading) vs runtime (overriding)", "interface-based polymorphism", "real use case"],
+    "questionPatterns": ["What's the difference between method overloading and overriding?", "Where have you used polymorphism in a real project?"],
+    "evaluationCriteria": ["correctly separates overloading from overriding", "gives a genuine example, not just textbook definition", "explains the benefit (extensibility, uniform interface)"],
+    "followUpConcepts": ["Inheritance vs Composition", "SOLID Principles"]
+  },
+  {
+    "topic": "SOLID Principles",
+    "difficulty": "medium",
+    "concepts": ["single responsibility", "open/closed", "Liskov substitution", "interface segregation", "dependency inversion"],
+    "questionPatterns": ["Explain single responsibility principle with an example of violating it.", "What does the open/closed principle mean in practice?"],
+    "evaluationCriteria": ["can explain at least 3 of the 5 principles correctly", "gives a code-level example, not just definitions", "recognizes a violation when described one"],
+    "followUpConcepts": ["Inheritance vs Composition", "Encapsulation and Abstraction"]
+  },
+  {
+    "topic": "Time and Space Complexity",
+    "difficulty": "easy",
+    "concepts": ["Big-O notation", "best/average/worst case", "amortized complexity", "space-time tradeoff"],
+    "questionPatterns": ["What's the time complexity of your solution and can you reduce it?", "Explain amortized time complexity with an example like dynamic array resizing."],
+    "evaluationCriteria": ["states correct Big-O for their own code when asked", "understands amortized analysis isn't the same as worst-case", "can articulate a space-time tradeoff decision"],
+    "followUpConcepts": ["Hashing and Hash Tables", "Database Indexing"]
+  },
+  {
+    "topic": "Hashing and Hash Tables",
+    "difficulty": "medium",
+    "concepts": ["hash function properties", "collision handling (chaining, open addressing)", "average O(1) lookup", "load factor and resizing"],
+    "questionPatterns": ["How does a hash table achieve O(1) average lookup?", "How do you handle hash collisions?"],
+    "evaluationCriteria": ["explains hash function mapping to buckets", "names a collision resolution strategy correctly", "acknowledges worst-case degradation to O(n)"],
+    "followUpConcepts": ["Time and Space Complexity", "Database Indexing"]
+  },
+  {
+    "topic": "REST API Design Principles",
+    "difficulty": "easy",
+    "concepts": ["statelessness", "resource-based URLs", "proper HTTP verb usage", "idempotency"],
+    "questionPatterns": ["What makes an API RESTful?", "Which HTTP methods are idempotent and why does that matter?"],
+    "evaluationCriteria": ["explains statelessness correctly", "uses resource nouns not verbs in URL examples", "correctly identifies GET/PUT/DELETE as idempotent, POST as not"],
+    "followUpConcepts": ["HTTP vs HTTPS and TLS Handshake", "Load Balancing"]
+  },
+  {
+    "topic": "Load Balancing",
+    "difficulty": "medium",
+    "concepts": ["round robin", "least connections", "session persistence / sticky sessions", "health checks"],
+    "questionPatterns": ["How does a load balancer decide which server to route a request to?", "What problem do sticky sessions solve, and what tradeoff do they introduce?"],
+    "evaluationCriteria": ["names at least two load balancing algorithms", "explains sticky sessions correctly (same client to same server)", "identifies the tradeoff (uneven load distribution)"],
+    "followUpConcepts": ["REST API Design Principles", "DNS Resolution"]
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "topic": "Horizontal vs Vertical Scaling",
+    "difficulty": "easy",
+    "concepts": ["vertical: bigger machine", "horizontal: more machines", "horizontal scaling requires statelessness", "cost and complexity tradeoffs"],
+    "questionPatterns": ["Why is horizontal scaling generally preferred for web servers over vertical scaling?", "What does an application need architecturally to scale horizontally?"],
+    "evaluationCriteria": ["correctly explains both scaling approaches", "identifies statelessness as a prerequisite for horizontal scaling", "understands vertical scaling has a hard ceiling"],
+    "followUpConcepts": ["Load Balancer Types", "Database Sharding"]
+  },
+  {
+    "topic": "Load Balancer Types",
+    "difficulty": "medium",
+    "concepts": ["Layer 4 (transport) vs Layer 7 (application) load balancing", "round robin, least connections, IP hash algorithms", "health checks removing unhealthy instances"],
+    "questionPatterns": ["What's the difference between a Layer 4 and Layer 7 load balancer?", "How does a load balancer know to stop routing traffic to a crashed server?"],
+    "evaluationCriteria": ["correctly distinguishes L4 (routes on IP/port) from L7 (routes on content, e.g. URL path)", "names at least one balancing algorithm correctly", "explains health check mechanism"],
+    "followUpConcepts": ["Horizontal vs Vertical Scaling"]
+  },
+  {
+    "topic": "Caching Layers (CDN Redis Browser)",
+    "difficulty": "medium",
+    "concepts": ["CDN caches static assets at edge locations", "Redis caches computed/DB data server-side", "browser cache reduces repeat requests entirely", "cache-control headers"],
+    "questionPatterns": ["Where would you introduce caching in a typical web app's request path, from browser to database?", "What's the purpose of a CDN versus an in-memory cache like Redis?"],
+    "evaluationCriteria": ["identifies at least 2-3 caching layers correctly (browser, CDN, application/Redis)", "explains CDN's role in serving static assets close to users", "distinguishes CDN (static content) from Redis (dynamic/computed data)"],
+    "followUpConcepts": ["Caching Strategies (Redis)"]
+  },
+  {
+    "topic": "Database Sharding",
+    "difficulty": "hard",
+    "concepts": ["splitting data across multiple database servers", "shard key selection", "hotspot risk with poor shard key choice", "cross-shard query complexity"],
+    "questionPatterns": ["How would you shard a users collection that's grown too large for one server?", "What makes a good shard key, and what happens if you pick a bad one?"],
+    "evaluationCriteria": ["explains sharding as horizontal data partitioning", "identifies shard key needs even distribution to avoid hotspots", "acknowledges cross-shard queries/joins become harder"],
+    "followUpConcepts": ["Horizontal vs Vertical Scaling", "Replication vs Sharding"]
+  },
+  {
+    "topic": "Message Queues",
+    "difficulty": "medium",
+    "concepts": ["decoupling producers from consumers", "async processing of background work", "at-least-once vs exactly-once delivery", "use case: sending notification emails without blocking the request"],
+    "questionPatterns": ["Why would you put email sending on a message queue instead of doing it directly in the request handler?", "What's the difference between at-least-once and exactly-once delivery, and why does it matter?"],
+    "evaluationCriteria": ["explains decoupling and non-blocking benefit correctly", "gives a valid async-processing use case", "shows awareness that most queues guarantee at-least-once, requiring idempotent consumers"],
+    "followUpConcepts": ["Microservices vs Monolith"]
+  },
+  {
+    "topic": "Microservices vs Monolith",
+    "difficulty": "medium",
+    "concepts": ["independent deployability vs simpler operations", "network overhead and distributed system complexity in microservices", "when a monolith is the right choice for a small team", "your own project split (Node backend + separate Python AI service)"],
+    "questionPatterns": ["Your project has a separate Python AI service alongside the Node backend — is that microservices, and why did you split it that way?", "What complexity does splitting a monolith into microservices introduce?"],
+    "evaluationCriteria": ["gives an honest, grounded answer about their own architecture rather than overclaiming 'microservices'", "names real distributed-system costs (network latency, partial failure, deployment complexity)", "justifies the split with a real reason (language/library needs, e.g. Python AI ecosystem)"],
+    "followUpConcepts": ["Message Queues", "API Gateway"]
+  },
+  {
+    "topic": "API Gateway",
+    "difficulty": "medium",
+    "concepts": ["single entry point for multiple backend services", "cross-cutting concerns: auth, rate limiting, logging", "routing requests to the right service"],
+    "questionPatterns": ["What problems does an API Gateway solve in a multi-service architecture?", "If you had five microservices, would clients call each directly or through a gateway, and why?"],
+    "evaluationCriteria": ["explains centralizing cross-cutting concerns as the main benefit", "understands it simplifies the client's view of a multi-service backend", "can reason about this even without direct prior implementation"],
+    "followUpConcepts": ["Microservices vs Monolith"]
+  },
+  {
+    "topic": "Rate Limiting Algorithms",
+    "difficulty": "medium",
+    "concepts": ["token bucket allows bursts up to a cap", "sliding window is more precise but costlier to compute", "fixed window is simplest but allows boundary bursts"],
+    "questionPatterns": ["What's the difference between a fixed window and sliding window rate limiter?", "Why might a fixed window rate limiter let through double the intended requests at a window boundary?"],
+    "evaluationCriteria": ["correctly explains the boundary-burst flaw of fixed window", "distinguishes at least two algorithms correctly", "can reason about the precision-vs-cost tradeoff between them"],
+    "followUpConcepts": ["Rate Limiting"]
+  },
+  {
+    "topic": "Consistent Hashing",
+    "difficulty": "hard",
+    "concepts": ["minimizes remapping when nodes are added/removed", "hash ring concept", "use case: distributed caching, sharding"],
+    "questionPatterns": ["Why is consistent hashing preferred over simple modulo hashing when scaling a distributed cache?", "What happens to key distribution when you add a node with consistent hashing versus modulo hashing?"],
+    "evaluationCriteria": ["explains modulo hashing requires remapping almost everything when node count changes", "describes the hash ring concept at a basic level", "understands the benefit: only a fraction of keys remap on node changes"],
+    "followUpConcepts": ["Database Sharding"]
+  },
+  {
+    "topic": "Designing a URL Shortener",
+    "difficulty": "medium",
+    "concepts": ["base62 encoding vs hashing for short codes", "collision handling", "read-heavy system, so caching/replication matters more than write scaling", "redirect status code choice (301 vs 302)"],
+    "questionPatterns": ["Walk me through how you'd design a URL shortener like bit.ly, focusing on how short codes are generated.", "Is a URL shortener read-heavy or write-heavy, and how does that shape your design?"],
+    "evaluationCriteria": ["proposes a reasonable short-code generation strategy (counter+base62, or hash+collision check)", "correctly identifies the system as read-heavy", "connects that to caching/replication being prioritized over write throughput"],
+    "followUpConcepts": ["Caching Layers (CDN Redis Browser)", "Consistent Hashing"]
+  },
+  {
+    "topic": "Designing a Rate Limiter",
+    "difficulty": "medium",
+    "concepts": ["where to enforce it: gateway vs per-service", "storing counters in Redis for distributed consistency", "algorithm choice tradeoff (token bucket vs sliding window)"],
+    "questionPatterns": ["How would you design a rate limiter that works correctly across multiple server instances?", "Why can't you just keep a rate limit counter in each server's local memory?"],
+    "evaluationCriteria": ["identifies the need for a shared store (Redis) across instances", "explains local in-memory counters break under horizontal scaling", "picks and justifies an algorithm"],
+    "followUpConcepts": ["Rate Limiting Algorithms", "Rate Limiting"]
+  },
+  {
+    "topic": "CAP Theorem in System Design Context",
+    "difficulty": "hard",
+    "concepts": ["applying CAP tradeoffs to real design decisions", "choosing AP vs CP based on product requirements", "example: chat delivery (AP) vs payment processing (CP)"],
+    "questionPatterns": ["Would you design a chat app's message delivery to favor consistency or availability, and why?", "Give an example of a feature where you'd deliberately choose availability over strict consistency."],
+    "evaluationCriteria": ["applies CAP correctly to a concrete product scenario, not just the abstract theorem", "justifies the choice with real user-experience reasoning", "shows they understand this is a deliberate design decision, not a default"],
+    "followUpConcepts": ["CAP Theorem", "Data Consistency Models"]
+  },
+  {
+    "topic": "Content Delivery Networks",
+    "difficulty": "easy",
+    "concepts": ["edge servers close to users reduce latency", "caching static assets", "origin server fallback on cache miss"],
+    "questionPatterns": ["How does a CDN reduce load time for users far from your origin server?", "What happens on a CDN cache miss?"],
+    "evaluationCriteria": ["explains edge-location proximity reducing latency correctly", "understands cache miss falls back to origin and then populates the edge cache", "gives a reasonable example of CDN-appropriate content (images, JS bundles)"],
+    "followUpConcepts": ["Caching Layers (CDN Redis Browser)"]
+  },
+  {
+    "topic": "Designing a Notification System",
+    "difficulty": "hard",
+    "concepts": ["fan-out on write vs fan-out on read", "queue-based async delivery", "multiple channels (email, push, in-app)", "your own wishlist/overdue-book notification cron experience"],
+    "questionPatterns": ["You built notification systems for book requests and wishlists — how would that design change at a much larger scale, say millions of users?", "What's the difference between fan-out on write and fan-out on read for delivering notifications?"],
+    "evaluationCriteria": ["connects the answer back to their real cron-based notification experience as a starting point", "explains fan-out tradeoff (write-heavy vs read-heavy) correctly", "proposes queue-based decoupling for scale"],
+    "followUpConcepts": ["Message Queues", "WebSockets vs Socket.io vs Polling"]
+  },
+  {
+    "topic": "Designing a Scalable Chat Application",
+    "difficulty": "hard",
+    "concepts": ["persistent WebSocket connections per user", "message delivery guarantees and ordering", "horizontal scaling challenge: routing a message to the right server holding that user's connection", "your own Socket.io experience as a starting point"],
+    "questionPatterns": ["You've used Socket.io for real-time notifications — how would you scale that to millions of concurrent connections across multiple servers?", "What problem arises when you horizontally scale a WebSocket server, and how would you solve it?"],
+    "evaluationCriteria": ["grounds the answer in their real Socket.io experience", "identifies the cross-server routing problem (a message needs to reach a specific server holding a specific connection)", "proposes a plausible solution (pub/sub layer like Redis, sticky sessions)"],
+    "followUpConcepts": ["WebSockets vs Socket.io vs Polling", "Load Balancer Types"]
+  }
+]

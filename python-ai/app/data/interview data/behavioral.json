@@ -1,0 +1,122 @@
+[
+  {
+    "topic": "Challenging Bug You Fixed",
+    "difficulty": "easy",
+    "concepts": ["specific technical problem, not vague", "debugging process/methodology", "root cause identification", "what they'd do differently"],
+    "questionPatterns": ["Tell me about the hardest bug you've had to debug.", "Walk me through your process when you can't immediately figure out why something is broken."],
+    "evaluationCriteria": ["describes a specific, technical bug rather than a vague generality", "shows a logical debugging process (isolate, hypothesize, test)", "reflects on the root cause, not just the fix"],
+    "followUpConcepts": ["Technical Decision in Hindsight"]
+  },
+  {
+    "topic": "Conflict With a Teammate",
+    "difficulty": "medium",
+    "concepts": ["specific disagreement, not generic", "how they communicated / resolved it", "outcome and relationship afterward", "self-awareness about their own role in the conflict"],
+    "questionPatterns": ["Tell me about a time you disagreed with a teammate on a technical approach.", "How do you typically handle conflict in a team setting?"],
+    "evaluationCriteria": ["gives a concrete, specific example rather than a hypothetical", "shows constructive resolution, not just 'I was right'", "reflects some self-awareness about their own contribution to the friction"],
+    "followUpConcepts": ["How You Handle Negative Feedback"]
+  },
+  {
+    "topic": "Missed Deadline",
+    "difficulty": "medium",
+    "concepts": ["honest acknowledgment rather than blame-shifting", "what caused the miss", "what changed afterward to prevent recurrence"],
+    "questionPatterns": ["Tell me about a time you missed a deadline. What happened?", "How do you handle a project falling behind schedule?"],
+    "evaluationCriteria": ["takes genuine ownership rather than only blaming external factors", "identifies a real, specific cause", "describes a concrete change in approach afterward, not just 'I'll try harder'"],
+    "followUpConcepts": ["How You Prioritize Under Pressure"]
+  },
+  {
+    "topic": "Technical Decision in Hindsight",
+    "difficulty": "medium",
+    "concepts": ["specific decision from a real project", "honest reflection, not defensive", "what they learned and would apply going forward"],
+    "questionPatterns": ["Looking back at one of your projects, what technical decision would you make differently today?", "What's something you built that you'd architect differently now?"],
+    "evaluationCriteria": ["names a real, specific decision from an actual project (not generic)", "shows genuine reflection rather than defensiveness", "connects the lesson to how they'd approach similar decisions now"],
+    "followUpConcepts": ["Challenging Bug You Fixed"]
+  },
+  {
+    "topic": "How You Prioritize Under Pressure",
+    "difficulty": "medium",
+    "concepts": ["a concrete prioritization framework or method", "example under real time constraint", "tradeoffs they consciously made"],
+    "questionPatterns": ["You have three urgent tasks and limited time — how do you decide what to do first?", "Describe a time you had to prioritize ruthlessly to meet a deadline."],
+    "evaluationCriteria": ["describes a concrete method (impact vs effort, urgency, dependencies) rather than 'I just work harder'", "gives a real example with actual tradeoffs made", "shows awareness of what got deprioritized and why that was acceptable"],
+    "followUpConcepts": ["Missed Deadline"]
+  },
+  {
+    "topic": "Leading or Initiating a Project",
+    "difficulty": "medium",
+    "concepts": ["taking initiative without being asked", "coordinating others or driving scope/direction", "outcome of the initiative"],
+    "questionPatterns": ["Tell me about a time you took the lead on something without being asked to.", "Describe a project where you drove the direction rather than just executing tasks."],
+    "evaluationCriteria": ["gives a genuine example of initiative, ideally from their freelance or personal project work", "describes what leading actually looked like in practice (decisions made, coordination)", "states a real outcome, not just intent"],
+    "followUpConcepts": ["Project You're Most Proud Of"]
+  },
+  {
+    "topic": "How You Handle Negative Feedback",
+    "difficulty": "easy",
+    "concepts": ["specific instance of receiving criticism", "initial reaction vs how they processed it", "concrete change made as a result"],
+    "questionPatterns": ["Tell me about a time you received critical feedback on your code or work. How did you respond?", "How do you typically react when someone points out a flaw in your approach?"],
+    "evaluationCriteria": ["gives a real instance, not a hypothetical", "shows they didn't get purely defensive", "describes an actual behavior change resulting from the feedback"],
+    "followUpConcepts": ["Conflict With a Teammate"]
+  },
+  {
+    "topic": "Learning Something Quickly",
+    "difficulty": "medium",
+    "concepts": ["specific technology/skill learned under time pressure", "learning method/resources used", "how it was applied immediately"],
+    "questionPatterns": ["Tell me about a time you had to learn a new technology quickly to finish a project.", "How do you approach ramping up on something completely unfamiliar?"],
+    "evaluationCriteria": ["names a specific real technology/skill and timeframe", "describes an actual learning method (docs, small experiments, existing codebase study)", "connects the learning directly to shipping something"],
+    "followUpConcepts": ["Readiness for Unfamiliar Technology"]
+  },
+  {
+    "topic": "Working With Unclear Requirements",
+    "difficulty": "medium",
+    "concepts": ["real example of ambiguity", "how they sought clarity or made reasonable assumptions", "outcome and whether assumptions were validated"],
+    "questionPatterns": ["Tell me about a time the requirements for something you built were vague or kept changing.", "How do you handle building something when the client or stakeholder isn't sure exactly what they want?"],
+    "evaluationCriteria": ["gives a concrete example, ideally from freelance client work where this is common", "describes proactively clarifying rather than guessing silently", "shows how they validated assumptions before over-investing"],
+    "followUpConcepts": ["Leading or Initiating a Project"]
+  },
+  {
+    "topic": "Approach to Code Reviews",
+    "difficulty": "easy",
+    "concepts": ["giving feedback: specific, constructive, not just critical", "receiving feedback: open, not defensive", "what they look for as a reviewer"],
+    "questionPatterns": ["What do you focus on when reviewing someone else's code?", "How do you give critical feedback on code without it feeling personal?"],
+    "evaluationCriteria": ["names concrete review priorities (correctness, readability, edge cases) not just 'style'", "frames feedback approach constructively", "shows self-awareness about tone when giving criticism"],
+    "followUpConcepts": ["How You Handle Negative Feedback"]
+  },
+  {
+    "topic": "Disagreeing With a Technical Decision",
+    "difficulty": "medium",
+    "concepts": ["specific disagreement with reasoning on both sides", "how they made their case", "outcome — did they defer, escalate, or convince"],
+    "questionPatterns": ["Tell me about a time you disagreed with a technical decision made above you or by the team.", "How do you handle a situation where you're overruled on something you believe is the wrong technical call?"],
+    "evaluationCriteria": ["gives a real example with clear reasoning for their position", "shows they made a case with evidence, not just opinion", "demonstrates ability to disagree-and-commit when appropriate, not just insist"],
+    "followUpConcepts": ["Conflict With a Teammate"]
+  },
+  {
+    "topic": "Staying Updated With Technology",
+    "difficulty": "easy",
+    "concepts": ["specific habits or resources, not vague 'I read blogs'", "how new knowledge gets applied, not just consumed", "balance between learning breadth and depth"],
+    "questionPatterns": ["How do you stay current with changes in the technologies you work with?", "What's something new you learned recently and how did you apply it?"],
+    "evaluationCriteria": ["names specific, real habits or resources", "connects learning to actual application in a project, not passive consumption", "avoids generic non-answers"],
+    "followUpConcepts": ["Learning Something Quickly"]
+  },
+  {
+    "topic": "Project You're Most Proud Of",
+    "difficulty": "easy",
+    "concepts": ["specific technical or product challenge overcome", "their individual contribution clearly articulated", "measurable or observable impact"],
+    "questionPatterns": ["Which project are you most proud of, and why?", "What's the most technically challenging thing you've built?"],
+    "evaluationCriteria": ["clearly articulates their own contribution vs the team's/others'", "identifies a genuine technical or design challenge, not just 'it works'", "can go deep if probed further on the specific challenge mentioned"],
+    "followUpConcepts": ["Leading or Initiating a Project"]
+  },
+  {
+    "topic": "Handling Being Wrong",
+    "difficulty": "medium",
+    "concepts": ["specific instance of a mistaken technical belief or decision", "how they discovered they were wrong", "how they corrected course"],
+    "questionPatterns": ["Tell me about a time you were confident about a technical approach and turned out to be wrong.", "How do you know when to abandon an approach you've already invested time in?"],
+    "evaluationCriteria": ["gives a genuine, specific example, not a deflected non-answer", "shows they recognized the signal that they were wrong rather than doubling down indefinitely", "describes concretely how they pivoted"],
+    "followUpConcepts": ["Technical Decision in Hindsight"]
+  },
+  {
+    "topic": "Readiness for Unfamiliar Technology",
+    "difficulty": "medium",
+    "concepts": ["honest acknowledgment of a real skill gap (e.g. Docker, cloud, MLOps)", "concrete plan or evidence of learning ability, not just 'I'll figure it out'", "transferable experience they can point to"],
+    "questionPatterns": ["Your resume shows strong MERN experience but limited exposure to Docker and cloud deployment — how would you approach ramping up on those?", "This role needs skills you haven't used in production yet — what makes you confident you can pick them up?"],
+    "evaluationCriteria": ["doesn't overclaim experience they don't have", "gives a credible, specific learning plan or references genuinely transferable experience", "shows self-awareness about the gap rather than deflecting"],
+    "followUpConcepts": ["Learning Something Quickly"]
+  }
+]

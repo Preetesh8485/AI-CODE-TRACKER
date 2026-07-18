@@ -1,6 +1,11 @@
 node_modules/
 .env
 
+# Chroma vector store (local, regenerate via app/scripts/load_seed_kb.py)
+python-ai/chroma_store/
+__pycache__/
+*.pyc
+
 # Logs
 logs
 *.log

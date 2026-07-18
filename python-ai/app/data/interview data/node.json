@@ -1,0 +1,122 @@
+[
+  {
+    "topic": "Node.js Event Loop (libuv)",
+    "difficulty": "medium",
+    "concepts": ["single-threaded JS execution with a background thread pool", "phases: timers, poll, check, close callbacks", "how libuv offloads I/O", "difference from browser event loop"],
+    "questionPatterns": ["How does Node.js handle thousands of concurrent connections on a single thread?", "What role does libuv play in Node's architecture?"],
+    "evaluationCriteria": ["correctly explains non-blocking I/O offloaded to libuv's thread pool", "understands JS execution itself stays single-threaded", "doesn't confuse this with multi-threading"],
+    "followUpConcepts": ["Node.js Non-blocking IO", "Clustering and Worker Threads"]
+  },
+  {
+    "topic": "Node.js Non-blocking IO",
+    "difficulty": "medium",
+    "concepts": ["callbacks/promises for async operations", "why blocking the event loop is dangerous", "CPU-bound vs I/O-bound task handling"],
+    "questionPatterns": ["Why is a synchronous, CPU-heavy loop dangerous in a Node.js API?", "How would you handle a CPU-intensive task without blocking the server?"],
+    "evaluationCriteria": ["explains blocking the event loop stalls ALL requests, not just one", "proposes offloading (worker threads, separate service, queue) for CPU-bound work", "distinguishes I/O-bound (fine as async) from CPU-bound (needs offloading)"],
+    "followUpConcepts": ["Node.js Event Loop (libuv)", "Clustering and Worker Threads"]
+  },
+  {
+    "topic": "Middleware in Express",
+    "difficulty": "easy",
+    "concepts": ["request-response cycle interception", "next() to pass control", "error-handling middleware signature", "middleware ordering matters"],
+    "questionPatterns": ["Walk me through how you built authentication middleware in your project.", "Why does middleware order matter in Express?"],
+    "evaluationCriteria": ["explains next() and the request/response pipeline correctly", "references real middleware they've written (auth, validation)", "understands error-handling middleware needs 4 arguments"],
+    "followUpConcepts": ["JWT Authentication Flow", "Rate Limiting"]
+  },
+  {
+    "topic": "REST API Error Handling Patterns",
+    "difficulty": "medium",
+    "concepts": ["centralized error-handling middleware", "consistent error response shape", "operational vs programmer errors", "proper status codes"],
+    "questionPatterns": ["How do you structure error handling across a large Express API?", "What's the difference between an operational error and a programming bug, and should they be handled the same way?"],
+    "evaluationCriteria": ["describes centralizing error handling rather than scattering try/catch everywhere", "uses appropriate HTTP status codes in examples", "distinguishes expected failures (bad input) from bugs (should crash/alert, not silently continue)"],
+    "followUpConcepts": ["Middleware in Express"]
+  },
+  {
+    "topic": "JWT Authentication Flow",
+    "difficulty": "medium",
+    "concepts": ["access token vs refresh token", "token expiration handling", "storing tokens: httpOnly cookie vs localStorage tradeoffs", "signature verification prevents tampering"],
+    "questionPatterns": ["Walk me through your JWT authentication flow, including what happens when the access token expires.", "Why would you store a JWT in an httpOnly cookie instead of localStorage?"],
+    "evaluationCriteria": ["explains access/refresh token pattern or at least expiration handling", "correctly identifies XSS risk of localStorage vs httpOnly cookie protection", "understands the token is signed, not encrypted, unless explicitly using JWE"],
+    "followUpConcepts": ["Cookies vs Local Storage vs Sessions", "CORS"]
+  },
+  {
+    "topic": "Cookies vs Local Storage vs Sessions",
+    "difficulty": "medium",
+    "concepts": ["cookies sent automatically with requests", "localStorage requires manual attachment", "session storage server-side vs client-side tokens", "CSRF risk with cookies vs XSS risk with localStorage"],
+    "questionPatterns": ["What are the security tradeoffs between storing auth tokens in cookies vs localStorage?", "How would you protect against CSRF if you're using cookie-based auth?"],
+    "evaluationCriteria": ["correctly maps XSS risk to localStorage, CSRF risk to cookies", "mentions SameSite cookie attribute or CSRF tokens as mitigation", "understands cookies are sent automatically which is both convenient and risky"],
+    "followUpConcepts": ["JWT Authentication Flow", "CORS"]
+  },
+  {
+    "topic": "CORS",
+    "difficulty": "medium",
+    "concepts": ["same-origin policy", "preflight OPTIONS requests", "Access-Control-Allow-Origin header", "credentials mode with cookies"],
+    "questionPatterns": ["Why did your frontend get a CORS error when calling your API from a different port, and how did you fix it?", "What triggers a preflight request?"],
+    "evaluationCriteria": ["correctly explains same-origin policy as the root cause", "knows preflight is triggered by non-simple requests (custom headers, non-GET/POST, credentials)", "references a real fix they applied (cors middleware config)"],
+    "followUpConcepts": ["Cookies vs Local Storage vs Sessions"]
+  },
+  {
+    "topic": "Rate Limiting",
+    "difficulty": "medium",
+    "concepts": ["token bucket / sliding window algorithms", "per-IP vs per-user limits", "why rate limiting protects against abuse and DoS", "429 status code"],
+    "questionPatterns": ["How did you implement rate limiting in your project, and what algorithm does it use?", "Why would you rate-limit per-user instead of per-IP for an authenticated API?"],
+    "evaluationCriteria": ["references their actual rate-limiting implementation (from Fortune Constructors project)", "explains the reasoning between per-IP and per-user limiting", "knows 429 is the correct status code"],
+    "followUpConcepts": ["Middleware in Express"]
+  },
+  {
+    "topic": "Environment Variables and Config Management",
+    "difficulty": "easy",
+    "concepts": ["keeping secrets out of source control", ".env files and dotenv", "different configs per environment (dev/staging/prod)", "validating required env vars at startup"],
+    "questionPatterns": ["How do you manage different configuration values across development and production?", "What happens in your app if a required environment variable is missing?"],
+    "evaluationCriteria": ["understands secrets should never be committed to git", "mentions per-environment config strategy", "bonus: validates env vars exist at startup rather than failing deep in request handling"],
+    "followUpConcepts": []
+  },
+  {
+    "topic": "Streams and Buffers",
+    "difficulty": "hard",
+    "concepts": ["readable/writable/duplex/transform streams", "buffering data without loading it all into memory", "piping streams together", "use case: large file uploads/downloads"],
+    "questionPatterns": ["Why would you use a stream instead of reading an entire file into memory?", "How does piping work between a readable and writable stream?"],
+    "evaluationCriteria": ["correctly explains memory efficiency of streaming vs full buffering", "understands backpressure conceptually", "gives a relevant use case (file upload, video streaming)"],
+    "followUpConcepts": ["File Upload Handling"]
+  },
+  {
+    "topic": "Clustering and Worker Threads",
+    "difficulty": "hard",
+    "concepts": ["cluster module spawns multiple processes to use all CPU cores", "worker_threads for CPU-bound parallelism within one process", "load balancing across cluster workers", "when to choose which"],
+    "questionPatterns": ["Node.js is single-threaded — how would you take advantage of a multi-core server?", "What's the difference between the cluster module and worker_threads?"],
+    "evaluationCriteria": ["explains cluster module forking multiple processes to use multiple cores", "distinguishes worker_threads (shared memory, CPU-bound tasks) from cluster (separate processes)", "gives a plausible use case for each"],
+    "followUpConcepts": ["Node.js Event Loop (libuv)", "Node.js Non-blocking IO"]
+  },
+  {
+    "topic": "WebSockets vs Socket.io vs Polling",
+    "difficulty": "medium",
+    "concepts": ["polling repeatedly requests updates", "WebSockets provide full-duplex persistent connection", "Socket.io adds fallback and reconnection on top of WebSockets", "use case: real-time notifications"],
+    "questionPatterns": ["Why did you choose Socket.io for real-time notifications instead of polling?", "What does Socket.io provide on top of raw WebSockets?"],
+    "evaluationCriteria": ["references their actual real-time notification implementation", "explains persistent connection benefit over repeated polling", "knows Socket.io adds reconnection/fallback handling, not just a wrapper"],
+    "followUpConcepts": []
+  },
+  {
+    "topic": "File Upload Handling",
+    "difficulty": "medium",
+    "concepts": ["multipart/form-data parsing", "Multer middleware and storage engines", "validating file type/size before processing", "streaming uploads to cloud storage"],
+    "questionPatterns": ["Walk me through your file upload pipeline using Multer and Cloudinary.", "How do you validate file size and type before accepting an upload?"],
+    "evaluationCriteria": ["references their actual Multer + Cloudinary pipeline", "mentions validation happening before/during upload, not after", "understands multipart/form-data parsing basics"],
+    "followUpConcepts": ["Streams and Buffers"]
+  },
+  {
+    "topic": "Cron Jobs and Scheduled Tasks",
+    "difficulty": "easy",
+    "concepts": ["node-cron scheduling syntax", "idempotency for scheduled jobs", "error isolation so one failure doesn't stop the whole job", "use case: daily stat aggregation"],
+    "questionPatterns": ["Walk me through your daily cron job — what does it do and how do you handle failures for individual users?", "Why is idempotency important for a scheduled job?"],
+    "evaluationCriteria": ["references their actual cron implementation (per-user error isolation)", "explains why a job should be safe to re-run without duplicating data", "understands failure in one iteration shouldn't crash the whole batch"],
+    "followUpConcepts": []
+  },
+  {
+    "topic": "API Versioning",
+    "difficulty": "easy",
+    "concepts": ["URL versioning (/api/v1/)", "header-based versioning", "why versioning matters for breaking changes", "backward compatibility"],
+    "questionPatterns": ["How would you introduce a breaking change to an API that's already being used by a mobile app?", "What are the tradeoffs between URL-based and header-based API versioning?"],
+    "evaluationCriteria": ["proposes a valid versioning strategy", "understands the core problem: can't break existing clients", "can weigh at least one tradeoff between versioning approaches"],
+    "followUpConcepts": ["REST API Design Principles"]
+  }
+]

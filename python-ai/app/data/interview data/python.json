@@ -1,0 +1,122 @@
+[
+  {
+    "topic": "GIL (Global Interpreter Lock)",
+    "difficulty": "medium",
+    "concepts": ["only one thread executes Python bytecode at a time", "why CPU-bound multithreading doesn't speed things up in CPython", "multiprocessing bypasses the GIL", "I/O-bound threading still benefits"],
+    "questionPatterns": ["Why doesn't multithreading speed up a CPU-bound Python task?", "How would you achieve true parallelism in Python despite the GIL?"],
+    "evaluationCriteria": ["correctly explains the GIL restricts one thread executing Python bytecode at a time", "proposes multiprocessing as the workaround for CPU-bound work", "acknowledges threading still helps for I/O-bound tasks"],
+    "followUpConcepts": ["Multithreading vs Multiprocessing", "Async/Await in Python"]
+  },
+  {
+    "topic": "List vs Tuple vs Set vs Dict",
+    "difficulty": "easy",
+    "concepts": ["mutability differences", "ordering guarantees", "uniqueness in sets", "average time complexity for lookup in each"],
+    "questionPatterns": ["When would you choose a tuple over a list?", "Why is checking membership in a set faster than in a list?"],
+    "evaluationCriteria": ["correctly explains mutability difference between list and tuple", "explains set/dict use hashing for near O(1) lookup vs O(n) list scan", "gives a valid reason to prefer tuple (immutability, hashability as dict key)"],
+    "followUpConcepts": ["Hashing and Hash Tables"]
+  },
+  {
+    "topic": "Generators and Iterators",
+    "difficulty": "medium",
+    "concepts": ["yield keyword and lazy evaluation", "memory efficiency vs building a full list", "iterator protocol (__iter__, __next__)", "generator expressions"],
+    "questionPatterns": ["Why would you use a generator instead of returning a list from a function that processes a huge file?", "What's the difference between an iterable and an iterator?"],
+    "evaluationCriteria": ["explains lazy evaluation and memory savings correctly", "distinguishes iterable (has __iter__) from iterator (has __next__)", "gives a valid large-data use case"],
+    "followUpConcepts": ["List Comprehensions"]
+  },
+  {
+    "topic": "Decorators",
+    "difficulty": "medium",
+    "concepts": ["functions that wrap other functions", "use cases: logging, timing, authentication checks", "preserving metadata with functools.wraps", "how FastAPI route decorators work conceptually"],
+    "questionPatterns": ["Write a simple decorator that logs how long a function takes to run.", "How do decorators relate to the route decorators you'd see in a framework like FastAPI or Flask?"],
+    "evaluationCriteria": ["can reason through or write a basic timing/logging decorator", "understands a decorator returns a wrapped function", "connects the concept to route registration in web frameworks even without direct FastAPI experience"],
+    "followUpConcepts": ["FastAPI vs Flask vs Django"]
+  },
+  {
+    "topic": "args and kwargs",
+    "difficulty": "easy",
+    "concepts": ["*args collects positional arguments into a tuple", "**kwargs collects keyword arguments into a dict", "use case: flexible wrapper/decorator functions"],
+    "questionPatterns": ["What's the difference between *args and **kwargs?", "Why are *args and **kwargs commonly used inside decorators?"],
+    "evaluationCriteria": ["correctly distinguishes positional (tuple) from keyword (dict) collection", "gives a valid use case, ideally tied to decorators/wrappers", "no major conceptual confusion"],
+    "followUpConcepts": ["Decorators"]
+  },
+  {
+    "topic": "Python Memory Management",
+    "difficulty": "hard",
+    "concepts": ["reference counting", "garbage collection for cyclic references", "mutable default argument pitfall", "small object caching / interning"],
+    "questionPatterns": ["Why is using a mutable default argument like a list in a function signature dangerous?", "How does Python decide when to free an object's memory?"],
+    "evaluationCriteria": ["correctly diagnoses the mutable-default-argument bug (shared across calls)", "explains reference counting as the primary mechanism", "mentions cyclic garbage collector as a secondary mechanism if pushed"],
+    "followUpConcepts": ["GIL (Global Interpreter Lock)"]
+  },
+  {
+    "topic": "Multithreading vs Multiprocessing",
+    "difficulty": "medium",
+    "concepts": ["threading for I/O-bound work", "multiprocessing for CPU-bound work due to GIL", "overhead of spawning processes vs threads", "shared memory complexity in multiprocessing"],
+    "questionPatterns": ["You need to process a CPU-heavy task in Python — threads or processes?", "What overhead does multiprocessing introduce that threading doesn't?"],
+    "evaluationCriteria": ["correctly maps CPU-bound to multiprocessing, I/O-bound to threading", "mentions the GIL as the reason for this split", "acknowledges process spawn overhead and inter-process communication cost"],
+    "followUpConcepts": ["GIL (Global Interpreter Lock)", "Async/Await in Python"]
+  },
+  {
+    "topic": "Context Managers",
+    "difficulty": "medium",
+    "concepts": ["with statement", "__enter__ and __exit__ methods", "automatic resource cleanup (files, connections)", "contextlib for simpler implementations"],
+    "questionPatterns": ["Why use 'with open(file) as f' instead of manually opening and closing a file?", "How would you write a custom context manager?"],
+    "evaluationCriteria": ["explains automatic cleanup even if an exception occurs", "understands __enter__/__exit__ protocol at a basic level", "gives a valid use case beyond file handling (DB connections, locks)"],
+    "followUpConcepts": []
+  },
+  {
+    "topic": "FastAPI vs Flask vs Django",
+    "difficulty": "medium",
+    "concepts": ["FastAPI: async-first, auto-generated docs, Pydantic validation", "Flask: minimal, unopinionated", "Django: batteries-included, ORM, admin panel", "when each is the right choice"],
+    "questionPatterns": ["Why might a team choose FastAPI over Flask for a new API?", "What does Django give you out of the box that FastAPI doesn't?"],
+    "evaluationCriteria": ["correctly characterizes at least two of the three frameworks", "mentions FastAPI's async support and automatic validation/docs as differentiators", "reasons about tradeoffs rather than just naming features"],
+    "followUpConcepts": ["Pydantic Validation", "Async/Await in Python"]
+  },
+  {
+    "topic": "Pydantic Validation",
+    "difficulty": "medium",
+    "concepts": ["schema-based request/response validation", "automatic type coercion and error messages", "nested models", "how this reduces manual validation code"],
+    "questionPatterns": ["How does Pydantic validation reduce the amount of manual input-checking code you'd otherwise write?", "What happens when a request body doesn't match your Pydantic model?"],
+    "evaluationCriteria": ["explains automatic validation and clear error responses on mismatch", "understands type coercion happens automatically where sensible", "can reason about this even without hands-on FastAPI experience, by analogy to schema validation in general"],
+    "followUpConcepts": ["FastAPI vs Flask vs Django"]
+  },
+  {
+    "topic": "Async/Await in Python (asyncio)",
+    "difficulty": "hard",
+    "concepts": ["single-threaded cooperative concurrency", "event loop similar in spirit to Node.js", "await yields control back to the loop", "asyncio.gather for concurrent execution"],
+    "questionPatterns": ["How is Python's asyncio conceptually similar to or different from Node.js's event loop?", "What does asyncio.gather let you do that sequential awaits don't?"],
+    "evaluationCriteria": ["correctly describes cooperative single-threaded concurrency", "draws a reasonable comparison to Node's event loop if they know Node (which they do)", "explains gather enables concurrent I/O-bound execution"],
+    "followUpConcepts": ["Node.js Event Loop (libuv)", "Multithreading vs Multiprocessing"]
+  },
+  {
+    "topic": "Exception Handling Best Practices",
+    "difficulty": "easy",
+    "concepts": ["catching specific exceptions over bare except", "custom exception classes", "finally for guaranteed cleanup", "not silently swallowing errors"],
+    "questionPatterns": ["Why is a bare 'except:' considered bad practice?", "How would you design custom exceptions for a data validation pipeline?"],
+    "evaluationCriteria": ["explains bare except hides real bugs and catches things like KeyboardInterrupt", "proposes specific exception types or a custom exception hierarchy", "understands finally guarantees cleanup regardless of exception"],
+    "followUpConcepts": ["Context Managers"]
+  },
+  {
+    "topic": "Virtual Environments and Dependency Management",
+    "difficulty": "easy",
+    "concepts": ["isolating project dependencies", "venv / requirements.txt / pip", "avoiding global package conflicts", "reproducible environments"],
+    "questionPatterns": ["Why do you need a virtual environment for a Python project instead of installing packages globally?", "How do you ensure someone else can reproduce your exact dependency versions?"],
+    "evaluationCriteria": ["explains dependency isolation to avoid version conflicts across projects", "mentions requirements.txt/pinned versions for reproducibility", "basic understanding even without deep Python background"],
+    "followUpConcepts": []
+  },
+  {
+    "topic": "List Comprehensions",
+    "difficulty": "easy",
+    "concepts": ["concise syntax for building lists", "readability vs performance tradeoff for complex logic", "generator expressions as the lazy equivalent"],
+    "questionPatterns": ["Rewrite a for-loop that filters and transforms a list as a list comprehension.", "When would a list comprehension hurt readability instead of helping it?"],
+    "evaluationCriteria": ["can correctly translate a simple loop into a comprehension", "recognizes deeply nested comprehensions hurt readability", "knows the generator expression variant exists for memory efficiency"],
+    "followUpConcepts": ["Generators and Iterators"]
+  },
+  {
+    "topic": "REST API Design in Python Frameworks",
+    "difficulty": "medium",
+    "concepts": ["route/path parameter handling", "request/response model separation", "dependency injection pattern (FastAPI-style)", "structuring routers/blueprints for larger apps"],
+    "questionPatterns": ["Even without direct FastAPI experience, how would you structure a REST API's routes for a medium-sized app?", "What's the value of separating request and response models?"],
+    "evaluationCriteria": ["transfers REST design principles from their Node/Express experience correctly", "understands separating input validation shape from output shape is good practice", "shows they can reason about unfamiliar framework syntax using familiar concepts"],
+    "followUpConcepts": ["FastAPI vs Flask vs Django", "REST API Design Principles"]
+  }
+]
