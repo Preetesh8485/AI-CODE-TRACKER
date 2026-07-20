@@ -11,26 +11,47 @@ def add_knowledge(knowledge_units: list[dict]) -> int:
     if not knowledge_units:
         return 0
     ids = [_slugify(unit["topic"]) for unit in knowledge_units]
-    documents = [build_embedding_text(unit) for unit in knowledge_units]
+    existing = _collection.get(ids=ids)
+    existing_ids = set(existing["ids"])
+    new_units = [
+        unit
+        for unit, id_ in zip(knowledge_units, ids)
+        if id_ not in existing_ids
+    ]
+    if not new_units:
+        return 0
+    new_ids = [_slugify(unit["topic"]) for unit in new_units]
+
+    documents = [
+        build_embedding_text(unit)
+        for unit in new_units
+    ]
     embeddings = embed_batch(documents)
+
     metadatas = []
-    for unit in knowledge_units:
+
+    for unit in new_units:
         metadata = {
             "topic": unit["topic"],
             "difficulty": unit.get("difficulty", "medium"),
             "status": unit.get("status", "seed"),
         }
+
         for field in _LIST_FIELDS:
-            metadata[field] = json.dumps(unit.get(field, []))
+            metadata[field] = json.dumps(
+                unit.get(field, [])
+            )
+
         metadatas.append(metadata)
- 
-    _collection.upsert(
-        ids=ids,
+
+    _collection.add(
+        ids=new_ids,
         embeddings=embeddings,
         documents=documents,
         metadatas=metadatas,
     )
-    return len(ids)
+
+    return len(new_ids)
 def retrieve_knowledge(query: str, top_k: int = 3, min_similarity: float = 0.5) -> list[dict]:
     if _collection.count() == 0:
         return []

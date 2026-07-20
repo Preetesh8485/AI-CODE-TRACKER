@@ -4,7 +4,7 @@ import os
  
 from app.services.chroma_service import add_knowledge, collection_size
  
-KB_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "interview_knowledge")
+KB_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "interview data")
  
  
 def main():
