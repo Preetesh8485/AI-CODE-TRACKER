@@ -1,122 +1,1209 @@
 [
   {
-    "topic": "GIL (Global Interpreter Lock)",
-    "difficulty": "medium",
-    "concepts": ["only one thread executes Python bytecode at a time", "why CPU-bound multithreading doesn't speed things up in CPython", "multiprocessing bypasses the GIL", "I/O-bound threading still benefits"],
-    "questionPatterns": ["Why doesn't multithreading speed up a CPU-bound Python task?", "How would you achieve true parallelism in Python despite the GIL?"],
-    "evaluationCriteria": ["correctly explains the GIL restricts one thread executing Python bytecode at a time", "proposes multiprocessing as the workaround for CPU-bound work", "acknowledges threading still helps for I/O-bound tasks"],
-    "followUpConcepts": ["Multithreading vs Multiprocessing", "Async/Await in Python"]
-  },
-  {
-    "topic": "List vs Tuple vs Set vs Dict",
+    "topic": "Python Data Types",
     "difficulty": "easy",
-    "concepts": ["mutability differences", "ordering guarantees", "uniqueness in sets", "average time complexity for lookup in each"],
-    "questionPatterns": ["When would you choose a tuple over a list?", "Why is checking membership in a set faster than in a list?"],
-    "evaluationCriteria": ["correctly explains mutability difference between list and tuple", "explains set/dict use hashing for near O(1) lookup vs O(n) list scan", "gives a valid reason to prefer tuple (immutability, hashability as dict key)"],
-    "followUpConcepts": ["Hashing and Hash Tables"]
+    "concepts": [
+      "built-in types include int float bool str list tuple set dict and NoneType",
+      "Python is dynamically typed",
+      "variables reference objects rather than containing fixed declared types",
+      "type can be inspected using type and isinstance"
+    ],
+    "questionPatterns": [
+      "What are the main built-in data types in Python?",
+      "What does dynamically typed mean in Python?"
+    ],
+    "evaluationCriteria": [
+      "identifies common built-in types",
+      "correctly explains dynamic typing",
+      "understands variables can reference objects of different types during execution"
+    ],
+    "followUpConcepts": [
+      "Mutable vs Immutable Objects",
+      "Python Object Model"
+    ]
   },
   {
-    "topic": "Generators and Iterators",
+    "topic": "Mutable vs Immutable Objects",
     "difficulty": "medium",
-    "concepts": ["yield keyword and lazy evaluation", "memory efficiency vs building a full list", "iterator protocol (__iter__, __next__)", "generator expressions"],
-    "questionPatterns": ["Why would you use a generator instead of returning a list from a function that processes a huge file?", "What's the difference between an iterable and an iterator?"],
-    "evaluationCriteria": ["explains lazy evaluation and memory savings correctly", "distinguishes iterable (has __iter__) from iterator (has __next__)", "gives a valid large-data use case"],
-    "followUpConcepts": ["List Comprehensions"]
+    "concepts": [
+      "mutable objects can be modified after creation",
+      "lists dictionaries and sets are mutable",
+      "strings tuples integers and floats are immutable",
+      "mutation and variable reassignment are different operations"
+    ],
+    "questionPatterns": [
+      "What's the difference between mutable and immutable objects in Python?",
+      "Why can't you modify a character directly inside a Python string?"
+    ],
+    "evaluationCriteria": [
+      "correctly categorizes common mutable and immutable types",
+      "distinguishes mutation from reassignment",
+      "understands immutability applies to the object itself"
+    ],
+    "followUpConcepts": [
+      "Python Object References",
+      "Shallow vs Deep Copy"
+    ]
   },
   {
-    "topic": "Decorators",
+    "topic": "Python Object References",
     "difficulty": "medium",
-    "concepts": ["functions that wrap other functions", "use cases: logging, timing, authentication checks", "preserving metadata with functools.wraps", "how FastAPI route decorators work conceptually"],
-    "questionPatterns": ["Write a simple decorator that logs how long a function takes to run.", "How do decorators relate to the route decorators you'd see in a framework like FastAPI or Flask?"],
-    "evaluationCriteria": ["can reason through or write a basic timing/logging decorator", "understands a decorator returns a wrapped function", "connects the concept to route registration in web frameworks even without direct FastAPI experience"],
-    "followUpConcepts": ["FastAPI vs Flask vs Django"]
+    "concepts": [
+      "variables are names bound to objects",
+      "multiple variables can reference the same object",
+      "assignment does not automatically copy an object",
+      "identity can be inspected using id",
+      "is compares identity while == compares equality"
+    ],
+    "questionPatterns": [
+      "What happens internally when you assign one list variable to another?",
+      "What's the difference between is and == in Python?"
+    ],
+    "evaluationCriteria": [
+      "understands assignment creates another reference rather than an automatic copy",
+      "correctly distinguishes identity from equality",
+      "can explain shared mutable object behavior"
+    ],
+    "followUpConcepts": [
+      "Mutable vs Immutable Objects",
+      "Shallow vs Deep Copy"
+    ]
   },
   {
-    "topic": "args and kwargs",
+    "topic": "Shallow vs Deep Copy",
+    "difficulty": "medium",
+    "concepts": [
+      "shallow copy creates a new outer container",
+      "nested mutable objects remain shared",
+      "copy.copy performs shallow copying",
+      "copy.deepcopy recursively copies nested objects",
+      "deep copying can be expensive or inappropriate for some object graphs"
+    ],
+    "questionPatterns": [
+      "What's the difference between shallow copy and deep copy in Python?",
+      "Why can modifying a nested list affect the original after using copy.copy?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains nested reference sharing",
+      "knows copy and deepcopy",
+      "understands deep copying is not always necessary"
+    ],
+    "followUpConcepts": [
+      "Python Object References",
+      "Mutable vs Immutable Objects"
+    ]
+  },
+  {
+    "topic": "List vs Tuple",
     "difficulty": "easy",
-    "concepts": ["*args collects positional arguments into a tuple", "**kwargs collects keyword arguments into a dict", "use case: flexible wrapper/decorator functions"],
-    "questionPatterns": ["What's the difference between *args and **kwargs?", "Why are *args and **kwargs commonly used inside decorators?"],
-    "evaluationCriteria": ["correctly distinguishes positional (tuple) from keyword (dict) collection", "gives a valid use case, ideally tied to decorators/wrappers", "no major conceptual confusion"],
-    "followUpConcepts": ["Decorators"]
+    "concepts": [
+      "lists are mutable",
+      "tuples are immutable",
+      "both preserve ordered collections",
+      "tuples can be used as dictionary keys when their contents are hashable",
+      "choice communicates whether collection structure is expected to change"
+    ],
+    "questionPatterns": [
+      "What's the difference between a list and tuple?",
+      "When would you choose a tuple instead of a list?"
+    ],
+    "evaluationCriteria": [
+      "correctly identifies mutability difference",
+      "provides reasonable use cases",
+      "understands hashability depends on contained values"
+    ],
+    "followUpConcepts": [
+      "Mutable vs Immutable Objects",
+      "Hashability"
+    ]
   },
   {
-    "topic": "Python Memory Management",
-    "difficulty": "hard",
-    "concepts": ["reference counting", "garbage collection for cyclic references", "mutable default argument pitfall", "small object caching / interning"],
-    "questionPatterns": ["Why is using a mutable default argument like a list in a function signature dangerous?", "How does Python decide when to free an object's memory?"],
-    "evaluationCriteria": ["correctly diagnoses the mutable-default-argument bug (shared across calls)", "explains reference counting as the primary mechanism", "mentions cyclic garbage collector as a secondary mechanism if pushed"],
-    "followUpConcepts": ["GIL (Global Interpreter Lock)"]
-  },
-  {
-    "topic": "Multithreading vs Multiprocessing",
+    "topic": "Dictionary Internals",
     "difficulty": "medium",
-    "concepts": ["threading for I/O-bound work", "multiprocessing for CPU-bound work due to GIL", "overhead of spawning processes vs threads", "shared memory complexity in multiprocessing"],
-    "questionPatterns": ["You need to process a CPU-heavy task in Python — threads or processes?", "What overhead does multiprocessing introduce that threading doesn't?"],
-    "evaluationCriteria": ["correctly maps CPU-bound to multiprocessing, I/O-bound to threading", "mentions the GIL as the reason for this split", "acknowledges process spawn overhead and inter-process communication cost"],
-    "followUpConcepts": ["GIL (Global Interpreter Lock)", "Async/Await in Python"]
+    "concepts": [
+      "dictionaries store key-value mappings",
+      "implemented using hash-table based structures",
+      "average lookup insertion and deletion are approximately O(1)",
+      "keys must be hashable",
+      "modern Python dictionaries preserve insertion order"
+    ],
+    "questionPatterns": [
+      "How does a Python dictionary work internally?",
+      "Why can't a list normally be used as a dictionary key?"
+    ],
+    "evaluationCriteria": [
+      "connects dictionaries to hashing",
+      "understands hashability requirements",
+      "recognizes average-case constant-time operations"
+    ],
+    "followUpConcepts": [
+      "Hashability",
+      "Sets"
+    ]
   },
   {
-    "topic": "Context Managers",
+    "topic": "Hashability",
     "difficulty": "medium",
-    "concepts": ["with statement", "__enter__ and __exit__ methods", "automatic resource cleanup (files, connections)", "contextlib for simpler implementations"],
-    "questionPatterns": ["Why use 'with open(file) as f' instead of manually opening and closing a file?", "How would you write a custom context manager?"],
-    "evaluationCriteria": ["explains automatic cleanup even if an exception occurs", "understands __enter__/__exit__ protocol at a basic level", "gives a valid use case beyond file handling (DB connections, locks)"],
-    "followUpConcepts": []
-  },
-  {
-    "topic": "FastAPI vs Flask vs Django",
-    "difficulty": "medium",
-    "concepts": ["FastAPI: async-first, auto-generated docs, Pydantic validation", "Flask: minimal, unopinionated", "Django: batteries-included, ORM, admin panel", "when each is the right choice"],
-    "questionPatterns": ["Why might a team choose FastAPI over Flask for a new API?", "What does Django give you out of the box that FastAPI doesn't?"],
-    "evaluationCriteria": ["correctly characterizes at least two of the three frameworks", "mentions FastAPI's async support and automatic validation/docs as differentiators", "reasons about tradeoffs rather than just naming features"],
-    "followUpConcepts": ["Pydantic Validation", "Async/Await in Python"]
-  },
-  {
-    "topic": "Pydantic Validation",
-    "difficulty": "medium",
-    "concepts": ["schema-based request/response validation", "automatic type coercion and error messages", "nested models", "how this reduces manual validation code"],
-    "questionPatterns": ["How does Pydantic validation reduce the amount of manual input-checking code you'd otherwise write?", "What happens when a request body doesn't match your Pydantic model?"],
-    "evaluationCriteria": ["explains automatic validation and clear error responses on mismatch", "understands type coercion happens automatically where sensible", "can reason about this even without hands-on FastAPI experience, by analogy to schema validation in general"],
-    "followUpConcepts": ["FastAPI vs Flask vs Django"]
-  },
-  {
-    "topic": "Async/Await in Python (asyncio)",
-    "difficulty": "hard",
-    "concepts": ["single-threaded cooperative concurrency", "event loop similar in spirit to Node.js", "await yields control back to the loop", "asyncio.gather for concurrent execution"],
-    "questionPatterns": ["How is Python's asyncio conceptually similar to or different from Node.js's event loop?", "What does asyncio.gather let you do that sequential awaits don't?"],
-    "evaluationCriteria": ["correctly describes cooperative single-threaded concurrency", "draws a reasonable comparison to Node's event loop if they know Node (which they do)", "explains gather enables concurrent I/O-bound execution"],
-    "followUpConcepts": ["Node.js Event Loop (libuv)", "Multithreading vs Multiprocessing"]
-  },
-  {
-    "topic": "Exception Handling Best Practices",
-    "difficulty": "easy",
-    "concepts": ["catching specific exceptions over bare except", "custom exception classes", "finally for guaranteed cleanup", "not silently swallowing errors"],
-    "questionPatterns": ["Why is a bare 'except:' considered bad practice?", "How would you design custom exceptions for a data validation pipeline?"],
-    "evaluationCriteria": ["explains bare except hides real bugs and catches things like KeyboardInterrupt", "proposes specific exception types or a custom exception hierarchy", "understands finally guarantees cleanup regardless of exception"],
-    "followUpConcepts": ["Context Managers"]
-  },
-  {
-    "topic": "Virtual Environments and Dependency Management",
-    "difficulty": "easy",
-    "concepts": ["isolating project dependencies", "venv / requirements.txt / pip", "avoiding global package conflicts", "reproducible environments"],
-    "questionPatterns": ["Why do you need a virtual environment for a Python project instead of installing packages globally?", "How do you ensure someone else can reproduce your exact dependency versions?"],
-    "evaluationCriteria": ["explains dependency isolation to avoid version conflicts across projects", "mentions requirements.txt/pinned versions for reproducibility", "basic understanding even without deep Python background"],
-    "followUpConcepts": []
+    "concepts": [
+      "hashable objects have a stable hash value during their lifetime",
+      "hashable objects can be dictionary keys and set members",
+      "many immutable built-in objects are hashable",
+      "immutability alone does not universally guarantee hashability",
+      "equal hashable objects must produce equal hash values"
+    ],
+    "questionPatterns": [
+      "What does hashable mean in Python?",
+      "Why can a tuple sometimes be a dictionary key while a list cannot?"
+    ],
+    "evaluationCriteria": [
+      "connects hashability to dictionaries and sets",
+      "understands hash stability requirements",
+      "recognizes tuple hashability depends on its elements"
+    ],
+    "followUpConcepts": [
+      "Dictionary Internals",
+      "List vs Tuple"
+    ]
   },
   {
     "topic": "List Comprehensions",
     "difficulty": "easy",
-    "concepts": ["concise syntax for building lists", "readability vs performance tradeoff for complex logic", "generator expressions as the lazy equivalent"],
-    "questionPatterns": ["Rewrite a for-loop that filters and transforms a list as a list comprehension.", "When would a list comprehension hurt readability instead of helping it?"],
-    "evaluationCriteria": ["can correctly translate a simple loop into a comprehension", "recognizes deeply nested comprehensions hurt readability", "knows the generator expression variant exists for memory efficiency"],
-    "followUpConcepts": ["Generators and Iterators"]
+    "concepts": [
+      "compact syntax for creating lists from iterables",
+      "supports transformation and filtering",
+      "nested comprehensions are possible",
+      "overly complex comprehensions can reduce readability"
+    ],
+    "questionPatterns": [
+      "What is a list comprehension?",
+      "How would you create a list containing squares of only even numbers?"
+    ],
+    "evaluationCriteria": [
+      "uses comprehension syntax correctly",
+      "understands optional filtering",
+      "prefers normal loops when comprehension logic becomes difficult to read"
+    ],
+    "followUpConcepts": [
+      "Generators",
+      "Functional Programming in Python"
+    ]
   },
   {
-    "topic": "REST API Design in Python Frameworks",
+    "topic": "Iterable vs Iterator",
     "difficulty": "medium",
-    "concepts": ["route/path parameter handling", "request/response model separation", "dependency injection pattern (FastAPI-style)", "structuring routers/blueprints for larger apps"],
-    "questionPatterns": ["Even without direct FastAPI experience, how would you structure a REST API's routes for a medium-sized app?", "What's the value of separating request and response models?"],
-    "evaluationCriteria": ["transfers REST design principles from their Node/Express experience correctly", "understands separating input validation shape from output shape is good practice", "shows they can reason about unfamiliar framework syntax using familiar concepts"],
-    "followUpConcepts": ["FastAPI vs Flask vs Django", "REST API Design Principles"]
+    "concepts": [
+      "an iterable can provide an iterator",
+      "iter uses the iteration protocol",
+      "an iterator provides values using next",
+      "StopIteration indicates exhaustion",
+      "for loops use the iterator protocol internally"
+    ],
+    "questionPatterns": [
+      "What's the difference between an iterable and an iterator?",
+      "What happens internally when a Python for loop runs?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes iterable from iterator",
+      "understands iter and next",
+      "mentions StopIteration"
+    ],
+    "followUpConcepts": [
+      "Generators",
+      "Python Iteration Protocol"
+    ]
+  },
+  {
+    "topic": "Generators",
+    "difficulty": "medium",
+    "concepts": [
+      "generator functions use yield",
+      "execution pauses and resumes around yield",
+      "values are produced lazily",
+      "generators avoid storing all generated values simultaneously",
+      "generators are iterators"
+    ],
+    "questionPatterns": [
+      "What's the difference between return and yield?",
+      "Why would you use a generator for processing a large dataset?"
+    ],
+    "evaluationCriteria": [
+      "understands lazy evaluation",
+      "explains execution suspension and resumption",
+      "connects generators to memory-efficient iteration"
+    ],
+    "followUpConcepts": [
+      "Iterable vs Iterator",
+      "Generator Expressions"
+    ]
+  },
+  {
+    "topic": "Generator Expressions",
+    "difficulty": "easy",
+    "concepts": [
+      "generator expressions use comprehension-like syntax with parentheses",
+      "values are generated lazily",
+      "useful when processing streams or large sequences",
+      "different from list comprehensions which construct the complete list"
+    ],
+    "questionPatterns": [
+      "What's the difference between a list comprehension and generator expression?",
+      "Which would you choose for processing millions of values one at a time?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes eager and lazy evaluation",
+      "connects generator expressions to lower memory usage",
+      "understands generators are generally consumed progressively"
+    ],
+    "followUpConcepts": [
+      "Generators",
+      "List Comprehensions"
+    ]
+  },
+  {
+    "topic": "Decorators",
+    "difficulty": "medium",
+    "concepts": [
+      "decorators wrap or transform functions or classes",
+      "functions are first-class objects",
+      "decorator syntax uses the at symbol",
+      "closures commonly implement decorators",
+      "functools.wraps preserves wrapped function metadata"
+    ],
+    "questionPatterns": [
+      "What is a decorator in Python?",
+      "How would you create a decorator that measures function execution time?"
+    ],
+    "evaluationCriteria": [
+      "understands decorators receive and return callables",
+      "can explain wrapper functions",
+      "mentions functools.wraps for production-quality function decorators"
+    ],
+    "followUpConcepts": [
+      "Closures in Python",
+      "Higher Order Functions"
+    ]
+  },
+  {
+    "topic": "Closures in Python",
+    "difficulty": "medium",
+    "concepts": [
+      "inner functions can retain access to enclosing scope variables",
+      "captured variables remain accessible after outer function returns",
+      "nonlocal allows rebinding variables in an enclosing function scope",
+      "closures support decorators and function factories"
+    ],
+    "questionPatterns": [
+      "What is a closure in Python?",
+      "What's the purpose of the nonlocal keyword?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains enclosing scope retention",
+      "understands nonlocal",
+      "provides a practical closure use case"
+    ],
+    "followUpConcepts": [
+      "Decorators",
+      "Python Scope LEGB Rule"
+    ]
+  },
+  {
+    "topic": "Python Scope LEGB Rule",
+    "difficulty": "medium",
+    "concepts": [
+      "Local scope",
+      "Enclosing scope",
+      "Global scope",
+      "Built-in scope",
+      "name lookup follows LEGB order"
+    ],
+    "questionPatterns": [
+      "What is the LEGB rule in Python?",
+      "What's the difference between global and nonlocal?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains lookup order",
+      "distinguishes enclosing and global scopes",
+      "understands global and nonlocal rebinding"
+    ],
+    "followUpConcepts": [
+      "Closures in Python",
+      "Namespaces"
+    ]
+  },
+  {
+    "topic": "Functions as First Class Objects",
+    "difficulty": "easy",
+    "concepts": [
+      "functions can be assigned to variables",
+      "functions can be passed as arguments",
+      "functions can be returned from other functions",
+      "functions can be stored in data structures"
+    ],
+    "questionPatterns": [
+      "What does it mean that functions are first-class objects in Python?",
+      "How does this enable decorators?"
+    ],
+    "evaluationCriteria": [
+      "provides correct examples",
+      "connects first-class functions to higher-order functions",
+      "understands decorators depend on callable manipulation"
+    ],
+    "followUpConcepts": [
+      "Decorators",
+      "Closures in Python"
+    ]
+  },
+  {
+    "topic": "args and kwargs",
+    "difficulty": "easy",
+    "concepts": [
+      "star args collects variable positional arguments",
+      "double-star kwargs collects variable keyword arguments",
+      "argument unpacking can forward values",
+      "parameter ordering rules must be respected"
+    ],
+    "questionPatterns": [
+      "What's the difference between args and kwargs?",
+      "How would you forward arbitrary arguments from one function to another?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes positional and keyword arguments",
+      "understands packing and unpacking",
+      "can provide a practical wrapper-function example"
+    ],
+    "followUpConcepts": [
+      "Decorators",
+      "Python Function Arguments"
+    ]
+  },
+  {
+    "topic": "Default Mutable Arguments",
+    "difficulty": "medium",
+    "concepts": [
+      "default argument expressions are evaluated when the function is defined",
+      "mutable defaults can therefore be shared across function calls",
+      "None is commonly used as a sentinel default",
+      "the mutable object can accumulate state unexpectedly"
+    ],
+    "questionPatterns": [
+      "Why is using an empty list as a default function argument dangerous?",
+      "How would you correctly define a function that needs a new list by default?"
+    ],
+    "evaluationCriteria": [
+      "understands default evaluation timing",
+      "correctly explains shared mutable state",
+      "uses None and creates the object inside the function"
+    ],
+    "followUpConcepts": [
+      "Mutable vs Immutable Objects",
+      "Python Function Arguments"
+    ]
+  },
+  {
+    "topic": "Lambda Functions",
+    "difficulty": "easy",
+    "concepts": [
+      "anonymous function expressions",
+      "limited to a single expression",
+      "commonly used with sorting and higher-order functions",
+      "named def functions are preferable for complex logic"
+    ],
+    "questionPatterns": [
+      "What is a lambda function in Python?",
+      "When would you use lambda instead of def?"
+    ],
+    "evaluationCriteria": [
+      "understands lambda syntax and limitations",
+      "provides an appropriate small-function use case",
+      "does not overuse lambda for complex logic"
+    ],
+    "followUpConcepts": [
+      "Functions as First Class Objects",
+      "Functional Programming in Python"
+    ]
+  },
+  {
+    "topic": "Exception Handling",
+    "difficulty": "easy",
+    "concepts": [
+      "try handles code that may raise exceptions",
+      "except handles matching exceptions",
+      "else runs when no exception occurs",
+      "finally runs for cleanup regardless of normal completion or exception propagation",
+      "specific exceptions should generally be preferred over broad catches"
+    ],
+    "questionPatterns": [
+      "How does exception handling work in Python?",
+      "What's the difference between else and finally in a try statement?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains try except else and finally",
+      "avoids unnecessarily broad exception handling",
+      "understands finally is useful for cleanup"
+    ],
+    "followUpConcepts": [
+      "Custom Exceptions",
+      "Context Managers"
+    ]
+  },
+  {
+    "topic": "Custom Exceptions",
+    "difficulty": "easy",
+    "concepts": [
+      "custom exceptions usually inherit from Exception",
+      "domain-specific exceptions improve error classification",
+      "exceptions can carry contextual information",
+      "application layers can catch specific exception types"
+    ],
+    "questionPatterns": [
+      "How do you create a custom exception in Python?",
+      "Why use custom exceptions instead of raising Exception everywhere?"
+    ],
+    "evaluationCriteria": [
+      "correctly subclasses Exception",
+      "provides a meaningful domain-specific use case",
+      "understands specific exception handling"
+    ],
+    "followUpConcepts": [
+      "Exception Handling",
+      "FastAPI Exception Handling"
+    ]
+  },
+  {
+    "topic": "Context Managers",
+    "difficulty": "medium",
+    "concepts": [
+      "with statement manages setup and cleanup",
+      "context managers implement enter and exit protocol methods",
+      "resources are cleaned up even when exceptions occur",
+      "common use cases include files locks and database resources"
+    ],
+    "questionPatterns": [
+      "Why should you use with when opening files?",
+      "How does a context manager work?"
+    ],
+    "evaluationCriteria": [
+      "connects context managers to deterministic resource cleanup",
+      "understands enter and exit conceptually",
+      "provides practical resource-management examples"
+    ],
+    "followUpConcepts": [
+      "Exception Handling",
+      "contextlib"
+    ]
+  },
+  {
+    "topic": "Python OOP",
+    "difficulty": "easy",
+    "concepts": [
+      "classes define object behavior and structure",
+      "instances are created from classes",
+      "instance attributes belong to individual objects",
+      "class attributes are associated with the class",
+      "methods operate on instances or classes depending on method type"
+    ],
+    "questionPatterns": [
+      "What's the difference between a class attribute and instance attribute?",
+      "What does self represent in Python?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes class and instance state",
+      "understands self refers to the current instance by convention",
+      "can define and instantiate a simple class"
+    ],
+    "followUpConcepts": [
+      "Inheritance and MRO",
+      "Instance Static and Class Methods"
+    ]
+  },
+  {
+    "topic": "Instance Static and Class Methods",
+    "difficulty": "medium",
+    "concepts": [
+      "instance methods receive self",
+      "class methods receive cls",
+      "staticmethod does not receive implicit instance or class arguments",
+      "class methods are useful for alternative constructors",
+      "static methods are useful for logically related utility behavior"
+    ],
+    "questionPatterns": [
+      "What's the difference between instance methods class methods and static methods?",
+      "When would you use a class method as an alternative constructor?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes all three method types",
+      "provides reasonable use cases",
+      "understands the classmethod and staticmethod decorators"
+    ],
+    "followUpConcepts": [
+      "Python OOP",
+      "Inheritance and MRO"
+    ]
+  },
+  {
+    "topic": "Inheritance and MRO",
+    "difficulty": "hard",
+    "concepts": [
+      "Python supports multiple inheritance",
+      "Method Resolution Order determines attribute and method lookup",
+      "C3 linearization determines MRO",
+      "super follows the MRO rather than simply meaning direct parent",
+      "diamond inheritance requires cooperative class design"
+    ],
+    "questionPatterns": [
+      "What is MRO in Python?",
+      "How does super work with multiple inheritance?"
+    ],
+    "evaluationCriteria": [
+      "understands method lookup follows MRO",
+      "does not describe super as always directly calling one parent class",
+      "recognizes diamond inheritance concerns"
+    ],
+    "followUpConcepts": [
+      "Python OOP",
+      "Multiple Inheritance"
+    ]
+  },
+  {
+    "topic": "Dunder Methods",
+    "difficulty": "medium",
+    "concepts": [
+      "special methods integrate objects with Python language behavior",
+      "__init__ initializes instances",
+      "__str__ provides user-friendly string representation",
+      "__repr__ provides developer-oriented representation",
+      "__len__ and __eq__ customize built-in operations"
+    ],
+    "questionPatterns": [
+      "What are dunder methods in Python?",
+      "What's the difference between __str__ and __repr__?"
+    ],
+    "evaluationCriteria": [
+      "understands special methods customize language protocols",
+      "correctly distinguishes common representation methods",
+      "provides appropriate examples"
+    ],
+    "followUpConcepts": [
+      "Python Data Model",
+      "Operator Overloading"
+    ]
+  },
+  {
+    "topic": "Dataclasses",
+    "difficulty": "medium",
+    "concepts": [
+      "dataclass decorator reduces boilerplate for data-oriented classes",
+      "can automatically generate init repr and equality methods",
+      "supports default values and default factories",
+      "frozen dataclasses can provide immutable-style instances"
+    ],
+    "questionPatterns": [
+      "What problem do Python dataclasses solve?",
+      "Why would you use default_factory for a list field?"
+    ],
+    "evaluationCriteria": [
+      "understands generated boilerplate",
+      "knows mutable defaults should use default_factory",
+      "selects dataclasses for appropriate data-container use cases"
+    ],
+    "followUpConcepts": [
+      "Python OOP",
+      "Pydantic Models"
+    ]
+  },
+  {
+    "topic": "Python Memory Management",
+    "difficulty": "hard",
+    "concepts": [
+      "Python manages object memory automatically",
+      "CPython primarily uses reference counting",
+      "cyclic garbage collector handles certain reference cycles",
+      "del removes a reference or binding rather than guaranteeing immediate object destruction",
+      "implementation details can differ between Python implementations"
+    ],
+    "questionPatterns": [
+      "How does Python manage memory?",
+      "What happens when you use del on a variable?"
+    ],
+    "evaluationCriteria": [
+      "mentions reference counting specifically in CPython",
+      "understands cyclic garbage collection",
+      "does not claim del directly destroys an object in every case"
+    ],
+    "followUpConcepts": [
+      "Garbage Collection",
+      "Python Object References"
+    ]
+  },
+  {
+    "topic": "GIL Global Interpreter Lock",
+    "difficulty": "hard",
+    "concepts": [
+      "traditional CPython builds use a Global Interpreter Lock for Python bytecode execution",
+      "the GIL historically allows one thread at a time to execute Python bytecode within a process",
+      "threads remain useful for many I/O-bound workloads",
+      "multiprocessing can provide process-level parallelism for CPU-bound Python work",
+      "modern Python versions are introducing optional free-threaded CPython builds so GIL behavior depends on runtime configuration"
+    ],
+    "questionPatterns": [
+      "What is the GIL in Python?",
+      "Why can Python threads still be useful despite the GIL?"
+    ],
+    "evaluationCriteria": [
+      "explains traditional CPython GIL behavior accurately",
+      "distinguishes concurrency from CPU parallelism",
+      "connects threads to I/O-bound workloads",
+      "recognizes modern free-threaded Python builds when relevant"
+    ],
+    "followUpConcepts": [
+      "Threading vs Multiprocessing",
+      "Asyncio"
+    ]
+  },
+  {
+    "topic": "Threading vs Multiprocessing",
+    "difficulty": "hard",
+    "concepts": [
+      "threads share process memory",
+      "processes have separate memory spaces",
+      "threads are commonly useful for I/O-bound concurrency",
+      "multiprocessing is commonly useful for CPU-bound parallelism",
+      "process communication and startup introduce additional overhead"
+    ],
+    "questionPatterns": [
+      "When would you use threading versus multiprocessing in Python?",
+      "Why can multiprocessing improve CPU-heavy workloads?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes shared and separate memory",
+      "connects workload type to concurrency strategy",
+      "recognizes communication and process overhead"
+    ],
+    "followUpConcepts": [
+      "GIL Global Interpreter Lock",
+      "Asyncio"
+    ]
+  },
+  {
+    "topic": "Asyncio",
+    "difficulty": "hard",
+    "concepts": [
+      "asyncio provides event-loop based cooperative concurrency",
+      "async defines coroutine functions",
+      "await suspends a coroutine while awaiting compatible asynchronous work",
+      "asyncio is particularly suitable for many concurrent I/O operations",
+      "blocking synchronous work can block the event loop"
+    ],
+    "questionPatterns": [
+      "How does asyncio work in Python?",
+      "What's the difference between asyncio and multithreading?"
+    ],
+    "evaluationCriteria": [
+      "understands cooperative asynchronous concurrency",
+      "connects asyncio primarily to I/O-heavy workloads",
+      "recognizes blocking code can stall the event loop"
+    ],
+    "followUpConcepts": [
+      "Coroutines",
+      "Threading vs Multiprocessing"
+    ]
+  },
+  {
+    "topic": "Coroutines",
+    "difficulty": "medium",
+    "concepts": [
+      "async def creates coroutine functions",
+      "calling a coroutine function creates a coroutine object",
+      "coroutines must be awaited or scheduled",
+      "await allows other asynchronous tasks to progress"
+    ],
+    "questionPatterns": [
+      "What is a coroutine in Python?",
+      "What happens if you call an async function without awaiting it?"
+    ],
+    "evaluationCriteria": [
+      "distinguishes coroutine functions from coroutine objects",
+      "understands awaiting or scheduling",
+      "connects suspension to cooperative concurrency"
+    ],
+    "followUpConcepts": [
+      "Asyncio",
+      "Async Tasks"
+    ]
+  },
+  {
+    "topic": "Python Modules and Packages",
+    "difficulty": "easy",
+    "concepts": [
+      "module is generally a Python source file or importable module unit",
+      "package organizes related modules",
+      "imports load and bind module objects",
+      "__init__.py is used in regular packages",
+      "absolute and relative imports"
+    ],
+    "questionPatterns": [
+      "What's the difference between a Python module and package?",
+      "What is __init__.py used for?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes modules and packages",
+      "understands import organization",
+      "recognizes package initialization behavior"
+    ],
+    "followUpConcepts": [
+      "Python Import System",
+      "Virtual Environments"
+    ]
+  },
+  {
+    "topic": "Python Import System and Module Cache",
+    "difficulty": "medium",
+    "concepts": [
+      "import searches for modules using the import system",
+      "loaded modules are stored in sys.modules",
+      "repeated imports usually reuse the loaded module object",
+      "module-level code normally executes on first import within a process",
+      "circular imports can create partially initialized modules"
+    ],
+    "questionPatterns": [
+      "Does Python execute a module every time it is imported?",
+      "What causes circular import problems?"
+    ],
+    "evaluationCriteria": [
+      "understands sys.modules caching",
+      "connects circular imports to initialization order",
+      "can suggest reorganizing shared dependencies when appropriate"
+    ],
+    "followUpConcepts": [
+      "Python Modules and Packages",
+      "Python Main Guard"
+    ]
+  },
+  {
+    "topic": "Python Main Guard",
+    "difficulty": "easy",
+    "concepts": [
+      "__name__ is set to __main__ when a file is executed directly",
+      "imported modules receive their module name",
+      "main guard prevents selected code from running during import"
+    ],
+    "questionPatterns": [
+      "What does if __name__ == '__main__' mean?",
+      "Why is the main guard useful?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains direct execution versus import",
+      "understands prevention of import-time execution"
+    ],
+    "followUpConcepts": [
+      "Python Import System and Module Cache",
+      "Python Modules and Packages"
+    ]
+  },
+  {
+    "topic": "Virtual Environments",
+    "difficulty": "easy",
+    "concepts": [
+      "isolates project-specific Python packages",
+      "prevents dependency conflicts between projects",
+      "venv is available in the standard library",
+      "deployment environments should install declared dependencies"
+    ],
+    "questionPatterns": [
+      "Why do Python projects use virtual environments?",
+      "What's the purpose of requirements.txt or pyproject.toml?"
+    ],
+    "evaluationCriteria": [
+      "understands dependency isolation",
+      "connects dependency declarations to reproducible environments",
+      "does not confuse virtual environments with virtual machines"
+    ],
+    "followUpConcepts": [
+      "Python Dependency Management",
+      "Python Deployment"
+    ]
+  },
+  {
+    "topic": "Type Hints",
+    "difficulty": "medium",
+    "concepts": [
+      "type annotations improve readability and static analysis",
+      "Python does not generally enforce type hints automatically at runtime",
+      "typing supports generic and composite types",
+      "static type checkers can detect certain errors before runtime"
+    ],
+    "questionPatterns": [
+      "Does Python enforce type hints at runtime?",
+      "Why use type hints in a dynamically typed language?"
+    ],
+    "evaluationCriteria": [
+      "understands annotations are not general runtime enforcement",
+      "connects typing to tooling and maintainability",
+      "can annotate basic functions correctly"
+    ],
+    "followUpConcepts": [
+      "Pydantic Models",
+      "Generic Types"
+    ]
+  },
+  {
+    "topic": "Python Serialization",
+    "difficulty": "medium",
+    "concepts": [
+      "JSON supports interoperable basic data structures",
+      "pickle serializes Python-specific object structures",
+      "unpickling untrusted data is unsafe",
+      "custom objects may require explicit conversion for JSON",
+      "serialization format depends on interoperability and security requirements"
+    ],
+    "questionPatterns": [
+      "What's the difference between JSON and pickle?",
+      "Why should you never unpickle untrusted user data?"
+    ],
+    "evaluationCriteria": [
+      "understands JSON interoperability",
+      "recognizes pickle security risks",
+      "selects formats based on application requirements"
+    ],
+    "followUpConcepts": [
+      "Pydantic Models",
+      "API Data Validation"
+    ]
+  },
+  {
+    "topic": "FastAPI Fundamentals",
+    "difficulty": "easy",
+    "concepts": [
+      "FastAPI is an ASGI web framework",
+      "uses Python type hints extensively",
+      "supports asynchronous route handlers",
+      "automatically generates OpenAPI documentation",
+      "integrates with Pydantic for validation"
+    ],
+    "questionPatterns": [
+      "Why would you use FastAPI for an AI microservice?",
+      "What's the difference between FastAPI and a traditional synchronous WSGI application?"
+    ],
+    "evaluationCriteria": [
+      "connects FastAPI to API development and validation",
+      "understands ASGI supports asynchronous application patterns",
+      "mentions automatic API documentation"
+    ],
+    "followUpConcepts": [
+      "Pydantic Models",
+      "Async FastAPI Endpoints"
+    ]
+  },
+  {
+    "topic": "Pydantic Models",
+    "difficulty": "medium",
+    "concepts": [
+      "Pydantic validates and parses structured application data",
+      "models are defined using typed fields",
+      "invalid input produces validation errors",
+      "models can serialize validated data",
+      "useful for API request and response schemas"
+    ],
+    "questionPatterns": [
+      "How does FastAPI validate incoming request bodies?",
+      "What's the role of Pydantic?"
+    ],
+    "evaluationCriteria": [
+      "understands validation from declared models",
+      "connects Pydantic to typed API schemas",
+      "distinguishes data validation from database persistence"
+    ],
+    "followUpConcepts": [
+      "FastAPI Fundamentals",
+      "Type Hints"
+    ]
+  },
+  {
+    "topic": "FastAPI Dependency Injection",
+    "difficulty": "medium",
+    "concepts": [
+      "Depends declares reusable dependencies",
+      "dependencies can handle authentication database sessions and shared validation",
+      "dependencies can depend on other dependencies",
+      "dependency cleanup can be managed using yield-based dependencies"
+    ],
+    "questionPatterns": [
+      "How does dependency injection work in FastAPI?",
+      "How would you reuse authentication logic across multiple endpoints?"
+    ],
+    "evaluationCriteria": [
+      "understands Depends",
+      "provides practical dependency use cases",
+      "recognizes dependency injection improves reuse and separation of concerns"
+    ],
+    "followUpConcepts": [
+      "FastAPI Fundamentals",
+      "Context Managers"
+    ]
+  },
+  {
+    "topic": "Async FastAPI Endpoints",
+    "difficulty": "hard",
+    "concepts": [
+      "async endpoints can efficiently await asynchronous I/O",
+      "blocking synchronous work inside async routes can block event-loop progress",
+      "CPU-heavy machine learning inference may require separate execution strategies",
+      "using async does not automatically make CPU-intensive code faster"
+    ],
+    "questionPatterns": [
+      "Should every FastAPI route be declared async?",
+      "What happens if you run heavy CPU-bound model inference directly inside an async endpoint?"
+    ],
+    "evaluationCriteria": [
+      "understands async is most beneficial with compatible asynchronous I/O",
+      "recognizes blocking operations can harm concurrency",
+      "does not treat async as automatic parallelism"
+    ],
+    "followUpConcepts": [
+      "Asyncio",
+      "FastAPI Fundamentals"
+    ]
+  },
+  {
+    "topic": "Python for AI ML Workloads",
+    "difficulty": "medium",
+    "concepts": [
+      "Python has a large AI and data ecosystem",
+      "NumPy provides efficient numerical arrays",
+      "Pandas supports tabular data manipulation",
+      "scikit-learn provides traditional machine learning algorithms",
+      "PyTorch and TensorFlow support deep learning",
+      "Python services commonly expose models through APIs"
+    ],
+    "questionPatterns": [
+      "Why is Python widely used for AI and machine learning?",
+      "How would you integrate a Python AI service with a Node.js backend?"
+    ],
+    "evaluationCriteria": [
+      "mentions ecosystem and library availability",
+      "understands Python can operate as a separate microservice",
+      "can explain HTTP or messaging-based service communication"
+    ],
+    "followUpConcepts": [
+      "NumPy Fundamentals",
+      "Pandas Fundamentals",
+      "FastAPI Fundamentals"
+    ]
+  },
+  {
+    "topic": "NumPy Fundamentals",
+    "difficulty": "medium",
+    "concepts": [
+      "ndarray provides multidimensional homogeneous arrays",
+      "vectorized operations reduce explicit Python-level loops",
+      "broadcasting enables operations between compatible shapes",
+      "array shape and dtype affect computation"
+    ],
+    "questionPatterns": [
+      "Why is NumPy generally faster than Python lists for numerical operations?",
+      "What is broadcasting in NumPy?"
+    ],
+    "evaluationCriteria": [
+      "connects performance to optimized array operations",
+      "understands homogeneous array storage conceptually",
+      "explains broadcasting at a basic level"
+    ],
+    "followUpConcepts": [
+      "Pandas Fundamentals",
+      "Vectorization"
+    ]
+  },
+  {
+    "topic": "Pandas Fundamentals",
+    "difficulty": "medium",
+    "concepts": [
+      "Series represents labeled one-dimensional data",
+      "DataFrame represents labeled tabular data",
+      "supports filtering grouping merging and aggregation",
+      "missing values require explicit handling",
+      "vectorized operations are generally preferable to row-by-row Python loops"
+    ],
+    "questionPatterns": [
+      "What's the difference between a Pandas Series and DataFrame?",
+      "How would you handle missing values in a dataset?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes Series and DataFrame",
+      "understands common data manipulation operations",
+      "does not blindly remove missing values without considering context"
+    ],
+    "followUpConcepts": [
+      "NumPy Fundamentals",
+      "Data Preprocessing"
+    ]
+  },
+  {
+    "topic": "Python Testing with pytest",
+    "difficulty": "medium",
+    "concepts": [
+      "pytest discovers test functions using conventions",
+      "fixtures provide reusable test setup",
+      "parametrization runs tests against multiple inputs",
+      "mocking isolates external dependencies",
+      "tests should include success failure and edge cases"
+    ],
+    "questionPatterns": [
+      "Why would you use pytest?",
+      "What is a pytest fixture?"
+    ],
+    "evaluationCriteria": [
+      "understands fixture-based setup",
+      "can distinguish unit and integration testing",
+      "uses mocking selectively rather than replacing every dependency"
+    ],
+    "followUpConcepts": [
+      "Mocking in Python",
+      "FastAPI Testing"
+    ]
+  },
+  {
+    "topic": "Python Logging",
+    "difficulty": "easy",
+    "concepts": [
+      "logging module provides configurable application logging",
+      "log levels include debug info warning error and critical",
+      "production applications should prefer logging over uncontrolled print statements",
+      "structured contextual logs improve debugging"
+    ],
+    "questionPatterns": [
+      "Why use logging instead of print in a production Python service?",
+      "What are common Python logging levels?"
+    ],
+    "evaluationCriteria": [
+      "understands configurable log levels",
+      "connects logging to production observability",
+      "avoids logging sensitive information"
+    ],
+    "followUpConcepts": [
+      "FastAPI Fundamentals",
+      "Production Python Services"
+    ]
+  },
+  {
+    "topic": "Environment Variables in Python",
+    "difficulty": "easy",
+    "concepts": [
+      "os.environ provides environment variables",
+      "secrets should remain outside source code",
+      "dotenv files are useful for local development",
+      "load_dotenv can load local environment configuration",
+      "production platforms commonly inject environment variables directly"
+    ],
+    "questionPatterns": [
+      "How would you securely store an API key in a Python application?",
+      "Why might os.getenv return None even though you added a value to a .env file?"
+    ],
+    "evaluationCriteria": [
+      "keeps secrets outside committed source code",
+      "understands .env files require loading when not automatically provided by the environment",
+      "distinguishes development dotenv usage from production secret configuration"
+    ],
+    "followUpConcepts": [
+      "FastAPI Configuration",
+      "Secrets Management"
+    ]
+  },
+  {
+    "topic": "Python Microservices",
+    "difficulty": "medium",
+    "concepts": [
+      "Python services can expose focused capabilities through APIs",
+      "services can communicate using HTTP RPC or messaging",
+      "independent deployment allows separate scaling",
+      "microservices introduce network and operational complexity",
+      "service boundaries should be based on meaningful responsibilities"
+    ],
+    "questionPatterns": [
+      "Why would you separate an AI service from your Node.js backend?",
+      "Should every feature become its own microservice?"
+    ],
+    "evaluationCriteria": [
+      "connects separation to independent technology and scaling needs",
+      "recognizes network and deployment overhead",
+      "does not recommend microservices without meaningful boundaries"
+    ],
+    "followUpConcepts": [
+      "FastAPI Fundamentals",
+      "Service Communication"
+    ]
+  },
+  {
+    "topic": "Embedding Models in Python",
+    "difficulty": "medium",
+    "concepts": [
+      "embedding models convert text into dense numerical vectors",
+      "semantically similar text should generally produce nearby vectors",
+      "local models can generate embeddings without an external API after model availability",
+      "embedding dimensionality depends on the selected model",
+      "documents and queries must use compatible embedding spaces"
+    ],
+    "questionPatterns": [
+      "What does an embedding model do?",
+      "Why must your stored documents and retrieval query use the same embedding model?"
+    ],
+    "evaluationCriteria": [
+      "understands semantic vector representation",
+      "connects embeddings to similarity search",
+      "recognizes incompatible embedding spaces cannot be directly compared reliably"
+    ],
+    "followUpConcepts": [
+      "Vector Similarity Search",
+      "RAG Pipeline"
+    ]
+  },
+  {
+    "topic": "Lazy Model Loading",
+    "difficulty": "medium",
+    "concepts": [
+      "model is loaded only when first needed",
+      "module-level cached reference prevents repeated loading within the same process",
+      "subsequent function calls reuse the loaded model",
+      "each separate deployed process may maintain its own model instance",
+      "persistent model files and in-memory model instances are different forms of caching"
+    ],
+    "questionPatterns": [
+      "Why would you use a global cached model variable in a Python embedding service?",
+      "Does lazy loading mean every API request downloads the model again?"
+    ],
+    "evaluationCriteria": [
+      "understands model initialization happens once per running process in the common pattern",
+      "distinguishes downloading model files from loading model weights into memory",
+      "recognizes separate deployment instances have separate process memory"
+    ],
+    "followUpConcepts": [
+      "Embedding Models in Python",
+      "Python Memory Management"
+    ]
+  },
+  {
+    "topic": "Python RAG Service Architecture",
+    "difficulty": "hard",
+    "concepts": [
+      "knowledge documents are embedded during ingestion",
+      "embeddings are stored in a vector database",
+      "runtime queries are embedded for semantic retrieval",
+      "retrieved context is provided to a language model",
+      "static knowledge embeddings do not need to be regenerated for every user",
+      "re-embedding is needed when knowledge or embedding models change"
+    ],
+    "questionPatterns": [
+      "Walk me through a RAG pipeline implemented with Python.",
+      "Do you need to regenerate your entire knowledge base embeddings for every interview session?"
+    ],
+    "evaluationCriteria": [
+      "correctly separates ingestion from runtime retrieval",
+      "understands stored embeddings are reused across users",
+      "recognizes queries or generated retrieval inputs still require embedding",
+      "understands changing the embedding model generally requires re-embedding existing vectors"
+    ],
+    "followUpConcepts": [
+      "Embedding Models in Python",
+      "Vector Similarity Search"
+    ]
   }
 ]

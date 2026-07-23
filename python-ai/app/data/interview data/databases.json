@@ -1,122 +1,1016 @@
 [
   {
-    "topic": "SQL vs NoSQL",
+    "topic": "SQL vs NoSQL Databases",
     "difficulty": "easy",
-    "concepts": ["schema rigidity vs flexibility", "vertical vs horizontal scaling tendencies", "relational joins vs embedded/denormalized data", "when each is the right choice"],
-    "questionPatterns": ["Why did you choose MongoDB over MySQL for your project?", "What kind of application would you NOT want to build on a NoSQL database?"],
-    "evaluationCriteria": ["gives a real justification for their own project's DB choice", "understands schema flexibility isn't automatically 'better'", "identifies a scenario needing strong relational integrity (e.g. financial systems) as a poor NoSQL fit"],
-    "followUpConcepts": ["MongoDB Schema Design", "Database Normalization"]
+    "concepts": [
+      "relational databases use structured tables and relationships",
+      "NoSQL databases support models such as documents, key-value, wide-column and graph",
+      "SQL databases commonly provide strong relational constraints",
+      "database choice should depend on access patterns, consistency and data relationships"
+    ],
+    "questionPatterns": [
+      "When would you choose MongoDB over a relational database?",
+      "What factors would you consider when choosing between SQL and NoSQL?"
+    ],
+    "evaluationCriteria": [
+      "avoids claiming one database type is universally better",
+      "considers relationships, query patterns and consistency requirements",
+      "understands NoSQL does not simply mean unstructured data"
+    ],
+    "followUpConcepts": [
+      "MongoDB Document Model",
+      "Database Schema Design"
+    ]
   },
   {
-    "topic": "MongoDB Schema Design",
+    "topic": "Database Schema Design",
     "difficulty": "medium",
-    "concepts": ["embedding vs referencing", "denormalization for read performance", "schema design driven by query patterns, not entities", "strict mode and field dropping pitfalls"],
-    "questionPatterns": ["When would you embed a document versus reference it with an ObjectId in MongoDB?", "You mentioned platform-specific schemas to avoid strict-mode field dropping — walk me through that problem."],
-    "evaluationCriteria": ["correctly reasons about embed-vs-reference based on access patterns and document growth", "references their actual strict-mode/schema design experience", "understands MongoDB schema design should follow queries, unlike SQL's entity-first approach"],
-    "followUpConcepts": ["SQL vs NoSQL", "Aggregation Pipeline"]
-  },
-  {
-    "topic": "Indexing Strategies",
-    "difficulty": "medium",
-    "concepts": ["single-field vs compound indexes", "index selectivity", "covered queries", "tradeoff: faster reads, slower writes, more storage"],
-    "questionPatterns": ["How would you decide which fields to index in a frequently-queried collection?", "What's a compound index and when does field order in it matter?"],
-    "evaluationCriteria": ["explains selectivity as a factor in choosing what to index", "understands compound index field order affects which queries can use it", "acknowledges the write/storage cost tradeoff"],
-    "followUpConcepts": ["Database Indexing", "Query Optimization"]
-  },
-  {
-    "topic": "Aggregation Pipeline (MongoDB)",
-    "difficulty": "medium",
-    "concepts": ["stages: $match, $group, $sort, $project", "pipeline processes documents in sequence", "use case: computing daily stats across users"],
-    "questionPatterns": ["Walk me through an aggregation pipeline you've written, like computing daily stats.", "Why would you use $match early in a pipeline?"],
-    "evaluationCriteria": ["references a real aggregation they've written (e.g. their DailyStats/cron aggregation)", "understands stages execute in sequence, each transforming the output of the last", "knows $match early reduces the document set before expensive stages"],
-    "followUpConcepts": ["MongoDB Schema Design"]
+    "concepts": [
+      "design schema around application access patterns",
+      "relationships and cardinality",
+      "constraints and data integrity",
+      "normalization versus intentional duplication",
+      "schema evolution over time"
+    ],
+    "questionPatterns": [
+      "How would you approach designing a database schema for a new application?",
+      "What information do you need before deciding how data should be structured?"
+    ],
+    "evaluationCriteria": [
+      "starts from entities, relationships and access patterns",
+      "considers integrity and future changes",
+      "does not design tables or collections independently of application queries"
+    ],
+    "followUpConcepts": [
+      "Normalization vs Denormalization",
+      "One-to-One One-to-Many and Many-to-Many Relationships"
+    ]
   },
   {
     "topic": "Normalization vs Denormalization",
     "difficulty": "medium",
-    "concepts": ["normalization reduces redundancy, favors writes", "denormalization duplicates data, favors reads", "real tradeoff decision in a project"],
-    "questionPatterns": ["When would you deliberately duplicate data across documents instead of normalizing it?", "What's the risk of denormalized data going out of sync?"],
-    "evaluationCriteria": ["gives a genuine tradeoff example, not just definitions", "identifies the sync/consistency risk of duplicated data", "connects choice to actual read/write patterns of an app"],
-    "followUpConcepts": ["Database Normalization", "MongoDB Schema Design"]
+    "concepts": [
+      "normalization reduces unnecessary data duplication",
+      "normalization helps prevent update anomalies",
+      "denormalization intentionally duplicates data for specific access patterns",
+      "denormalization can improve reads while increasing consistency complexity"
+    ],
+    "questionPatterns": [
+      "Why do relational databases use normalization?",
+      "When would you intentionally denormalize a database?"
+    ],
+    "evaluationCriteria": [
+      "connects normalization to integrity and reduced redundancy",
+      "understands denormalization is a deliberate tradeoff",
+      "recognizes duplicated data must be kept consistent"
+    ],
+    "followUpConcepts": [
+      "Database Schema Design",
+      "MongoDB Embedding vs Referencing"
+    ]
   },
   {
-    "topic": "Joins vs Embedding and Referencing",
+    "topic": "One-to-One One-to-Many and Many-to-Many Relationships",
+    "difficulty": "easy",
+    "concepts": [
+      "one-to-one relationship",
+      "one-to-many relationship",
+      "many-to-many relationship",
+      "foreign keys and junction tables in relational databases",
+      "embedding or references in document databases"
+    ],
+    "questionPatterns": [
+      "How would you model users and orders in a relational database?",
+      "How would you represent a many-to-many relationship?"
+    ],
+    "evaluationCriteria": [
+      "correctly identifies relationship cardinality",
+      "uses foreign keys appropriately",
+      "understands junction tables for relational many-to-many relationships"
+    ],
+    "followUpConcepts": [
+      "Database Schema Design",
+      "MongoDB Embedding vs Referencing"
+    ]
+  },
+  {
+    "topic": "Database Indexing",
     "difficulty": "medium",
-    "concepts": ["SQL joins combine normalized tables at query time", "MongoDB embeds related data or references via ObjectId + populate", "performance and consistency tradeoffs"],
-    "questionPatterns": ["How does fetching a user's related orders differ between a SQL join and a MongoDB populate?", "What's the cost of using populate heavily in Mongoose?"],
-    "evaluationCriteria": ["correctly contrasts join-at-query-time vs embed/reference approach", "understands populate performs additional queries (N+1-like cost) if overused", "gives a reasonable use case for referencing over embedding"],
-    "followUpConcepts": ["MongoDB Schema Design", "N+1 Query Problem"]
+    "concepts": [
+      "indexes are additional data structures that improve lookup performance",
+      "B-tree based indexes support equality and range queries",
+      "indexes reduce scanning but consume storage",
+      "indexes add overhead to inserts, updates and deletes"
+    ],
+    "questionPatterns": [
+      "How does a database index improve query performance?",
+      "Why shouldn't you create an index on every field?"
+    ],
+    "evaluationCriteria": [
+      "explains that indexes reduce unnecessary scanning",
+      "understands the read versus write tradeoff",
+      "recognizes indexes should be based on actual query patterns"
+    ],
+    "followUpConcepts": [
+      "B-Tree vs Hash Indexes",
+      "Composite Indexes"
+    ]
   },
   {
-    "topic": "Transactions in MongoDB",
-    "difficulty": "hard",
-    "concepts": ["multi-document ACID transactions since MongoDB 4.0", "session-based transaction API", "when embedding avoids needing transactions at all", "atomic upsert as a simpler alternative"],
-    "questionPatterns": ["When would you need a multi-document transaction in MongoDB versus relying on atomic single-document updates?", "You mentioned atomic upsert logic for resume uploads — why was that important?"],
-    "evaluationCriteria": ["references their actual atomic upsert fix for resume uploads", "understands single-document atomicity often avoids needing full transactions", "knows multi-document transactions exist but come with performance cost"],
-    "followUpConcepts": ["ACID Properties"]
-  },
-  {
-    "topic": "Replication vs Sharding",
+    "topic": "B-Tree vs Hash Indexes",
     "difficulty": "medium",
-    "concepts": ["replication: copies of data for availability/read scaling", "sharding: splitting data across servers for write/storage scaling", "different problems solved by each"],
-    "questionPatterns": ["What problem does replication solve that sharding doesn't, and vice versa?", "Would you shard a database to handle more read traffic?"],
-    "evaluationCriteria": ["correctly separates availability/read-scaling (replication) from horizontal data distribution (sharding)", "recognizes read scaling is usually better solved by replication or caching, not sharding", "no major conceptual confusion between the two"],
-    "followUpConcepts": ["CAP Theorem", "Database Sharding"]
+    "concepts": [
+      "B-tree indexes maintain ordered keys",
+      "B-tree indexes support equality and range queries",
+      "hash indexes are optimized primarily for equality lookup",
+      "index implementation depends on database engine"
+    ],
+    "questionPatterns": [
+      "Why can a B-tree index support range queries?",
+      "What's the conceptual difference between B-tree and hash indexes?"
+    ],
+    "evaluationCriteria": [
+      "connects ordered index structure to range scanning",
+      "understands hash lookup is primarily useful for equality",
+      "does not assume every database implements indexes identically"
+    ],
+    "followUpConcepts": [
+      "Database Indexing",
+      "Composite Indexes"
+    ]
   },
   {
-    "topic": "CAP Theorem",
+    "topic": "Composite Indexes",
+    "difficulty": "medium",
+    "concepts": [
+      "single index contains multiple fields",
+      "field order affects supported query patterns",
+      "leftmost prefix behavior",
+      "equality fields often precede range fields depending on query pattern"
+    ],
+    "questionPatterns": [
+      "If you have an index on {status, createdAt}, which queries can benefit from it?",
+      "Why does field order matter in a compound index?"
+    ],
+    "evaluationCriteria": [
+      "understands compound index order is significant",
+      "can reason about prefix-based usage",
+      "designs indexes around real filter and sort patterns"
+    ],
+    "followUpConcepts": [
+      "Database Indexing",
+      "Index Selectivity"
+    ]
+  },
+  {
+    "topic": "Index Selectivity",
+    "difficulty": "medium",
+    "concepts": [
+      "selectivity describes how effectively a field narrows matching rows or documents",
+      "high-cardinality fields are often more selective",
+      "low-selectivity indexes may provide limited benefit",
+      "selectivity should be considered with actual query patterns"
+    ],
+    "questionPatterns": [
+      "Would indexing a boolean field always improve query performance?",
+      "What does index selectivity mean?"
+    ],
+    "evaluationCriteria": [
+      "understands highly selective values narrow results more effectively",
+      "recognizes low-cardinality fields may produce weak standalone indexes",
+      "avoids absolute rules without considering query patterns"
+    ],
+    "followUpConcepts": [
+      "Composite Indexes",
+      "Query Execution Plans"
+    ]
+  },
+  {
+    "topic": "Covered Queries",
     "difficulty": "hard",
-    "concepts": ["consistency, availability, partition tolerance", "you can only fully guarantee two during a network partition", "where MongoDB and typical SQL databases fall on this spectrum"],
-    "questionPatterns": ["Explain the CAP theorem and where MongoDB sits on it by default.", "Why must you sacrifice either consistency or availability during a network partition?"],
-    "evaluationCriteria": ["correctly defines all three properties", "explains partition tolerance isn't optional in distributed systems, so it's really a C-vs-A tradeoff during partitions", "attempts to place a real database on the spectrum, even approximately"],
-    "followUpConcepts": ["Replication vs Sharding", "Data Consistency Models"]
+    "concepts": [
+      "all required query fields can be satisfied from an index",
+      "database may avoid fetching the underlying document or table row",
+      "projection affects whether a query can be covered",
+      "can reduce data access cost"
+    ],
+    "questionPatterns": [
+      "What is a covered query?",
+      "How can an index sometimes answer a query without reading the full document?"
+    ],
+    "evaluationCriteria": [
+      "understands both filtering and returned fields must be available from the index",
+      "connects covered queries to reduced underlying data access",
+      "recognizes unnecessary projected fields can prevent coverage"
+    ],
+    "followUpConcepts": [
+      "Database Indexing",
+      "Query Execution Plans"
+    ]
+  },
+  {
+    "topic": "Query Execution Plans",
+    "difficulty": "medium",
+    "concepts": [
+      "query planner chooses an execution strategy",
+      "execution plans reveal index usage",
+      "full scans can indicate missing or unusable indexes",
+      "rows or documents examined versus returned",
+      "execution time should be measured rather than guessed"
+    ],
+    "questionPatterns": [
+      "How would you investigate a slow database query?",
+      "What information can an EXPLAIN or explain() output provide?"
+    ],
+    "evaluationCriteria": [
+      "mentions inspecting the execution plan",
+      "checks whether indexes are actually used",
+      "compares scanned data with returned data",
+      "uses measurements before adding indexes"
+    ],
+    "followUpConcepts": [
+      "Database Indexing",
+      "Query Optimization"
+    ]
+  },
+  {
+    "topic": "Query Optimization",
+    "difficulty": "hard",
+    "concepts": [
+      "measure slow queries before optimizing",
+      "reduce unnecessary scanned data",
+      "appropriate indexing",
+      "return only required fields",
+      "avoid unnecessary repeated queries",
+      "analyze execution plans"
+    ],
+    "questionPatterns": [
+      "A database query is taking several seconds. How would you optimize it?",
+      "Why is adding an index not always the correct solution to a slow query?"
+    ],
+    "evaluationCriteria": [
+      "starts with measurement and execution-plan analysis",
+      "considers query structure and data access patterns",
+      "understands indexes introduce their own costs"
+    ],
+    "followUpConcepts": [
+      "Query Execution Plans",
+      "N Plus One Query Problem"
+    ]
+  },
+  {
+    "topic": "N Plus One Query Problem",
+    "difficulty": "medium",
+    "concepts": [
+      "one initial query followed by one query per returned item",
+      "large number of database round trips",
+      "common with careless ORM relationship loading",
+      "solved using joins, batching, aggregation or eager loading depending on database"
+    ],
+    "questionPatterns": [
+      "What is the N+1 query problem?",
+      "Why can fetching users and then separately fetching each user's orders become inefficient?"
+    ],
+    "evaluationCriteria": [
+      "correctly identifies repeated per-item queries",
+      "connects the problem to network and query overhead",
+      "suggests batching or appropriate combined retrieval"
+    ],
+    "followUpConcepts": [
+      "Query Optimization",
+      "SQL Joins"
+    ]
+  },
+  {
+    "topic": "SQL Joins",
+    "difficulty": "medium",
+    "concepts": [
+      "INNER JOIN returns matching rows",
+      "LEFT JOIN preserves rows from the left side",
+      "FULL OUTER JOIN preserves rows from both sides where supported",
+      "join conditions determine how rows are related"
+    ],
+    "questionPatterns": [
+      "What's the difference between INNER JOIN and LEFT JOIN?",
+      "How would you return all users including those who have never placed an order?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains matching and preserved rows",
+      "selects LEFT JOIN for retaining unmatched left-side records",
+      "can reason about null values from missing matches"
+    ],
+    "followUpConcepts": [
+      "Subqueries vs Joins",
+      "N Plus One Query Problem"
+    ]
+  },
+  {
+    "topic": "Subqueries vs Joins",
+    "difficulty": "medium",
+    "concepts": [
+      "subquery nests one query inside another",
+      "joins combine related data sets",
+      "correlated subqueries may execute conceptually per outer row",
+      "query optimizer may rewrite queries",
+      "readability and execution plan both matter"
+    ],
+    "questionPatterns": [
+      "When would you use a subquery instead of a join?",
+      "Are joins always faster than subqueries?"
+    ],
+    "evaluationCriteria": [
+      "understands both can express overlapping query requirements",
+      "does not claim joins are universally faster",
+      "recognizes correlated subqueries can become expensive"
+    ],
+    "followUpConcepts": [
+      "SQL Joins",
+      "Query Execution Plans"
+    ]
+  },
+  {
+    "topic": "Common Table Expressions",
+    "difficulty": "medium",
+    "concepts": [
+      "WITH clause defines a named query result",
+      "improves readability of complex queries",
+      "recursive CTEs can process hierarchical data",
+      "performance behavior depends on database engine"
+    ],
+    "questionPatterns": [
+      "What is a CTE and why would you use one?",
+      "What type of problem might require a recursive CTE?"
+    ],
+    "evaluationCriteria": [
+      "understands CTEs as named query expressions",
+      "connects recursive CTEs to hierarchical or graph-like relational data",
+      "does not automatically assume CTEs improve performance"
+    ],
+    "followUpConcepts": [
+      "Subqueries vs Joins",
+      "Window Functions"
+    ]
+  },
+  {
+    "topic": "Window Functions",
+    "difficulty": "hard",
+    "concepts": [
+      "perform calculations across related rows without collapsing them",
+      "OVER and PARTITION BY",
+      "ROW_NUMBER, RANK and DENSE_RANK",
+      "running totals and moving calculations"
+    ],
+    "questionPatterns": [
+      "How would you find the top three salaries in each department?",
+      "What's the difference between GROUP BY and a window function?"
+    ],
+    "evaluationCriteria": [
+      "understands window functions preserve individual rows",
+      "can explain partitioning at a high level",
+      "distinguishes aggregation from windowed calculations"
+    ],
+    "followUpConcepts": [
+      "SQL Aggregation GROUP BY and HAVING",
+      "Common Table Expressions"
+    ]
+  },
+  {
+    "topic": "SQL Aggregation GROUP BY and HAVING",
+    "difficulty": "easy",
+    "concepts": [
+      "GROUP BY creates groups for aggregate calculations",
+      "WHERE filters rows before grouping",
+      "HAVING filters groups after aggregation",
+      "common aggregate functions include COUNT, SUM, AVG, MIN and MAX"
+    ],
+    "questionPatterns": [
+      "What's the difference between WHERE and HAVING?",
+      "How would you find departments with more than ten employees?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes row filtering from group filtering",
+      "uses aggregate functions appropriately",
+      "understands grouping changes result granularity"
+    ],
+    "followUpConcepts": [
+      "SQL Query Execution Order",
+      "Window Functions"
+    ]
+  },
+  {
+    "topic": "SQL Query Execution Order",
+    "difficulty": "medium",
+    "concepts": [
+      "FROM and JOIN establish source rows",
+      "WHERE filters rows",
+      "GROUP BY forms groups",
+      "HAVING filters groups",
+      "SELECT produces output expressions",
+      "ORDER BY sorts results",
+      "LIMIT restricts returned rows"
+    ],
+    "questionPatterns": [
+      "Why can't you always use a SELECT alias inside WHERE?",
+      "What is the logical execution order of a SQL query?"
+    ],
+    "evaluationCriteria": [
+      "understands logical execution differs from written clause order",
+      "places WHERE before grouping and HAVING after grouping",
+      "connects execution order to alias availability"
+    ],
+    "followUpConcepts": [
+      "SQL Aggregation GROUP BY and HAVING",
+      "Query Execution Plans"
+    ]
+  },
+  {
+    "topic": "ACID Transactions in Practice",
+    "difficulty": "medium",
+    "concepts": [
+      "atomicity ensures all-or-nothing transaction execution",
+      "consistency preserves defined database rules",
+      "isolation controls concurrent transaction interaction",
+      "durability preserves committed changes"
+    ],
+    "questionPatterns": [
+      "Why would transferring money require a database transaction?",
+      "What could happen if only half of a multi-step operation succeeds?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains all four ACID properties",
+      "connects atomicity to multi-step operations",
+      "understands transactions protect logical units of work"
+    ],
+    "followUpConcepts": [
+      "Transaction Isolation Levels",
+      "Database Transactions in MongoDB"
+    ]
+  },
+  {
+    "topic": "Transaction Isolation Levels",
+    "difficulty": "hard",
+    "concepts": [
+      "read uncommitted",
+      "read committed",
+      "repeatable read",
+      "serializable",
+      "stronger isolation reduces certain concurrency anomalies",
+      "stronger isolation can increase coordination cost"
+    ],
+    "questionPatterns": [
+      "What problems do transaction isolation levels solve?",
+      "Why wouldn't every database transaction simply use the strongest isolation level?"
+    ],
+    "evaluationCriteria": [
+      "understands isolation controls concurrent visibility",
+      "connects stronger guarantees to possible concurrency cost",
+      "can explain at least common isolation anomalies"
+    ],
+    "followUpConcepts": [
+      "Dirty Non-Repeatable and Phantom Reads",
+      "MVCC"
+    ]
+  },
+  {
+    "topic": "Dirty Non-Repeatable and Phantom Reads",
+    "difficulty": "hard",
+    "concepts": [
+      "dirty read observes uncommitted data",
+      "non-repeatable read sees a previously read row changed",
+      "phantom read sees the result set change because matching rows were inserted or removed",
+      "isolation levels prevent different anomaly classes"
+    ],
+    "questionPatterns": [
+      "What's the difference between a dirty read and a non-repeatable read?",
+      "What is a phantom read?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes all three anomalies",
+      "uses concrete concurrent transaction examples",
+      "connects anomalies to isolation behavior"
+    ],
+    "followUpConcepts": [
+      "Transaction Isolation Levels",
+      "MVCC"
+    ]
+  },
+  {
+    "topic": "Optimistic vs Pessimistic Locking",
+    "difficulty": "hard",
+    "concepts": [
+      "pessimistic locking prevents conflicting access using locks",
+      "optimistic concurrency assumes conflicts are relatively uncommon",
+      "optimistic approaches detect conflicts using versions or conditions",
+      "choice depends on contention and workload"
+    ],
+    "questionPatterns": [
+      "What's the difference between optimistic and pessimistic locking?",
+      "When would optimistic concurrency control be preferable?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes prevention from conflict detection",
+      "connects optimistic approaches to lower expected contention",
+      "recognizes pessimistic locking can reduce concurrency"
+    ],
+    "followUpConcepts": [
+      "MVCC",
+      "Database Deadlocks"
+    ]
+  },
+  {
+    "topic": "MVCC",
+    "difficulty": "hard",
+    "concepts": [
+      "multiple versions of data support concurrent access",
+      "readers can observe consistent snapshots",
+      "reduces some reader-writer blocking",
+      "old versions eventually require cleanup"
+    ],
+    "questionPatterns": [
+      "What is Multi-Version Concurrency Control?",
+      "How can a database allow readers and writers to operate concurrently without always blocking each other?"
+    ],
+    "evaluationCriteria": [
+      "explains the idea of maintaining multiple row versions",
+      "connects MVCC to snapshot-based reads",
+      "understands MVCC does not eliminate every concurrency conflict"
+    ],
+    "followUpConcepts": [
+      "Transaction Isolation Levels",
+      "Optimistic vs Pessimistic Locking"
+    ]
+  },
+  {
+    "topic": "Database Deadlocks",
+    "difficulty": "hard",
+    "concepts": [
+      "transactions wait cyclically for locked resources",
+      "database may detect deadlocks and abort one transaction",
+      "consistent lock ordering can reduce risk",
+      "transactions should generally remain appropriately short"
+    ],
+    "questionPatterns": [
+      "How can two database transactions deadlock?",
+      "How would you reduce the chance of database deadlocks?"
+    ],
+    "evaluationCriteria": [
+      "describes a circular lock dependency",
+      "understands the database may select a transaction to roll back",
+      "suggests consistent resource ordering or shorter transactions"
+    ],
+    "followUpConcepts": [
+      "Optimistic vs Pessimistic Locking",
+      "Transaction Isolation Levels"
+    ]
+  },
+  {
+    "topic": "MongoDB Document Model",
+    "difficulty": "easy",
+    "concepts": [
+      "data stored as BSON documents",
+      "documents can contain nested objects and arrays",
+      "flexible schema does not mean schema design is unnecessary",
+      "documents are grouped into collections"
+    ],
+    "questionPatterns": [
+      "How does MongoDB's document model differ from relational tables?",
+      "Does MongoDB being schema-flexible mean you don't need a schema?"
+    ],
+    "evaluationCriteria": [
+      "understands document-oriented storage",
+      "recognizes nested structures as a core capability",
+      "understands production applications still require deliberate schema design and validation"
+    ],
+    "followUpConcepts": [
+      "MongoDB Embedding vs Referencing",
+      "MongoDB ObjectId"
+    ]
+  },
+  {
+    "topic": "MongoDB Embedding vs Referencing",
+    "difficulty": "medium",
+    "concepts": [
+      "embedding stores related data inside the same document",
+      "referencing stores identifiers pointing to separate documents",
+      "embedding can reduce joins and additional queries",
+      "references avoid uncontrolled duplication and document growth",
+      "decision depends on cardinality and access patterns"
+    ],
+    "questionPatterns": [
+      "When would you embed data in MongoDB instead of referencing another collection?",
+      "Would you embed every user's orders inside their user document?"
+    ],
+    "evaluationCriteria": [
+      "considers how frequently related data is read together",
+      "recognizes unbounded arrays as a potential problem",
+      "understands neither embedding nor referencing is universally superior"
+    ],
+    "followUpConcepts": [
+      "MongoDB Document Model",
+      "Mongoose Populate vs Aggregation"
+    ]
+  },
+  {
+    "topic": "MongoDB Indexing",
+    "difficulty": "medium",
+    "concepts": [
+      "single-field indexes",
+      "compound indexes",
+      "multikey indexes for arrays",
+      "unique indexes",
+      "text and specialized indexes depending on requirements",
+      "explain execution statistics"
+    ],
+    "questionPatterns": [
+      "How would you decide which MongoDB fields to index?",
+      "What happens to write performance as you add more indexes?"
+    ],
+    "evaluationCriteria": [
+      "designs indexes based on actual query patterns",
+      "understands indexes improve reads while increasing write cost",
+      "mentions explain plans for validation"
+    ],
+    "followUpConcepts": [
+      "Composite Indexes",
+      "MongoDB Aggregation Pipeline"
+    ]
+  },
+  {
+    "topic": "MongoDB Compound Index Order",
+    "difficulty": "hard",
+    "concepts": [
+      "compound index field order matters",
+      "equality sort range guideline as a useful heuristic",
+      "prefixes determine many supported query patterns",
+      "sorting can sometimes be satisfied directly by an index"
+    ],
+    "questionPatterns": [
+      "You frequently query by status and sort by createdAt. How would you think about the compound index?",
+      "Why can two compound indexes containing the same fields behave differently?"
+    ],
+    "evaluationCriteria": [
+      "understands index order affects usable query patterns",
+      "considers filtering and sorting together",
+      "does not mechanically create indexes without examining execution plans"
+    ],
+    "followUpConcepts": [
+      "Composite Indexes",
+      "MongoDB Indexing"
+    ]
+  },
+  {
+    "topic": "MongoDB Aggregation Pipeline",
+    "difficulty": "medium",
+    "concepts": [
+      "documents flow through sequential processing stages",
+      "$match filters documents",
+      "$project reshapes output",
+      "$group performs aggregation",
+      "$lookup combines data from another collection",
+      "early filtering can reduce later processing"
+    ],
+    "questionPatterns": [
+      "What is the MongoDB aggregation pipeline?",
+      "How would you calculate the number of orders per user?"
+    ],
+    "evaluationCriteria": [
+      "understands the stage-based processing model",
+      "can identify common stages",
+      "recognizes filtering early can reduce unnecessary processing"
+    ],
+    "followUpConcepts": [
+      "Mongoose Populate vs Aggregation",
+      "MongoDB Indexing"
+    ]
+  },
+  {
+    "topic": "Mongoose Populate vs Aggregation",
+    "difficulty": "medium",
+    "concepts": [
+      "populate resolves referenced documents through Mongoose",
+      "aggregation provides database-side transformation and joining capabilities",
+      "$lookup can combine collections inside aggregation",
+      "choice depends on query complexity and required transformations"
+    ],
+    "questionPatterns": [
+      "What's the difference between Mongoose populate and MongoDB $lookup?",
+      "When would you prefer an aggregation pipeline over populate?"
+    ],
+    "evaluationCriteria": [
+      "understands populate is a Mongoose abstraction",
+      "recognizes aggregation is more suitable for complex data processing",
+      "does not claim one approach is always faster"
+    ],
+    "followUpConcepts": [
+      "MongoDB Aggregation Pipeline",
+      "MongoDB Embedding vs Referencing"
+    ]
+  },
+  {
+    "topic": "MongoDB ObjectId",
+    "difficulty": "easy",
+    "concepts": [
+      "default MongoDB identifier type",
+      "12-byte value",
+      "contains a timestamp component",
+      "generally generated without requiring a central sequential counter",
+      "approximately sortable by creation time but not a replacement for explicit timestamps"
+    ],
+    "questionPatterns": [
+      "What is an ObjectId in MongoDB?",
+      "Can you determine approximately when a MongoDB ObjectId was generated?"
+    ],
+    "evaluationCriteria": [
+      "understands ObjectId is MongoDB's common default identifier",
+      "knows it includes a timestamp component",
+      "does not rely on ObjectId as a complete replacement for explicit application timestamps"
+    ],
+    "followUpConcepts": [
+      "MongoDB Document Model"
+    ]
+  },
+  {
+    "topic": "Database Transactions in MongoDB",
+    "difficulty": "medium",
+    "concepts": [
+      "single-document operations are atomic",
+      "multi-document transactions support atomic operations across multiple documents",
+      "transactions introduce coordination overhead",
+      "good schema design can reduce the need for multi-document transactions"
+    ],
+    "questionPatterns": [
+      "Does MongoDB support transactions?",
+      "When would you need a multi-document transaction in MongoDB?"
+    ],
+    "evaluationCriteria": [
+      "knows single-document updates provide atomicity",
+      "understands multi-document transactions exist",
+      "does not use transactions unnecessarily for every operation"
+    ],
+    "followUpConcepts": [
+      "ACID Transactions in Practice",
+      "MongoDB Embedding vs Referencing"
+    ]
+  },
+  {
+    "topic": "Database Replication",
+    "difficulty": "medium",
+    "concepts": [
+      "copies of data maintained across multiple database nodes",
+      "primary handles writes in common primary-replica architectures",
+      "replicas improve availability and can serve eligible reads",
+      "replication is different from partitioning data"
+    ],
+    "questionPatterns": [
+      "Why would a database use replication?",
+      "What's the difference between replication and sharding?"
+    ],
+    "evaluationCriteria": [
+      "connects replication to redundancy and availability",
+      "understands replicas contain copies rather than different partitions",
+      "recognizes failover as a common replication capability"
+    ],
+    "followUpConcepts": [
+      "Read Replicas and Replication Lag",
+      "Database Sharding"
+    ]
+  },
+  {
+    "topic": "Read Replicas and Replication Lag",
+    "difficulty": "hard",
+    "concepts": [
+      "read replicas can distribute read workloads",
+      "replication is often asynchronous",
+      "replicas may temporarily contain stale data",
+      "read-after-write consistency can become a concern"
+    ],
+    "questionPatterns": [
+      "Why might a user update their profile and then immediately read the old value from a replica?",
+      "When should a request read from the primary instead of a read replica?"
+    ],
+    "evaluationCriteria": [
+      "connects stale reads to replication delay",
+      "understands read replicas improve read scalability",
+      "recognizes consistency-sensitive reads may require stronger routing guarantees"
+    ],
+    "followUpConcepts": [
+      "Database Replication",
+      "Data Consistency Models"
+    ]
+  },
+  {
+    "topic": "Database Sharding",
+    "difficulty": "hard",
+    "concepts": [
+      "data partitioned across multiple database nodes",
+      "shard key determines data placement",
+      "poor shard keys create hotspots",
+      "cross-shard operations add complexity",
+      "resharding can be operationally difficult"
+    ],
+    "questionPatterns": [
+      "When would you consider sharding a database?",
+      "What makes a good shard key?"
+    ],
+    "evaluationCriteria": [
+      "understands sharding as horizontal partitioning",
+      "connects shard-key choice to balanced distribution",
+      "recognizes cross-shard queries and operations become harder"
+    ],
+    "followUpConcepts": [
+      "Database Replication",
+      "Horizontal vs Vertical Partitioning"
+    ]
+  },
+  {
+    "topic": "Horizontal vs Vertical Partitioning",
+    "difficulty": "medium",
+    "concepts": [
+      "horizontal partitioning divides rows or documents",
+      "vertical partitioning separates columns or groups of fields",
+      "partitioning can reduce the amount of data handled by individual storage units",
+      "partition strategy should follow access patterns"
+    ],
+    "questionPatterns": [
+      "What's the difference between horizontal and vertical database partitioning?",
+      "Is sharding a form of horizontal or vertical partitioning?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes row-based and column-based separation",
+      "identifies sharding as commonly involving horizontal partitioning",
+      "connects partition strategy to access patterns"
+    ],
+    "followUpConcepts": [
+      "Database Sharding",
+      "Database Schema Design"
+    ]
   },
   {
     "topic": "Connection Pooling",
     "difficulty": "medium",
-    "concepts": ["reusing DB connections instead of opening one per request", "pool size tuning", "connection exhaustion under load"],
-    "questionPatterns": ["Why does opening a new database connection for every request hurt performance?", "What happens if your connection pool is too small under high traffic?"],
-    "evaluationCriteria": ["explains connection setup overhead being avoided by pooling", "understands requests queue or fail when the pool is exhausted", "shows awareness this is usually handled by the driver (e.g. Mongoose default pool)"],
-    "followUpConcepts": []
+    "concepts": [
+      "reuses established database connections",
+      "avoids creating a new connection for every request",
+      "pool size must be bounded",
+      "too many application instances can create excessive total database connections"
+    ],
+    "questionPatterns": [
+      "Why do backend applications use database connection pools?",
+      "Can increasing the database connection pool size indefinitely improve performance?"
+    ],
+    "evaluationCriteria": [
+      "connects pooling to connection reuse",
+      "understands connections consume database resources",
+      "recognizes total connection count across application instances matters"
+    ],
+    "followUpConcepts": [
+      "Database Scaling Bottlenecks",
+      "Query Optimization"
+    ]
   },
   {
-    "topic": "N+1 Query Problem",
+    "topic": "Database Caching",
     "difficulty": "medium",
-    "concepts": ["one query for a list, then one additional query per item", "solved via joins, populate with select, or batching", "performance impact at scale"],
-    "questionPatterns": ["What is the N+1 query problem and how would you fix it in a Mongoose-based API?", "How would you detect an N+1 problem in an existing codebase?"],
-    "evaluationCriteria": ["correctly explains the pattern (1 + N queries instead of 1-2)", "proposes a concrete fix (populate, batching, or a join)", "understands this scales badly as list size grows"],
-    "followUpConcepts": ["Joins vs Embedding and Referencing"]
+    "concepts": [
+      "frequently accessed query results can be cached",
+      "cache-aside is a common strategy",
+      "cache invalidation is a major challenge",
+      "TTL can limit stale data lifetime",
+      "not every query should be cached"
+    ],
+    "questionPatterns": [
+      "How would you reduce repeated database queries for frequently requested data?",
+      "Why is cache invalidation difficult?"
+    ],
+    "evaluationCriteria": [
+      "understands the cache-aside flow",
+      "recognizes stale-data risks",
+      "uses caching selectively for suitable access patterns"
+    ],
+    "followUpConcepts": [
+      "Query Optimization",
+      "Cache Consistency"
+    ]
   },
   {
-    "topic": "Database Migrations",
+    "topic": "Pagination Strategies",
+    "difficulty": "medium",
+    "concepts": [
+      "offset-based pagination uses skip and limit style semantics",
+      "cursor-based pagination uses a stable ordering key",
+      "large offsets can become inefficient",
+      "cursor pagination handles changing data more predictably for many feeds"
+    ],
+    "questionPatterns": [
+      "What's the difference between offset and cursor pagination?",
+      "Why can skip-based pagination become slow on very large datasets?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains both strategies",
+      "recognizes large offsets may require significant traversal or scanning",
+      "connects cursor pagination to stable indexed ordering"
+    ],
+    "followUpConcepts": [
+      "Database Indexing",
+      "Query Optimization"
+    ]
+  },
+  {
+    "topic": "Soft Delete vs Hard Delete",
     "difficulty": "easy",
-    "concepts": ["versioned schema changes", "why migrations matter more for SQL, less rigid for MongoDB", "handling schema evolution in a NoSQL app without formal migrations"],
-    "questionPatterns": ["How do you handle schema changes over time in a MongoDB-based app without a formal migration tool?", "Why are migrations more critical in a strict-schema SQL database?"],
-    "evaluationCriteria": ["understands schema flexibility in MongoDB reduces but doesn't eliminate the need for careful evolution", "proposes a reasonable strategy (default values, backfill scripts) for schema drift", "acknowledges SQL's rigidity necessitates formal migration tooling"],
-    "followUpConcepts": ["MongoDB Schema Design"]
+    "concepts": [
+      "hard delete physically removes data",
+      "soft delete marks data as deleted",
+      "soft deletion supports recovery and auditing",
+      "soft-deleted records must be consistently excluded from normal queries"
+    ],
+    "questionPatterns": [
+      "When would you use soft deletion instead of permanently deleting a record?",
+      "What problems can soft deletion introduce?"
+    ],
+    "evaluationCriteria": [
+      "understands recovery and auditing benefits",
+      "recognizes additional query and storage complexity",
+      "does not treat soft deletion as universally appropriate"
+    ],
+    "followUpConcepts": [
+      "Database Schema Design",
+      "Data Retention and Archival"
+    ]
   },
   {
-    "topic": "Caching Strategies (Redis)",
+    "topic": "Database Constraints",
     "difficulty": "medium",
-    "concepts": ["cache-aside pattern", "TTL-based expiration", "cache invalidation difficulty", "what data is a good caching candidate"],
-    "questionPatterns": ["What data in your app would be a good candidate for caching, and what wouldn't be?", "How do you avoid serving stale data from a cache?"],
-    "evaluationCriteria": ["identifies read-heavy, infrequently-changing data as good cache candidates", "mentions TTL or explicit invalidation on write as staleness mitigation", "shows awareness that cache invalidation is a genuinely hard problem"],
-    "followUpConcepts": ["Connection Pooling"]
-  },
-  {
-    "topic": "Query Optimization",
-    "difficulty": "medium",
-    "concepts": ["reading an execution plan (explain)", "identifying full collection/table scans", "adding indexes based on actual query patterns, not guesses"],
-    "questionPatterns": ["How would you diagnose why a MongoDB query is slow?", "What would you look for in an explain() output?"],
-    "evaluationCriteria": ["mentions using explain() or equivalent to inspect the query plan", "understands a full scan (COLLSCAN) is usually the red flag to look for", "proposes index changes based on actual query shape, not blind indexing"],
-    "followUpConcepts": ["Indexing Strategies"]
+    "concepts": [
+      "primary key constraints",
+      "foreign key constraints",
+      "unique constraints",
+      "not-null constraints",
+      "check constraints",
+      "database-level integrity complements application validation"
+    ],
+    "questionPatterns": [
+      "Why use database constraints if your backend already validates input?",
+      "What's the difference between a unique constraint and application-level duplicate checking?"
+    ],
+    "evaluationCriteria": [
+      "understands application validation alone cannot guarantee integrity under every concurrent path",
+      "recognizes constraints provide database-level guarantees",
+      "can identify common constraint types"
+    ],
+    "followUpConcepts": [
+      "Database Schema Design",
+      "ACID Transactions in Practice"
+    ]
   },
   {
     "topic": "Data Consistency Models",
     "difficulty": "hard",
-    "concepts": ["strong vs eventual consistency", "read-your-writes consistency", "tradeoffs for user-facing features (e.g. seeing your own comment immediately)"],
-    "questionPatterns": ["What's the difference between strong and eventual consistency, and where does it matter for user experience?", "Would eventual consistency be acceptable for a 'likes' counter but not for a bank balance? Why?"],
-    "evaluationCriteria": ["correctly defines strong vs eventual consistency", "gives a sensible example of where eventual consistency is acceptable vs not", "connects this back to CAP theorem tradeoffs"],
-    "followUpConcepts": ["CAP Theorem"]
+    "concepts": [
+      "strong consistency",
+      "eventual consistency",
+      "read-after-write consistency",
+      "consistency requirements depend on product behavior",
+      "distributed replicas can expose temporary differences"
+    ],
+    "questionPatterns": [
+      "What's the difference between strong and eventual consistency?",
+      "Would eventual consistency be acceptable for every type of application data?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes immediate visibility from convergence over time",
+      "uses product requirements to justify consistency choices",
+      "recognizes financial and security-sensitive operations may require stronger guarantees"
+    ],
+    "followUpConcepts": [
+      "Read Replicas and Replication Lag",
+      "Database Replication"
+    ]
+  },
+  {
+    "topic": "Database Scaling Bottlenecks",
+    "difficulty": "hard",
+    "concepts": [
+      "slow or unindexed queries",
+      "connection exhaustion",
+      "lock contention",
+      "hot rows or partitions",
+      "insufficient compute or memory",
+      "scaling should follow measured bottlenecks"
+    ],
+    "questionPatterns": [
+      "Your application becomes slow under heavy traffic and the database is the bottleneck. What would you investigate first?",
+      "Why is sharding usually not the first solution to a database performance problem?"
+    ],
+    "evaluationCriteria": [
+      "starts by identifying the actual bottleneck",
+      "considers queries, indexes, connections and contention before major architectural changes",
+      "treats sharding as a complex scaling technique rather than a default optimization"
+    ],
+    "followUpConcepts": [
+      "Query Optimization",
+      "Connection Pooling",
+      "Database Sharding"
+    ]
   }
 ]

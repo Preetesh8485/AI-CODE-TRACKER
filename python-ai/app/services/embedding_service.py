@@ -1,47 +1,37 @@
-import os
-from dotenv import load_dotenv
-from google import genai
-from google.genai import types
-load_dotenv()
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-EMBEDDING_MODEL= "gemini-embedding-001"
-DEFAULT_DIMENSIONALITY = 768
-MAX_BATCH_SIZE = 100
-def embed_text(text: str, output_dimensionality: int | None = DEFAULT_DIMENSIONALITY) -> list[float]:
+from sentence_transformers import SentenceTransformer
+
+EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+
+_model: SentenceTransformer | None = None
+
+
+def _get_model() -> SentenceTransformer:
+    global _model
+    if _model is None:
+        _model = SentenceTransformer(EMBEDDING_MODEL) 
+    return _model
+
+
+def embed_text(text: str) -> list[float]:
     if not text or not text.strip():
         raise ValueError("Cannot embed empty text.")
-    config = (
-        types.EmbedContentConfig(output_dimensionality=output_dimensionality)
-        if output_dimensionality
-        else None
-    )
-    response = client.models.embed_content(
-        model=EMBEDDING_MODEL,
-        contents=text,
-        config=config,
-    )
-    return response.embeddings[0].values
-def embed_batch( texts: list[str], output_dimensionality: int | None = DEFAULT_DIMENSIONALITY) -> list[list[float]]:
+    model = _get_model()
+    embedding = model.encode(text, normalize_embeddings=True)
+    return embedding.tolist()
+
+
+def embed_batch(texts: list[str]) -> list[list[float]]:
     if not texts:
         return []
- 
-    config = (
-        types.EmbedContentConfig(output_dimensionality=output_dimensionality)
-        if output_dimensionality
-        else None
+    model = _get_model()
+    embeddings = model.encode(
+        texts,
+        normalize_embeddings=True,
+        batch_size=32,
+        show_progress_bar=False,
     )
- 
-    all_embeddings: list[list[float]] = []
-    for i in range(0, len(texts), MAX_BATCH_SIZE):
-        batch = texts[i : i + MAX_BATCH_SIZE]
-        response = client.models.embed_content(
-            model=EMBEDDING_MODEL,
-            contents=batch,
-            config=config,
-        )
-        all_embeddings.extend([e.values for e in response.embeddings])
- 
-    return all_embeddings
+    return embeddings.tolist()
+
 
 def build_embedding_text(knowledge_unit: dict) -> str:
     parts = [knowledge_unit.get("topic", "")]

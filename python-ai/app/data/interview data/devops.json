@@ -1,0 +1,730 @@
+[
+  {
+    "topic": "Docker Containers vs Virtual Machines",
+    "difficulty": "easy",
+    "concepts": [
+      "containers share the host operating system kernel",
+      "virtual machines include a complete guest operating system",
+      "containers are generally lighter and faster to start",
+      "isolation and portability differences"
+    ],
+    "questionPatterns": [
+      "What's the difference between a Docker container and a virtual machine?",
+      "Why would you containerize an application instead of deploying it directly on a server?"
+    ],
+    "evaluationCriteria": [
+      "explains that containers share the host kernel while virtual machines run separate operating systems",
+      "connects containers to portability and consistent environments",
+      "understands containers are isolated processes rather than lightweight virtual machines"
+    ],
+    "followUpConcepts": [
+      "Docker Images and Containers",
+      "Dockerizing a Full Stack Application"
+    ]
+  },
+  {
+    "topic": "Docker Images and Containers",
+    "difficulty": "easy",
+    "concepts": [
+      "image as immutable application template",
+      "container as running instance of an image",
+      "image layers and caching",
+      "container lifecycle"
+    ],
+    "questionPatterns": [
+      "What's the difference between a Docker image and a container?",
+      "Can multiple containers run from the same Docker image?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes an image from a running container",
+      "understands multiple containers can be created from one image",
+      "shows basic understanding of layered images"
+    ],
+    "followUpConcepts": [
+      "Writing an Efficient Dockerfile",
+      "Docker Volumes and Persistent Data"
+    ]
+  },
+  {
+    "topic": "Writing an Efficient Dockerfile",
+    "difficulty": "medium",
+    "concepts": [
+      "FROM, WORKDIR, COPY, RUN, EXPOSE and CMD instructions",
+      "Docker layer caching",
+      "copying dependency files before application source",
+      "using .dockerignore",
+      "small base images"
+    ],
+    "questionPatterns": [
+      "Walk me through how you would write a Dockerfile for a Node.js application.",
+      "Why would you copy package.json and install dependencies before copying the rest of your source code?"
+    ],
+    "evaluationCriteria": [
+      "understands the basic Dockerfile build sequence",
+      "explains how dependency-layer caching speeds up rebuilds",
+      "mentions excluding unnecessary files with .dockerignore",
+      "avoids installing unnecessary development dependencies in production when appropriate"
+    ],
+    "followUpConcepts": [
+      "Docker Images and Containers",
+      "Multi-stage Docker Builds"
+    ]
+  },
+  {
+    "topic": "Multi-stage Docker Builds",
+    "difficulty": "medium",
+    "concepts": [
+      "separate build and runtime stages",
+      "copying only required build artifacts into the final image",
+      "reducing production image size",
+      "keeping build tools out of runtime images"
+    ],
+    "questionPatterns": [
+      "What is a multi-stage Docker build and why would you use one?",
+      "How would you reduce the size of a Docker image for a React application?"
+    ],
+    "evaluationCriteria": [
+      "explains separation between build and runtime stages",
+      "connects multi-stage builds to smaller production images",
+      "understands the final image does not need every build dependency"
+    ],
+    "followUpConcepts": [
+      "Writing an Efficient Dockerfile",
+      "Dockerizing a Full Stack Application"
+    ]
+  },
+  {
+    "topic": "Docker Volumes and Persistent Data",
+    "difficulty": "medium",
+    "concepts": [
+      "container filesystem is disposable",
+      "volumes persist data independently of container lifecycle",
+      "bind mounts versus named volumes",
+      "database persistence use cases"
+    ],
+    "questionPatterns": [
+      "What happens to data stored inside a container when the container is removed?",
+      "Why would you use a Docker volume for a database?"
+    ],
+    "evaluationCriteria": [
+      "understands container-local data can disappear with container removal",
+      "explains volumes as persistent storage outside the container lifecycle",
+      "can distinguish named volumes from bind mounts conceptually"
+    ],
+    "followUpConcepts": [
+      "Docker Images and Containers",
+      "Docker Compose"
+    ]
+  },
+  {
+    "topic": "Docker Networking",
+    "difficulty": "medium",
+    "concepts": [
+      "containers communicating through Docker networks",
+      "service-name based DNS resolution",
+      "port publishing between host and container",
+      "localhost inside a container refers to that container"
+    ],
+    "questionPatterns": [
+      "Why can't a Dockerized Node.js application connect to MongoDB using localhost when MongoDB is running in another container?",
+      "What's the difference between exposing a port and publishing a port?"
+    ],
+    "evaluationCriteria": [
+      "understands localhost refers to the current container",
+      "uses container or service names for communication on a shared network",
+      "understands host-to-container port mapping at a basic level"
+    ],
+    "followUpConcepts": [
+      "Docker Compose",
+      "Dockerizing a Full Stack Application"
+    ]
+  },
+  {
+    "topic": "Docker Compose",
+    "difficulty": "medium",
+    "concepts": [
+      "defining multi-container applications",
+      "services, networks and volumes",
+      "environment configuration",
+      "starting dependent application components together"
+    ],
+    "questionPatterns": [
+      "How would Docker Compose help you run a React, Node.js, Python and database application locally?",
+      "What's the difference between a Dockerfile and a Docker Compose file?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes building an individual image from orchestrating multiple services",
+      "understands services can communicate over shared networks",
+      "recognizes volumes and environment configuration as common Compose concerns"
+    ],
+    "followUpConcepts": [
+      "Docker Networking",
+      "Dockerizing a Full Stack Application"
+    ]
+  },
+  {
+    "topic": "Dockerizing a Full Stack Application",
+    "difficulty": "medium",
+    "concepts": [
+      "separate containers for independently deployed services",
+      "Node.js backend and Python AI service",
+      "service networking",
+      "environment-specific configuration",
+      "persistent external databases"
+    ],
+    "questionPatterns": [
+      "How would you containerize your Node.js backend and Python AI service?",
+      "Would you put your React frontend, Node backend and Python service inside one container?"
+    ],
+    "evaluationCriteria": [
+      "prefers independently manageable containers for separate services",
+      "understands inter-service networking",
+      "keeps configuration outside application images",
+      "does not assume production databases must run inside the same container"
+    ],
+    "followUpConcepts": [
+      "Docker Compose",
+      "Microservices Deployment"
+    ]
+  },
+  {
+    "topic": "CI vs Continuous Delivery vs Continuous Deployment",
+    "difficulty": "easy",
+    "concepts": [
+      "continuous integration automatically validates code changes",
+      "continuous delivery keeps software ready for deployment",
+      "continuous deployment automatically releases validated changes",
+      "automated build and test pipelines"
+    ],
+    "questionPatterns": [
+      "What's the difference between continuous integration and continuous deployment?",
+      "What should happen automatically when a developer opens or merges a pull request?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains continuous integration as frequent integration with automated validation",
+      "distinguishes delivery from fully automatic deployment",
+      "mentions automated testing or build verification"
+    ],
+    "followUpConcepts": [
+      "CI/CD Pipeline Design",
+      "GitHub Actions"
+    ]
+  },
+  {
+    "topic": "CI/CD Pipeline Design",
+    "difficulty": "medium",
+    "concepts": [
+      "install dependencies",
+      "lint and static analysis",
+      "automated tests",
+      "build artifacts or container images",
+      "deployment stages",
+      "failure stops promotion"
+    ],
+    "questionPatterns": [
+      "Design a basic CI/CD pipeline for your MERN application.",
+      "What steps should happen before code is automatically deployed to production?"
+    ],
+    "evaluationCriteria": [
+      "provides a logical pipeline sequence",
+      "includes automated validation before deployment",
+      "understands a failed stage should prevent deployment",
+      "distinguishes build artifacts from source code"
+    ],
+    "followUpConcepts": [
+      "GitHub Actions",
+      "Deployment Strategies"
+    ]
+  },
+  {
+    "topic": "GitHub Actions",
+    "difficulty": "medium",
+    "concepts": [
+      "workflow YAML files",
+      "events and triggers",
+      "jobs, steps and runners",
+      "repository secrets",
+      "automating testing, building and deployment"
+    ],
+    "questionPatterns": [
+      "How would you create a GitHub Actions workflow that tests your Node.js application on every pull request?",
+      "Where would you store deployment credentials used by a GitHub Actions workflow?"
+    ],
+    "evaluationCriteria": [
+      "understands workflows are triggered by repository events",
+      "correctly distinguishes jobs and steps at a basic level",
+      "uses repository or environment secrets instead of hardcoding credentials"
+    ],
+    "followUpConcepts": [
+      "CI/CD Pipeline Design",
+      "Secrets Management"
+    ]
+  },
+  {
+    "topic": "Environment Variables and Secrets Management",
+    "difficulty": "easy",
+    "concepts": [
+      "configuration separated from application code",
+      "secrets must not be committed to source control",
+      "different values for development, staging and production",
+      "secret managers and deployment platform environment configuration"
+    ],
+    "questionPatterns": [
+      "How would you manage your MongoDB URI and API keys in production?",
+      "Why shouldn't a .env file containing production secrets be committed to Git?"
+    ],
+    "evaluationCriteria": [
+      "keeps credentials outside source code",
+      "understands different environments require different configuration",
+      "mentions deployment secrets or secret-management systems for production"
+    ],
+    "followUpConcepts": [
+      "GitHub Actions",
+      "Configuration Management"
+    ]
+  },
+  {
+    "topic": "Development Staging and Production Environments",
+    "difficulty": "easy",
+    "concepts": [
+      "development for local iteration",
+      "staging for production-like validation",
+      "production serving real users",
+      "separate configuration and credentials"
+    ],
+    "questionPatterns": [
+      "Why would you need a staging environment instead of deploying directly from development to production?",
+      "Should development and production use the same database?"
+    ],
+    "evaluationCriteria": [
+      "understands staging reduces deployment risk",
+      "keeps production data and credentials appropriately separated",
+      "recognizes configuration differences across environments"
+    ],
+    "followUpConcepts": [
+      "CI/CD Pipeline Design",
+      "Deployment Strategies"
+    ]
+  },
+  {
+    "topic": "Deployment Strategies",
+    "difficulty": "hard",
+    "concepts": [
+      "rolling deployment",
+      "blue-green deployment",
+      "canary deployment",
+      "downtime and rollback tradeoffs"
+    ],
+    "questionPatterns": [
+      "What's the difference between blue-green and canary deployment?",
+      "How would you deploy a new version while minimizing the risk of affecting every user?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains at least two deployment strategies",
+      "connects canary deployment to gradually exposing users",
+      "understands blue-green deployment enables fast environment switching and rollback"
+    ],
+    "followUpConcepts": [
+      "Rollback Strategies",
+      "Zero Downtime Deployment"
+    ]
+  },
+  {
+    "topic": "Rollback Strategies",
+    "difficulty": "medium",
+    "concepts": [
+      "keeping previous deployable versions",
+      "rolling back application releases",
+      "database migration compatibility",
+      "feature flags as risk reduction"
+    ],
+    "questionPatterns": [
+      "What would you do if a production deployment introduced a critical bug?",
+      "Why can rolling back application code be difficult after a database schema change?"
+    ],
+    "evaluationCriteria": [
+      "prioritizes restoring a known working version",
+      "understands database changes can make rollback difficult",
+      "recognizes backward-compatible migrations or feature flags as useful strategies"
+    ],
+    "followUpConcepts": [
+      "Deployment Strategies",
+      "Database Migrations in Deployment"
+    ]
+  },
+  {
+    "topic": "Reverse Proxy and Nginx",
+    "difficulty": "medium",
+    "concepts": [
+      "reverse proxy sits in front of application servers",
+      "TLS termination",
+      "request routing",
+      "static file serving",
+      "load balancing capabilities"
+    ],
+    "questionPatterns": [
+      "Why would you put Nginx in front of a Node.js application?",
+      "What's the difference between a forward proxy and a reverse proxy?"
+    ],
+    "evaluationCriteria": [
+      "understands clients communicate with the reverse proxy rather than directly with backend instances",
+      "mentions routing, TLS termination, static assets or load balancing",
+      "correctly distinguishes the direction and purpose of forward and reverse proxies"
+    ],
+    "followUpConcepts": [
+      "Load Balancing",
+      "TLS Termination"
+    ]
+  },
+  {
+    "topic": "Health Checks and Readiness",
+    "difficulty": "medium",
+    "concepts": [
+      "liveness indicates whether the process is functioning",
+      "readiness indicates whether the instance can receive traffic",
+      "load balancers remove unhealthy instances",
+      "health endpoints should reflect meaningful dependencies carefully"
+    ],
+    "questionPatterns": [
+      "Why would your deployed backend expose a /health endpoint?",
+      "What's the difference between a liveness check and a readiness check?"
+    ],
+    "evaluationCriteria": [
+      "connects health checks to automated traffic routing and recovery",
+      "distinguishes alive from ready to serve traffic",
+      "understands an application may be alive but temporarily not ready"
+    ],
+    "followUpConcepts": [
+      "Kubernetes Probes",
+      "Monitoring and Observability"
+    ]
+  },
+  {
+    "topic": "Logging in Production",
+    "difficulty": "medium",
+    "concepts": [
+      "structured logging",
+      "log levels",
+      "centralized log aggregation",
+      "correlation or request IDs",
+      "avoiding sensitive information in logs"
+    ],
+    "questionPatterns": [
+      "How would you debug an error that only happens in production?",
+      "Why are structured logs better than scattered console.log statements?"
+    ],
+    "evaluationCriteria": [
+      "uses logs and request context systematically",
+      "understands centralized logging across multiple instances",
+      "mentions log levels or structured fields",
+      "avoids logging credentials or sensitive user information"
+    ],
+    "followUpConcepts": [
+      "Monitoring and Observability",
+      "Production Incident Response"
+    ]
+  },
+  {
+    "topic": "Monitoring and Observability",
+    "difficulty": "medium",
+    "concepts": [
+      "metrics, logs and traces",
+      "latency, traffic, errors and saturation",
+      "alerting based on meaningful signals",
+      "observability for distributed applications"
+    ],
+    "questionPatterns": [
+      "What would you monitor after deploying a backend application?",
+      "What's the difference between logs, metrics and traces?"
+    ],
+    "evaluationCriteria": [
+      "identifies meaningful application and infrastructure signals",
+      "correctly distinguishes logs, metrics and traces",
+      "understands monitoring should detect user-impacting problems"
+    ],
+    "followUpConcepts": [
+      "Logging in Production",
+      "Production Incident Response"
+    ]
+  },
+  {
+    "topic": "Production Incident Response",
+    "difficulty": "hard",
+    "concepts": [
+      "detect and assess impact",
+      "mitigate before performing deep root cause analysis",
+      "rollback or disable problematic functionality",
+      "post-incident root cause analysis",
+      "preventing recurrence"
+    ],
+    "questionPatterns": [
+      "Your error rate suddenly increases after deployment. Walk me through what you would do.",
+      "What's the difference between incident mitigation and root cause analysis?"
+    ],
+    "evaluationCriteria": [
+      "prioritizes reducing user impact",
+      "uses monitoring and logs to investigate systematically",
+      "considers rollback when a recent deployment is responsible",
+      "follows mitigation with root cause analysis and prevention"
+    ],
+    "followUpConcepts": [
+      "Rollback Strategies",
+      "Monitoring and Observability"
+    ]
+  },
+  {
+    "topic": "Kubernetes Pods Deployments and Services",
+    "difficulty": "medium",
+    "concepts": [
+      "pod as smallest deployable Kubernetes unit",
+      "deployment manages desired replicas and rolling updates",
+      "service provides stable network access to pods",
+      "pods are replaceable and ephemeral"
+    ],
+    "questionPatterns": [
+      "What's the difference between a Pod, Deployment and Service in Kubernetes?",
+      "Why don't applications normally connect directly to individual Pod IP addresses?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains the basic responsibility of each resource",
+      "understands pods can be recreated with different addresses",
+      "connects Services to stable discovery and traffic distribution"
+    ],
+    "followUpConcepts": [
+      "Kubernetes Scaling",
+      "Kubernetes Probes"
+    ]
+  },
+  {
+    "topic": "Kubernetes Scaling",
+    "difficulty": "medium",
+    "concepts": [
+      "replicas",
+      "horizontal pod autoscaling",
+      "CPU and custom metrics",
+      "stateless application design"
+    ],
+    "questionPatterns": [
+      "How would Kubernetes scale your backend when traffic increases?",
+      "Why is a stateless backend easier to scale horizontally?"
+    ],
+    "evaluationCriteria": [
+      "understands increasing replicas creates additional application instances",
+      "connects autoscaling to observed metrics",
+      "understands local in-memory state complicates horizontal scaling"
+    ],
+    "followUpConcepts": [
+      "Kubernetes Pods Deployments and Services",
+      "Horizontal vs Vertical Scaling"
+    ]
+  },
+  {
+    "topic": "Kubernetes Probes",
+    "difficulty": "medium",
+    "concepts": [
+      "liveness probes",
+      "readiness probes",
+      "startup probes",
+      "automatic restart and traffic management"
+    ],
+    "questionPatterns": [
+      "What happens if a Kubernetes readiness probe starts failing?",
+      "When would you need a startup probe?"
+    ],
+    "evaluationCriteria": [
+      "understands failed readiness removes a pod from serving traffic",
+      "understands liveness failures can trigger restarts",
+      "connects startup probes to slow-starting applications"
+    ],
+    "followUpConcepts": [
+      "Health Checks and Readiness",
+      "Kubernetes Scaling"
+    ]
+  },
+  {
+    "topic": "Kubernetes ConfigMaps and Secrets",
+    "difficulty": "medium",
+    "concepts": [
+      "ConfigMaps for non-sensitive configuration",
+      "Secrets for sensitive configuration",
+      "injecting configuration through environment variables or mounted files",
+      "keeping configuration separate from container images"
+    ],
+    "questionPatterns": [
+      "What's the difference between a Kubernetes ConfigMap and Secret?",
+      "How would you provide a database connection string to a Kubernetes application?"
+    ],
+    "evaluationCriteria": [
+      "correctly separates normal configuration from sensitive values",
+      "understands configuration should not be baked directly into images",
+      "shows awareness that Kubernetes Secrets still require appropriate cluster security"
+    ],
+    "followUpConcepts": [
+      "Environment Variables and Secrets Management"
+    ]
+  },
+  {
+    "topic": "Infrastructure as Code",
+    "difficulty": "medium",
+    "concepts": [
+      "infrastructure defined declaratively in version-controlled files",
+      "repeatable environment creation",
+      "reducing manual configuration drift",
+      "tools such as Terraform"
+    ],
+    "questionPatterns": [
+      "What problem does Infrastructure as Code solve?",
+      "Why would defining cloud infrastructure in code be better than manually creating resources from a dashboard?"
+    ],
+    "evaluationCriteria": [
+      "connects infrastructure as code to repeatability",
+      "mentions version control and reviewability",
+      "understands it reduces manual environment differences and configuration drift"
+    ],
+    "followUpConcepts": [
+      "Configuration Drift",
+      "Cloud Deployment Fundamentals"
+    ]
+  },
+  {
+    "topic": "Cloud Deployment Fundamentals",
+    "difficulty": "easy",
+    "concepts": [
+      "compute for running applications",
+      "managed databases",
+      "object storage",
+      "DNS and networking",
+      "managed services versus self-hosting"
+    ],
+    "questionPatterns": [
+      "What cloud resources would you need to deploy a typical full-stack application?",
+      "What's the benefit of using a managed database instead of hosting the database yourself?"
+    ],
+    "evaluationCriteria": [
+      "identifies the main infrastructure categories required by an application",
+      "understands managed services reduce operational responsibility",
+      "recognizes managed services introduce cost and platform tradeoffs"
+    ],
+    "followUpConcepts": [
+      "Cloud Service Models",
+      "High Availability"
+    ]
+  },
+  {
+    "topic": "Cloud Service Models",
+    "difficulty": "easy",
+    "concepts": [
+      "Infrastructure as a Service",
+      "Platform as a Service",
+      "Software as a Service",
+      "different levels of operational responsibility"
+    ],
+    "questionPatterns": [
+      "What's the difference between IaaS, PaaS and SaaS?",
+      "Would a platform like Render be closer to IaaS or PaaS, and why?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains the three service models",
+      "connects them to different levels of infrastructure management",
+      "can classify common deployment approaches approximately"
+    ],
+    "followUpConcepts": [
+      "Cloud Deployment Fundamentals"
+    ]
+  },
+  {
+    "topic": "High Availability and Fault Tolerance",
+    "difficulty": "hard",
+    "concepts": [
+      "avoiding single points of failure",
+      "multiple application instances",
+      "health checks and automatic failover",
+      "database replication",
+      "multi-zone deployment"
+    ],
+    "questionPatterns": [
+      "How would you design your deployment so one server crashing doesn't take down the entire application?",
+      "What's the difference between high availability and simply having backups?"
+    ],
+    "evaluationCriteria": [
+      "identifies redundancy as essential",
+      "uses health checks and traffic rerouting",
+      "understands backups protect data but do not automatically provide availability",
+      "recognizes databases and other dependencies can also become single points of failure"
+    ],
+    "followUpConcepts": [
+      "Load Balancing",
+      "Disaster Recovery and Backups"
+    ]
+  },
+  {
+    "topic": "Disaster Recovery and Backups",
+    "difficulty": "medium",
+    "concepts": [
+      "regular automated backups",
+      "restore testing",
+      "recovery point objective",
+      "recovery time objective",
+      "backups stored independently from primary infrastructure"
+    ],
+    "questionPatterns": [
+      "Your production database is accidentally deleted. What should your recovery plan look like?",
+      "What's the difference between RPO and RTO?"
+    ],
+    "evaluationCriteria": [
+      "understands backups must be created before an incident",
+      "recognizes untested backups may not provide reliable recovery",
+      "correctly distinguishes acceptable data loss from acceptable recovery time"
+    ],
+    "followUpConcepts": [
+      "High Availability and Fault Tolerance"
+    ]
+  },
+  {
+    "topic": "Zero Downtime Deployment",
+    "difficulty": "hard",
+    "concepts": [
+      "running old and new versions simultaneously during transition",
+      "readiness checks before receiving traffic",
+      "backward-compatible database migrations",
+      "graceful shutdown and connection draining"
+    ],
+    "questionPatterns": [
+      "How would you deploy a new backend version without interrupting active users?",
+      "Why can a database migration break zero-downtime deployment even if your application servers are updated gradually?"
+    ],
+    "evaluationCriteria": [
+      "understands new instances should become ready before old instances are removed",
+      "mentions graceful shutdown or connection draining",
+      "recognizes database compatibility between simultaneously running application versions"
+    ],
+    "followUpConcepts": [
+      "Deployment Strategies",
+      "Rollback Strategies"
+    ]
+  },
+  {
+    "topic": "Graceful Shutdown",
+    "difficulty": "medium",
+    "concepts": [
+      "stop accepting new requests",
+      "finish in-flight requests",
+      "close database connections",
+      "handle termination signals",
+      "important during container replacement and deployment"
+    ],
+    "questionPatterns": [
+      "What should a Node.js application do when it receives a termination signal during deployment?",
+      "Why shouldn't a container simply terminate immediately while requests are still being processed?"
+    ],
+    "evaluationCriteria": [
+      "understands in-flight requests should be allowed to finish when possible",
+      "mentions closing external resources cleanly",
+      "connects graceful shutdown to deployments and orchestration"
+    ],
+    "followUpConcepts": [
+      "Zero Downtime Deployment",
+      "Kubernetes Pods Deployments and Services"
+    ]
+  }
+]

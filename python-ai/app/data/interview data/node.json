@@ -1,122 +1,1228 @@
 [
   {
-    "topic": "Node.js Event Loop (libuv)",
+    "topic": "Node.js Runtime Architecture",
     "difficulty": "medium",
-    "concepts": ["single-threaded JS execution with a background thread pool", "phases: timers, poll, check, close callbacks", "how libuv offloads I/O", "difference from browser event loop"],
-    "questionPatterns": ["How does Node.js handle thousands of concurrent connections on a single thread?", "What role does libuv play in Node's architecture?"],
-    "evaluationCriteria": ["correctly explains non-blocking I/O offloaded to libuv's thread pool", "understands JS execution itself stays single-threaded", "doesn't confuse this with multi-threading"],
-    "followUpConcepts": ["Node.js Non-blocking IO", "Clustering and Worker Threads"]
+    "concepts": [
+      "Node.js executes JavaScript using the V8 engine",
+      "Node.js provides runtime APIs for filesystem networking processes and other server-side operations",
+      "JavaScript execution is primarily single-threaded",
+      "Node.js can handle many concurrent operations through asynchronous I/O",
+      "libuv provides event loop and asynchronous I/O infrastructure"
+    ],
+    "questionPatterns": [
+      "How does Node.js work internally?",
+      "If JavaScript runs on one main thread, how can Node.js handle thousands of concurrent requests?"
+    ],
+    "evaluationCriteria": [
+      "mentions V8 for JavaScript execution",
+      "explains asynchronous non-blocking I/O",
+      "understands that single-threaded JavaScript execution does not mean the entire Node.js runtime uses only one thread",
+      "mentions the role of libuv"
+    ],
+    "followUpConcepts": [
+      "Node.js Event Loop",
+      "libuv and Thread Pool"
+    ]
   },
   {
-    "topic": "Node.js Non-blocking IO",
-    "difficulty": "medium",
-    "concepts": ["callbacks/promises for async operations", "why blocking the event loop is dangerous", "CPU-bound vs I/O-bound task handling"],
-    "questionPatterns": ["Why is a synchronous, CPU-heavy loop dangerous in a Node.js API?", "How would you handle a CPU-intensive task without blocking the server?"],
-    "evaluationCriteria": ["explains blocking the event loop stalls ALL requests, not just one", "proposes offloading (worker threads, separate service, queue) for CPU-bound work", "distinguishes I/O-bound (fine as async) from CPU-bound (needs offloading)"],
-    "followUpConcepts": ["Node.js Event Loop (libuv)", "Clustering and Worker Threads"]
+    "topic": "Node.js Event Loop",
+    "difficulty": "hard",
+    "concepts": [
+      "event loop coordinates asynchronous callback execution",
+      "event loop progresses through multiple phases",
+      "timers phase handles eligible timer callbacks",
+      "poll phase processes many I/O callbacks",
+      "check phase handles setImmediate callbacks",
+      "microtasks are processed at specific points between callback execution"
+    ],
+    "questionPatterns": [
+      "Explain the Node.js event loop.",
+      "What are the major phases of the Node.js event loop?"
+    ],
+    "evaluationCriteria": [
+      "understands the event loop coordinates asynchronous work",
+      "names important phases such as timers poll and check",
+      "does not claim asynchronous operations all execute directly on the JavaScript thread"
+    ],
+    "followUpConcepts": [
+      "Node.js Runtime Architecture",
+      "process.nextTick vs Promise Microtasks"
+    ]
   },
   {
-    "topic": "Middleware in Express",
+    "topic": "libuv and Thread Pool",
+    "difficulty": "hard",
+    "concepts": [
+      "libuv provides cross-platform asynchronous I/O support",
+      "some operations use operating system asynchronous facilities",
+      "some operations are delegated to the libuv thread pool",
+      "filesystem operations and some crypto and DNS operations can use the thread pool",
+      "thread pool saturation can affect latency"
+    ],
+    "questionPatterns": [
+      "What is libuv and why does Node.js use it?",
+      "Does every asynchronous operation in Node.js use the thread pool?"
+    ],
+    "evaluationCriteria": [
+      "understands libuv supports the Node.js asynchronous runtime",
+      "does not claim every asynchronous operation uses the thread pool",
+      "can name common thread-pool workloads",
+      "understands thread-pool saturation can become a bottleneck"
+    ],
+    "followUpConcepts": [
+      "Node.js Event Loop",
+      "CPU Bound vs IO Bound Work"
+    ]
+  },
+  {
+    "topic": "CPU Bound vs IO Bound Work",
+    "difficulty": "medium",
+    "concepts": [
+      "I/O-bound work spends significant time waiting for external operations",
+      "CPU-bound work spends significant time performing computation",
+      "Node.js asynchronous architecture is effective for many I/O-heavy workloads",
+      "CPU-intensive JavaScript can block the event loop",
+      "worker threads or external services can handle heavy computation"
+    ],
+    "questionPatterns": [
+      "Why is Node.js considered good for I/O-heavy applications?",
+      "What happens if you perform a large CPU-intensive calculation inside an API request handler?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes CPU-bound and I/O-bound work",
+      "understands synchronous CPU-heavy work blocks JavaScript execution",
+      "suggests appropriate offloading approaches"
+    ],
+    "followUpConcepts": [
+      "Worker Threads",
+      "Event Loop Blocking"
+    ]
+  },
+  {
+    "topic": "Event Loop Blocking",
+    "difficulty": "hard",
+    "concepts": [
+      "long-running synchronous JavaScript prevents other callbacks from executing",
+      "large synchronous loops can block request processing",
+      "synchronous filesystem operations can block the main thread",
+      "event loop lag increases application latency",
+      "CPU-heavy work should be broken up or moved elsewhere when appropriate"
+    ],
+    "questionPatterns": [
+      "What does it mean to block the Node.js event loop?",
+      "Why should synchronous filesystem APIs generally be avoided inside request handlers?"
+    ],
+    "evaluationCriteria": [
+      "understands blocking prevents other JavaScript callbacks from progressing",
+      "identifies CPU-heavy and synchronous operations as common causes",
+      "connects blocking to increased latency across concurrent requests"
+    ],
+    "followUpConcepts": [
+      "CPU Bound vs IO Bound Work",
+      "Worker Threads"
+    ]
+  },
+  {
+    "topic": "process.nextTick vs Promise Microtasks",
+    "difficulty": "hard",
+    "concepts": [
+      "process.nextTick uses a Node.js-specific next-tick queue",
+      "Promise callbacks use the microtask queue",
+      "nextTick callbacks are processed before regular Promise microtasks in common Node.js execution checkpoints",
+      "excessive recursive nextTick usage can delay event loop progress"
+    ],
+    "questionPatterns": [
+      "What's the difference between process.nextTick and Promise.resolve().then()?",
+      "Why can recursively scheduling process.nextTick cause problems?"
+    ],
+    "evaluationCriteria": [
+      "distinguishes the next-tick queue from Promise microtasks",
+      "understands nextTick callbacks receive very high scheduling priority",
+      "connects excessive nextTick scheduling to event-loop starvation"
+    ],
+    "followUpConcepts": [
+      "Node.js Event Loop",
+      "setImmediate vs setTimeout"
+    ]
+  },
+  {
+    "topic": "setImmediate vs setTimeout",
+    "difficulty": "hard",
+    "concepts": [
+      "setTimeout schedules a callback after a minimum delay threshold",
+      "setImmediate schedules execution in the check phase",
+      "execution order can depend on the context in which they are scheduled",
+      "neither should be treated as universally executing first"
+    ],
+    "questionPatterns": [
+      "What's the difference between setImmediate and setTimeout with zero delay?",
+      "Which executes first: setImmediate or setTimeout?"
+    ],
+    "evaluationCriteria": [
+      "does not claim one always executes first",
+      "connects setImmediate to the check phase",
+      "understands timers execute after their threshold becomes eligible"
+    ],
+    "followUpConcepts": [
+      "Node.js Event Loop",
+      "process.nextTick vs Promise Microtasks"
+    ]
+  },
+  {
+    "topic": "CommonJS vs ES Modules in Node.js",
+    "difficulty": "medium",
+    "concepts": [
+      "CommonJS uses require and module.exports",
+      "ES modules use import and export",
+      "package configuration and file extensions can determine module interpretation",
+      "ES modules support static module structure",
+      "the two systems have interoperability differences"
+    ],
+    "questionPatterns": [
+      "What's the difference between CommonJS and ES modules in Node.js?",
+      "Why might require not work inside an ES module?"
+    ],
+    "evaluationCriteria": [
+      "correctly identifies both module systems",
+      "understands module mode affects available syntax and globals",
+      "recognizes interoperability requires deliberate handling"
+    ],
+    "followUpConcepts": [
+      "Node.js Module Resolution",
+      "package.json"
+    ]
+  },
+  {
+    "topic": "Node.js Module Caching",
+    "difficulty": "medium",
+    "concepts": [
+      "loaded CommonJS modules are generally cached after first evaluation",
+      "subsequent require calls can reuse cached exports",
+      "module-level state can therefore behave like shared process state",
+      "cache behavior depends on resolved module identity"
+    ],
+    "questionPatterns": [
+      "Does Node.js execute a required module every time you call require?",
+      "Why can module-level variables retain state across multiple imports?"
+    ],
+    "evaluationCriteria": [
+      "understands modules are generally evaluated once per resolved cached module",
+      "connects caching to shared module state",
+      "recognizes caching is process-local"
+    ],
+    "followUpConcepts": [
+      "CommonJS vs ES Modules in Node.js",
+      "Node.js Module Resolution"
+    ]
+  },
+  {
+    "topic": "package.json and Dependency Management",
     "difficulty": "easy",
-    "concepts": ["request-response cycle interception", "next() to pass control", "error-handling middleware signature", "middleware ordering matters"],
-    "questionPatterns": ["Walk me through how you built authentication middleware in your project.", "Why does middleware order matter in Express?"],
-    "evaluationCriteria": ["explains next() and the request/response pipeline correctly", "references real middleware they've written (auth, validation)", "understands error-handling middleware needs 4 arguments"],
-    "followUpConcepts": ["JWT Authentication Flow", "Rate Limiting"]
+    "concepts": [
+      "package.json stores project metadata scripts and dependency declarations",
+      "dependencies are required by the application at runtime",
+      "devDependencies are generally development-time dependencies",
+      "package-lock.json records resolved dependency versions",
+      "semantic version ranges affect dependency updates"
+    ],
+    "questionPatterns": [
+      "What's the difference between dependencies and devDependencies?",
+      "Why should package-lock.json usually be committed?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes runtime and development dependencies",
+      "understands lockfiles improve reproducibility",
+      "has basic awareness of semantic versioning"
+    ],
+    "followUpConcepts": [
+      "Semantic Versioning",
+      "Node.js Module Resolution"
+    ]
   },
   {
-    "topic": "REST API Error Handling Patterns",
+    "topic": "Node.js Streams",
     "difficulty": "medium",
-    "concepts": ["centralized error-handling middleware", "consistent error response shape", "operational vs programmer errors", "proper status codes"],
-    "questionPatterns": ["How do you structure error handling across a large Express API?", "What's the difference between an operational error and a programming bug, and should they be handled the same way?"],
-    "evaluationCriteria": ["describes centralizing error handling rather than scattering try/catch everywhere", "uses appropriate HTTP status codes in examples", "distinguishes expected failures (bad input) from bugs (should crash/alert, not silently continue)"],
-    "followUpConcepts": ["Middleware in Express"]
+    "concepts": [
+      "streams process data incrementally",
+      "readable writable duplex and transform streams",
+      "streams avoid loading entire large payloads into memory",
+      "pipe connects compatible stream flows",
+      "backpressure prevents producers from overwhelming consumers"
+    ],
+    "questionPatterns": [
+      "Why would you use streams to process a large file?",
+      "What are the main types of streams in Node.js?"
+    ],
+    "evaluationCriteria": [
+      "understands incremental data processing",
+      "names major stream types",
+      "connects streams to memory efficiency",
+      "recognizes backpressure as an important stream concern"
+    ],
+    "followUpConcepts": [
+      "Backpressure in Node.js Streams",
+      "Buffers"
+    ]
+  },
+  {
+    "topic": "Backpressure in Node.js Streams",
+    "difficulty": "hard",
+    "concepts": [
+      "producer can generate data faster than consumer processes it",
+      "uncontrolled buffering increases memory usage",
+      "writable stream write can signal when producers should pause",
+      "drain indicates writing can continue",
+      "pipe and pipeline help manage flow control"
+    ],
+    "questionPatterns": [
+      "What is backpressure in Node.js streams?",
+      "What happens if a readable stream produces data much faster than a writable stream can process it?"
+    ],
+    "evaluationCriteria": [
+      "correctly identifies producer-consumer speed mismatch",
+      "connects uncontrolled buffering to memory growth",
+      "understands flow control is required"
+    ],
+    "followUpConcepts": [
+      "Node.js Streams",
+      "Memory Management in Node.js"
+    ]
+  },
+  {
+    "topic": "Buffers",
+    "difficulty": "medium",
+    "concepts": [
+      "Buffer represents binary data",
+      "commonly used with files network packets and streams",
+      "buffers contain raw bytes",
+      "encoding converts between binary data and textual representations"
+    ],
+    "questionPatterns": [
+      "What is a Buffer in Node.js?",
+      "Why do file uploads often involve buffers?"
+    ],
+    "evaluationCriteria": [
+      "understands buffers represent binary data",
+      "connects buffers to I/O operations",
+      "distinguishes raw bytes from JavaScript strings"
+    ],
+    "followUpConcepts": [
+      "Node.js Streams",
+      "File Upload Handling"
+    ]
+  },
+  {
+    "topic": "Node.js File System",
+    "difficulty": "easy",
+    "concepts": [
+      "fs module provides filesystem operations",
+      "callback Promise and synchronous APIs are available",
+      "synchronous operations block JavaScript execution",
+      "large files should often be streamed rather than fully loaded into memory"
+    ],
+    "questionPatterns": [
+      "What's the difference between readFile and createReadStream?",
+      "Why should you avoid readFileSync inside a request handler?"
+    ],
+    "evaluationCriteria": [
+      "understands synchronous filesystem operations block execution",
+      "selects streaming for large files",
+      "can use asynchronous APIs for request-time operations"
+    ],
+    "followUpConcepts": [
+      "Node.js Streams",
+      "Event Loop Blocking"
+    ]
+  },
+  {
+    "topic": "EventEmitter",
+    "difficulty": "medium",
+    "concepts": [
+      "EventEmitter implements an event-driven publish-subscribe style API within a process",
+      "listeners subscribe using on or once",
+      "events are emitted using emit",
+      "listeners run synchronously when an event is emitted unless they schedule asynchronous work"
+    ],
+    "questionPatterns": [
+      "What is EventEmitter in Node.js?",
+      "Are EventEmitter listeners automatically asynchronous?"
+    ],
+    "evaluationCriteria": [
+      "understands event registration and emission",
+      "knows listeners are invoked synchronously by emit",
+      "provides a reasonable event-driven use case"
+    ],
+    "followUpConcepts": [
+      "Event Driven Architecture",
+      "Memory Leaks with Event Listeners"
+    ]
+  },
+  {
+    "topic": "Worker Threads",
+    "difficulty": "hard",
+    "concepts": [
+      "worker threads execute JavaScript in separate threads",
+      "useful for CPU-intensive JavaScript workloads",
+      "workers have separate JavaScript execution contexts",
+      "communication can use message passing",
+      "shared memory is possible using SharedArrayBuffer"
+    ],
+    "questionPatterns": [
+      "When would you use worker_threads in Node.js?",
+      "Would worker threads make normal database API calls faster?"
+    ],
+    "evaluationCriteria": [
+      "connects workers primarily to CPU-heavy JavaScript work",
+      "does not recommend workers automatically for normal asynchronous I/O",
+      "understands communication introduces overhead"
+    ],
+    "followUpConcepts": [
+      "CPU Bound vs IO Bound Work",
+      "Cluster and Multiple Processes"
+    ]
+  },
+  {
+    "topic": "Cluster and Multiple Processes",
+    "difficulty": "hard",
+    "concepts": [
+      "multiple Node.js processes can utilize multiple CPU cores",
+      "each process has separate memory",
+      "traffic can be distributed between workers",
+      "in-memory state is not automatically shared",
+      "external shared stores are needed for shared distributed state"
+    ],
+    "questionPatterns": [
+      "How can a Node.js application use multiple CPU cores?",
+      "What happens to in-memory session data when your application runs across multiple processes?"
+    ],
+    "evaluationCriteria": [
+      "understands multiple processes have separate memory",
+      "connects process scaling to external shared state",
+      "distinguishes clustering from worker threads"
+    ],
+    "followUpConcepts": [
+      "Worker Threads",
+      "Horizontal Scaling Node.js Applications"
+    ]
+  },
+  {
+    "topic": "Express Middleware",
+    "difficulty": "easy",
+    "concepts": [
+      "middleware functions participate in the request-response pipeline",
+      "middleware receives request response and next",
+      "middleware order matters",
+      "middleware can modify request or response objects",
+      "common uses include authentication validation logging and error handling"
+    ],
+    "questionPatterns": [
+      "What is middleware in Express?",
+      "Why does middleware order matter?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains the middleware pipeline",
+      "understands next passes control forward",
+      "recognizes incorrect ordering can cause security or functionality problems"
+    ],
+    "followUpConcepts": [
+      "Express Error Handling",
+      "Authentication Middleware"
+    ]
+  },
+  {
+    "topic": "Express Request Lifecycle",
+    "difficulty": "medium",
+    "concepts": [
+      "incoming request enters middleware stack",
+      "middleware executes according to registration and route matching",
+      "route handler processes matched requests",
+      "response ends the request lifecycle",
+      "errors can be forwarded to error-handling middleware"
+    ],
+    "questionPatterns": [
+      "Walk me through what happens when a request reaches an Express application.",
+      "What happens if middleware neither sends a response nor calls next?"
+    ],
+    "evaluationCriteria": [
+      "explains middleware and route execution order",
+      "understands a request can remain pending if control is not continued or completed",
+      "recognizes error middleware as part of centralized failure handling"
+    ],
+    "followUpConcepts": [
+      "Express Middleware",
+      "Express Error Handling"
+    ]
+  },
+  {
+    "topic": "Express Error Handling",
+    "difficulty": "medium",
+    "concepts": [
+      "centralized error-handling middleware",
+      "error middleware uses four parameters",
+      "operational errors should be converted into appropriate responses",
+      "internal implementation details should not be exposed in production",
+      "asynchronous errors must reach the error-handling pipeline"
+    ],
+    "questionPatterns": [
+      "How would you implement centralized error handling in Express?",
+      "Why is centralized error middleware better than repeating try-catch response logic everywhere?"
+    ],
+    "evaluationCriteria": [
+      "understands the error middleware signature",
+      "centralizes consistent error responses",
+      "distinguishes expected operational errors from unexpected failures",
+      "avoids leaking sensitive stack traces"
+    ],
+    "followUpConcepts": [
+      "Express Middleware",
+      "Custom Error Classes"
+    ]
+  },
+  {
+    "topic": "Async Error Handling in Express",
+    "difficulty": "medium",
+    "concepts": [
+      "rejected asynchronous operations must reach error middleware",
+      "behavior differs between Express versions and handler styles",
+      "wrapper utilities can forward rejected Promises in older patterns",
+      "unhandled asynchronous failures should not silently disappear"
+    ],
+    "questionPatterns": [
+      "How do you handle errors from async Express route handlers?",
+      "Why can asynchronous error handling differ from synchronous error handling?"
+    ],
+    "evaluationCriteria": [
+      "understands rejected Promises must be handled or forwarded",
+      "recognizes framework-version differences",
+      "uses a consistent centralized strategy"
+    ],
+    "followUpConcepts": [
+      "Express Error Handling",
+      "Promises and Async Await"
+    ]
+  },
+  {
+    "topic": "Express Routing",
+    "difficulty": "easy",
+    "concepts": [
+      "routes map HTTP methods and paths to handlers",
+      "Express Router enables modular route organization",
+      "route parameters represent path values",
+      "query parameters commonly represent filtering sorting or pagination"
+    ],
+    "questionPatterns": [
+      "What's the difference between route parameters and query parameters?",
+      "Why would you use Express Router?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes path and query parameters",
+      "connects Router to modular organization",
+      "uses HTTP methods appropriately"
+    ],
+    "followUpConcepts": [
+      "REST API Design",
+      "Express Middleware"
+    ]
   },
   {
     "topic": "JWT Authentication Flow",
     "difficulty": "medium",
-    "concepts": ["access token vs refresh token", "token expiration handling", "storing tokens: httpOnly cookie vs localStorage tradeoffs", "signature verification prevents tampering"],
-    "questionPatterns": ["Walk me through your JWT authentication flow, including what happens when the access token expires.", "Why would you store a JWT in an httpOnly cookie instead of localStorage?"],
-    "evaluationCriteria": ["explains access/refresh token pattern or at least expiration handling", "correctly identifies XSS risk of localStorage vs httpOnly cookie protection", "understands the token is signed, not encrypted, unless explicitly using JWE"],
-    "followUpConcepts": ["Cookies vs Local Storage vs Sessions", "CORS"]
+    "concepts": [
+      "server authenticates credentials",
+      "server signs a token containing claims",
+      "client presents the token on later requests",
+      "server verifies signature and relevant claims",
+      "JWT payload is encoded rather than inherently encrypted"
+    ],
+    "questionPatterns": [
+      "Walk me through JWT authentication in a Node.js application.",
+      "Can sensitive information safely be stored inside a JWT payload?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains signing and verification",
+      "understands JWT payloads can be decoded",
+      "checks expiration and authorization separately",
+      "does not confuse authentication with authorization"
+    ],
+    "followUpConcepts": [
+      "Access Tokens and Refresh Tokens",
+      "HTTP Only Cookies"
+    ]
   },
   {
-    "topic": "Cookies vs Local Storage vs Sessions",
+    "topic": "Access Tokens and Refresh Tokens",
     "difficulty": "medium",
-    "concepts": ["cookies sent automatically with requests", "localStorage requires manual attachment", "session storage server-side vs client-side tokens", "CSRF risk with cookies vs XSS risk with localStorage"],
-    "questionPatterns": ["What are the security tradeoffs between storing auth tokens in cookies vs localStorage?", "How would you protect against CSRF if you're using cookie-based auth?"],
-    "evaluationCriteria": ["correctly maps XSS risk to localStorage, CSRF risk to cookies", "mentions SameSite cookie attribute or CSRF tokens as mitigation", "understands cookies are sent automatically which is both convenient and risky"],
-    "followUpConcepts": ["JWT Authentication Flow", "CORS"]
+    "concepts": [
+      "access tokens are generally short-lived",
+      "refresh tokens obtain new access tokens",
+      "refresh token storage requires stronger protection",
+      "token rotation can reduce replay risk",
+      "logout and revocation strategies must be deliberately designed"
+    ],
+    "questionPatterns": [
+      "Why use refresh tokens instead of making access tokens valid for months?",
+      "How would you implement secure refresh token rotation?"
+    ],
+    "evaluationCriteria": [
+      "understands short-lived access tokens reduce exposure",
+      "explains refresh flow correctly",
+      "recognizes token revocation and reuse detection as important concerns"
+    ],
+    "followUpConcepts": [
+      "JWT Authentication Flow",
+      "HTTP Only Cookies"
+    ]
+  },
+  {
+    "topic": "HTTP Only Cookies",
+    "difficulty": "medium",
+    "concepts": [
+      "HttpOnly prevents JavaScript from directly reading a cookie",
+      "Secure restricts transmission to HTTPS",
+      "SameSite controls some cross-site cookie behavior",
+      "cookie-based authentication requires consideration of CSRF",
+      "XSS and CSRF are different threats"
+    ],
+    "questionPatterns": [
+      "Why would you store an authentication token in an HttpOnly cookie?",
+      "Does using HttpOnly cookies completely prevent authentication attacks?"
+    ],
+    "evaluationCriteria": [
+      "understands HttpOnly reduces direct token theft through JavaScript",
+      "mentions Secure and SameSite appropriately",
+      "recognizes CSRF still requires consideration",
+      "does not claim HttpOnly prevents XSS itself"
+    ],
+    "followUpConcepts": [
+      "JWT Authentication Flow",
+      "CSRF Protection"
+    ]
+  },
+  {
+    "topic": "Password Hashing with bcrypt",
+    "difficulty": "medium",
+    "concepts": [
+      "passwords should be hashed rather than encrypted for normal authentication storage",
+      "bcrypt includes salting behavior",
+      "cost factor controls computational expense",
+      "password comparison hashes the candidate according to the stored hash parameters"
+    ],
+    "questionPatterns": [
+      "Why do you use bcrypt instead of storing encrypted passwords?",
+      "What is the purpose of the bcrypt cost factor?"
+    ],
+    "evaluationCriteria": [
+      "understands password hashing is intentionally one-way",
+      "connects computational cost to resistance against brute-force attacks",
+      "does not store plaintext passwords"
+    ],
+    "followUpConcepts": [
+      "Authentication Security",
+      "Rate Limiting"
+    ]
   },
   {
     "topic": "CORS",
     "difficulty": "medium",
-    "concepts": ["same-origin policy", "preflight OPTIONS requests", "Access-Control-Allow-Origin header", "credentials mode with cookies"],
-    "questionPatterns": ["Why did your frontend get a CORS error when calling your API from a different port, and how did you fix it?", "What triggers a preflight request?"],
-    "evaluationCriteria": ["correctly explains same-origin policy as the root cause", "knows preflight is triggered by non-simple requests (custom headers, non-GET/POST, credentials)", "references a real fix they applied (cors middleware config)"],
-    "followUpConcepts": ["Cookies vs Local Storage vs Sessions"]
+    "concepts": [
+      "CORS is a browser-enforced cross-origin access mechanism",
+      "server returns headers describing allowed origins methods and headers",
+      "some requests trigger a preflight OPTIONS request",
+      "credentialed requests require compatible origin and credential configuration"
+    ],
+    "questionPatterns": [
+      "What is CORS and why does a Node.js backend need to configure it?",
+      "Why might your React frontend work in Postman but fail in the browser with a CORS error?"
+    ],
+    "evaluationCriteria": [
+      "understands CORS is primarily enforced by browsers",
+      "explains cross-origin restrictions",
+      "recognizes preflight requests",
+      "does not treat CORS as authentication"
+    ],
+    "followUpConcepts": [
+      "CORS Preflight Requests",
+      "HTTP Only Cookies"
+    ]
   },
   {
     "topic": "Rate Limiting",
     "difficulty": "medium",
-    "concepts": ["token bucket / sliding window algorithms", "per-IP vs per-user limits", "why rate limiting protects against abuse and DoS", "429 status code"],
-    "questionPatterns": ["How did you implement rate limiting in your project, and what algorithm does it use?", "Why would you rate-limit per-user instead of per-IP for an authenticated API?"],
-    "evaluationCriteria": ["references their actual rate-limiting implementation (from Fortune Constructors project)", "explains the reasoning between per-IP and per-user limiting", "knows 429 is the correct status code"],
-    "followUpConcepts": ["Middleware in Express"]
+    "concepts": [
+      "limits request frequency",
+      "protects APIs from abuse and accidental overload",
+      "common algorithms include fixed window sliding window and token bucket",
+      "distributed deployments require shared rate-limit state",
+      "client identity must be determined carefully behind proxies"
+    ],
+    "questionPatterns": [
+      "Why would you add rate limiting to a Node.js API?",
+      "What changes when your rate-limited API runs across multiple server instances?"
+    ],
+    "evaluationCriteria": [
+      "connects rate limiting to abuse and resource protection",
+      "understands in-memory counters do not coordinate across instances",
+      "recognizes proxy configuration can affect client IP detection"
+    ],
+    "followUpConcepts": [
+      "Express Behind Reverse Proxies",
+      "Distributed Rate Limiting"
+    ]
   },
   {
-    "topic": "Environment Variables and Config Management",
-    "difficulty": "easy",
-    "concepts": ["keeping secrets out of source control", ".env files and dotenv", "different configs per environment (dev/staging/prod)", "validating required env vars at startup"],
-    "questionPatterns": ["How do you manage different configuration values across development and production?", "What happens in your app if a required environment variable is missing?"],
-    "evaluationCriteria": ["understands secrets should never be committed to git", "mentions per-environment config strategy", "bonus: validates env vars exist at startup rather than failing deep in request handling"],
-    "followUpConcepts": []
-  },
-  {
-    "topic": "Streams and Buffers",
+    "topic": "Express Behind Reverse Proxies",
     "difficulty": "hard",
-    "concepts": ["readable/writable/duplex/transform streams", "buffering data without loading it all into memory", "piping streams together", "use case: large file uploads/downloads"],
-    "questionPatterns": ["Why would you use a stream instead of reading an entire file into memory?", "How does piping work between a readable and writable stream?"],
-    "evaluationCriteria": ["correctly explains memory efficiency of streaming vs full buffering", "understands backpressure conceptually", "gives a relevant use case (file upload, video streaming)"],
-    "followUpConcepts": ["File Upload Handling"]
+    "concepts": [
+      "production applications commonly run behind reverse proxies or platform load balancers",
+      "proxy headers can communicate original client information",
+      "Express trust proxy configuration affects how forwarded headers are interpreted",
+      "incorrect trust configuration can create security or rate-limiting problems"
+    ],
+    "questionPatterns": [
+      "Why does Express have a trust proxy setting?",
+      "Why might rate limiting behave incorrectly after deploying behind a reverse proxy?"
+    ],
+    "evaluationCriteria": [
+      "understands the application may not directly receive the original client connection",
+      "connects forwarded headers to client IP and protocol detection",
+      "recognizes proxy trust must match the actual deployment architecture"
+    ],
+    "followUpConcepts": [
+      "Rate Limiting",
+      "Reverse Proxy and Load Balancing"
+    ]
   },
   {
-    "topic": "Clustering and Worker Threads",
-    "difficulty": "hard",
-    "concepts": ["cluster module spawns multiple processes to use all CPU cores", "worker_threads for CPU-bound parallelism within one process", "load balancing across cluster workers", "when to choose which"],
-    "questionPatterns": ["Node.js is single-threaded — how would you take advantage of a multi-core server?", "What's the difference between the cluster module and worker_threads?"],
-    "evaluationCriteria": ["explains cluster module forking multiple processes to use multiple cores", "distinguishes worker_threads (shared memory, CPU-bound tasks) from cluster (separate processes)", "gives a plausible use case for each"],
-    "followUpConcepts": ["Node.js Event Loop (libuv)", "Node.js Non-blocking IO"]
-  },
-  {
-    "topic": "WebSockets vs Socket.io vs Polling",
+    "topic": "Helmet and Security Headers",
     "difficulty": "medium",
-    "concepts": ["polling repeatedly requests updates", "WebSockets provide full-duplex persistent connection", "Socket.io adds fallback and reconnection on top of WebSockets", "use case: real-time notifications"],
-    "questionPatterns": ["Why did you choose Socket.io for real-time notifications instead of polling?", "What does Socket.io provide on top of raw WebSockets?"],
-    "evaluationCriteria": ["references their actual real-time notification implementation", "explains persistent connection benefit over repeated polling", "knows Socket.io adds reconnection/fallback handling, not just a wrapper"],
-    "followUpConcepts": []
+    "concepts": [
+      "Helmet configures multiple HTTP security headers",
+      "Content Security Policy can reduce certain content injection risks",
+      "security headers provide defense in depth",
+      "security configuration should match application requirements"
+    ],
+    "questionPatterns": [
+      "What does Helmet do in an Express application?",
+      "Why might you need to customize Content Security Policy?"
+    ],
+    "evaluationCriteria": [
+      "understands Helmet configures response security headers",
+      "does not describe Helmet as complete application security",
+      "recognizes restrictive policies may require application-specific configuration"
+    ],
+    "followUpConcepts": [
+      "API Security",
+      "CORS"
+    ]
+  },
+  {
+    "topic": "Input Validation and Sanitization",
+    "difficulty": "medium",
+    "concepts": [
+      "never trust client-provided input",
+      "schema validation checks expected shape and constraints",
+      "validation should happen at application boundaries",
+      "sanitization and validation solve different problems",
+      "database constraints provide an additional integrity layer"
+    ],
+    "questionPatterns": [
+      "Why validate requests if your frontend already validates forms?",
+      "What's the difference between validation and sanitization?"
+    ],
+    "evaluationCriteria": [
+      "understands clients can bypass frontend validation",
+      "distinguishes checking validity from transforming unsafe input",
+      "supports schema-based validation"
+    ],
+    "followUpConcepts": [
+      "Zod Validation",
+      "API Security"
+    ]
   },
   {
     "topic": "File Upload Handling",
     "difficulty": "medium",
-    "concepts": ["multipart/form-data parsing", "Multer middleware and storage engines", "validating file type/size before processing", "streaming uploads to cloud storage"],
-    "questionPatterns": ["Walk me through your file upload pipeline using Multer and Cloudinary.", "How do you validate file size and type before accepting an upload?"],
-    "evaluationCriteria": ["references their actual Multer + Cloudinary pipeline", "mentions validation happening before/during upload, not after", "understands multipart/form-data parsing basics"],
-    "followUpConcepts": ["Streams and Buffers"]
+    "concepts": [
+      "multipart form data",
+      "Multer handles multipart parsing in Express applications",
+      "memory storage keeps uploaded files in memory as buffers",
+      "disk storage writes temporary files",
+      "file size and type validation are important",
+      "large uploads require memory and streaming considerations"
+    ],
+    "questionPatterns": [
+      "How does Multer handle file uploads?",
+      "What's the difference between memory storage and disk storage?"
+    ],
+    "evaluationCriteria": [
+      "understands multipart processing",
+      "connects memory storage to Buffer objects",
+      "recognizes large files can cause memory pressure",
+      "mentions validation and upload limits"
+    ],
+    "followUpConcepts": [
+      "Buffers",
+      "Cloud File Upload Pipeline"
+    ]
   },
   {
-    "topic": "Cron Jobs and Scheduled Tasks",
-    "difficulty": "easy",
-    "concepts": ["node-cron scheduling syntax", "idempotency for scheduled jobs", "error isolation so one failure doesn't stop the whole job", "use case: daily stat aggregation"],
-    "questionPatterns": ["Walk me through your daily cron job — what does it do and how do you handle failures for individual users?", "Why is idempotency important for a scheduled job?"],
-    "evaluationCriteria": ["references their actual cron implementation (per-user error isolation)", "explains why a job should be safe to re-run without duplicating data", "understands failure in one iteration shouldn't crash the whole batch"],
-    "followUpConcepts": []
+    "topic": "Cloud File Upload Pipeline",
+    "difficulty": "medium",
+    "concepts": [
+      "backend receives or streams uploaded data",
+      "files may be validated and transformed",
+      "cloud object or media storage handles persistent file storage",
+      "database generally stores file identifiers or URLs rather than large binary files",
+      "cleanup is needed when replacing or deleting files"
+    ],
+    "questionPatterns": [
+      "Walk me through how you would upload an image from React through Node.js to Cloudinary.",
+      "Why would you store a Cloudinary public ID in your database?"
+    ],
+    "evaluationCriteria": [
+      "explains the complete upload flow",
+      "understands public identifiers support later deletion or replacement",
+      "considers validation and cleanup"
+    ],
+    "followUpConcepts": [
+      "File Upload Handling",
+      "Streams and Buffers"
+    ]
   },
   {
-    "topic": "API Versioning",
+    "topic": "Node Cron and Scheduled Jobs",
+    "difficulty": "medium",
+    "concepts": [
+      "scheduled jobs execute tasks according to a configured schedule",
+      "useful for periodic maintenance and notifications",
+      "in-process schedulers run only while the process is active",
+      "multiple application instances can accidentally execute the same job",
+      "critical distributed jobs require coordination or external scheduling"
+    ],
+    "questionPatterns": [
+      "How does node-cron work?",
+      "What problem can occur if you deploy three instances of an application that each run the same cron job?"
+    ],
+    "evaluationCriteria": [
+      "understands in-process scheduling limitations",
+      "identifies duplicate execution in multi-instance deployments",
+      "suggests distributed locking queues or external schedulers when appropriate"
+    ],
+    "followUpConcepts": [
+      "Background Jobs and Queues",
+      "Horizontal Scaling Node.js Applications"
+    ]
+  },
+  {
+    "topic": "Background Jobs and Queues",
+    "difficulty": "medium",
+    "concepts": [
+      "long-running non-immediate tasks can be moved outside request handling",
+      "producer adds jobs to a queue",
+      "workers process queued jobs",
+      "retries and failure handling are important",
+      "queues can smooth temporary traffic spikes"
+    ],
+    "questionPatterns": [
+      "Why would you use a job queue instead of sending emails directly inside an API request?",
+      "What happens if a background job fails?"
+    ],
+    "evaluationCriteria": [
+      "connects queues to request latency and reliability",
+      "understands producer-worker separation",
+      "mentions retries and idempotency"
+    ],
+    "followUpConcepts": [
+      "Job Idempotency",
+      "Node Cron and Scheduled Jobs"
+    ]
+  },
+  {
+    "topic": "Graceful Shutdown",
+    "difficulty": "medium",
+    "concepts": [
+      "process receives termination signals",
+      "server stops accepting new requests",
+      "in-flight work is given time to complete",
+      "database and external connections are closed",
+      "process exits after cleanup"
+    ],
+    "questionPatterns": [
+      "How should a Node.js application shut down gracefully?",
+      "Why is graceful shutdown important during deployments?"
+    ],
+    "evaluationCriteria": [
+      "mentions handling termination signals",
+      "stops accepting new work",
+      "closes external resources",
+      "connects graceful shutdown to avoiding interrupted requests"
+    ],
+    "followUpConcepts": [
+      "Process Signals",
+      "Production Deployment"
+    ]
+  },
+  {
+    "topic": "Environment Variables and Configuration",
     "difficulty": "easy",
-    "concepts": ["URL versioning (/api/v1/)", "header-based versioning", "why versioning matters for breaking changes", "backward compatibility"],
-    "questionPatterns": ["How would you introduce a breaking change to an API that's already being used by a mobile app?", "What are the tradeoffs between URL-based and header-based API versioning?"],
-    "evaluationCriteria": ["proposes a valid versioning strategy", "understands the core problem: can't break existing clients", "can weigh at least one tradeoff between versioning approaches"],
-    "followUpConcepts": ["REST API Design Principles"]
+    "concepts": [
+      "configuration should be separated from source code",
+      "process.env exposes environment variables",
+      "secrets should not be committed to Git",
+      "different environments can provide different configuration",
+      "required configuration should be validated during startup"
+    ],
+    "questionPatterns": [
+      "How do you manage environment-specific configuration in Node.js?",
+      "What should happen if a required environment variable is missing?"
+    ],
+    "evaluationCriteria": [
+      "keeps secrets outside source control",
+      "supports environment-specific values",
+      "prefers failing early when critical configuration is missing"
+    ],
+    "followUpConcepts": [
+      "Secrets Management",
+      "Application Startup"
+    ]
+  },
+  {
+    "topic": "Node.js Memory Management",
+    "difficulty": "hard",
+    "concepts": [
+      "V8 manages JavaScript heap memory",
+      "garbage collection reclaims unreachable objects",
+      "external memory such as buffers also affects process memory",
+      "memory leaks occur when unnecessary references remain reachable",
+      "heap limits can affect memory-intensive applications"
+    ],
+    "questionPatterns": [
+      "Can a Node.js application have memory leaks despite garbage collection?",
+      "What would you investigate if a Node.js process keeps consuming more memory?"
+    ],
+    "evaluationCriteria": [
+      "understands garbage collection does not prevent retained-reference leaks",
+      "mentions heap profiling or memory snapshots",
+      "considers event listeners timers caches and large buffers"
+    ],
+    "followUpConcepts": [
+      "Memory Leaks in Node.js",
+      "Backpressure in Node.js Streams"
+    ]
+  },
+  {
+    "topic": "Memory Leaks in Node.js",
+    "difficulty": "hard",
+    "concepts": [
+      "unbounded global collections",
+      "forgotten timers",
+      "event listeners that are never removed",
+      "closures retaining large objects",
+      "unbounded caches",
+      "large buffered data"
+    ],
+    "questionPatterns": [
+      "What are common causes of memory leaks in Node.js?",
+      "How would you diagnose a memory leak in production?"
+    ],
+    "evaluationCriteria": [
+      "identifies realistic server-side leak sources",
+      "connects leaks to retained references",
+      "mentions profiling heap snapshots and monitoring memory trends"
+    ],
+    "followUpConcepts": [
+      "Node.js Memory Management",
+      "EventEmitter"
+    ]
+  },
+  {
+    "topic": "Uncaught Exceptions and Unhandled Rejections",
+    "difficulty": "hard",
+    "concepts": [
+      "uncaught exceptions indicate failures that escaped normal handling",
+      "unhandled Promise rejections indicate rejected Promises without appropriate handling",
+      "process-level handlers are not substitutes for proper application error handling",
+      "continuing after an unknown fatal state can be unsafe",
+      "production process managers can restart failed processes"
+    ],
+    "questionPatterns": [
+      "What should you do when a Node.js application encounters an uncaught exception?",
+      "Should you simply catch every process-level error and continue running?"
+    ],
+    "evaluationCriteria": [
+      "prioritizes proper localized error handling",
+      "understands unknown fatal states may require controlled shutdown",
+      "does not use process-level handlers as normal error-control flow"
+    ],
+    "followUpConcepts": [
+      "Express Error Handling",
+      "Graceful Shutdown"
+    ]
+  },
+  {
+    "topic": "Socket.io Fundamentals",
+    "difficulty": "medium",
+    "concepts": [
+      "supports bidirectional event-based communication",
+      "commonly uses WebSocket when available with additional transport and reconnection features",
+      "client and server emit named events",
+      "rooms group connections",
+      "namespaces separate communication channels"
+    ],
+    "questionPatterns": [
+      "What's the difference between Socket.io and raw WebSockets?",
+      "What are rooms and namespaces in Socket.io?"
+    ],
+    "evaluationCriteria": [
+      "does not claim Socket.io is identical to the WebSocket protocol",
+      "understands event-based communication",
+      "correctly explains rooms at a high level"
+    ],
+    "followUpConcepts": [
+      "Scaling Socket.io",
+      "WebSockets vs HTTP"
+    ]
+  },
+  {
+    "topic": "Scaling Socket.io",
+    "difficulty": "hard",
+    "concepts": [
+      "each server instance owns its local client connections",
+      "messages may need to reach users connected to different instances",
+      "shared adapters can coordinate events between instances",
+      "load balancing and connection behavior must be considered",
+      "connection state should not depend solely on one application's local memory"
+    ],
+    "questionPatterns": [
+      "What happens when your Socket.io application runs on multiple server instances?",
+      "How would a message reach a user connected to a different server?"
+    ],
+    "evaluationCriteria": [
+      "identifies cross-instance communication as the central problem",
+      "suggests a shared messaging layer or adapter",
+      "understands each process has separate connection state"
+    ],
+    "followUpConcepts": [
+      "Socket.io Fundamentals",
+      "Horizontal Scaling Node.js Applications"
+    ]
+  },
+  {
+    "topic": "Horizontal Scaling Node.js Applications",
+    "difficulty": "hard",
+    "concepts": [
+      "multiple application instances serve traffic",
+      "load balancer distributes requests",
+      "application servers should avoid unnecessary local state",
+      "sessions caches rate limits and real-time coordination may require shared infrastructure",
+      "database connection limits must be considered across all instances"
+    ],
+    "questionPatterns": [
+      "What changes when you scale a Node.js backend from one instance to ten?",
+      "Why can storing user sessions only in server memory become a problem?"
+    ],
+    "evaluationCriteria": [
+      "understands local memory is not shared",
+      "identifies distributed state concerns",
+      "considers database connections and background jobs",
+      "connects scaling to load balancing"
+    ],
+    "followUpConcepts": [
+      "Cluster and Multiple Processes",
+      "Scaling Socket.io"
+    ]
+  },
+  {
+    "topic": "Database Connection Pooling in Node.js",
+    "difficulty": "medium",
+    "concepts": [
+      "database drivers maintain reusable connection pools",
+      "creating a new connection for every request is inefficient",
+      "pool sizes should be bounded",
+      "multiple application instances multiply total database connections"
+    ],
+    "questionPatterns": [
+      "Should you open a new MongoDB connection for every API request?",
+      "Why can increasing application instances cause database connection problems?"
+    ],
+    "evaluationCriteria": [
+      "understands connection reuse",
+      "recognizes connection limits",
+      "considers total pool size across deployed instances"
+    ],
+    "followUpConcepts": [
+      "MongoDB Connection Management",
+      "Horizontal Scaling Node.js Applications"
+    ]
+  },
+  {
+    "topic": "API Pagination Filtering and Sorting",
+    "difficulty": "medium",
+    "concepts": [
+      "pagination limits response size",
+      "filtering should be validated against allowed fields",
+      "sorting should use controlled parameters",
+      "database indexes should support common access patterns",
+      "large offset pagination can become inefficient"
+    ],
+    "questionPatterns": [
+      "How would you implement filtering sorting and pagination in an Express API?",
+      "Why shouldn't you directly pass arbitrary client query parameters into a database query?"
+    ],
+    "evaluationCriteria": [
+      "validates and whitelists query options",
+      "connects API access patterns to database indexing",
+      "understands pagination tradeoffs"
+    ],
+    "followUpConcepts": [
+      "Query Optimization",
+      "API Security"
+    ]
+  },
+  {
+    "topic": "API Response Compression",
+    "difficulty": "medium",
+    "concepts": [
+      "compression reduces response transfer size",
+      "compression consumes CPU resources",
+      "already compressed formats may gain little benefit",
+      "reverse proxies or CDNs can perform compression"
+    ],
+    "questionPatterns": [
+      "Why would you enable compression for an API?",
+      "Should every response always be compressed?"
+    ],
+    "evaluationCriteria": [
+      "connects compression to reduced bandwidth",
+      "recognizes CPU tradeoffs",
+      "understands infrastructure can also handle compression"
+    ],
+    "followUpConcepts": [
+      "Node.js Performance Optimization",
+      "Reverse Proxy"
+    ]
+  },
+  {
+    "topic": "Node.js Performance Optimization",
+    "difficulty": "hard",
+    "concepts": [
+      "measure before optimizing",
+      "avoid blocking the event loop",
+      "optimize database access patterns",
+      "use caching where appropriate",
+      "stream large data",
+      "move CPU-heavy work away from request thread",
+      "profile memory and CPU bottlenecks"
+    ],
+    "questionPatterns": [
+      "Your Node.js API becomes slow under load. How would you investigate it?",
+      "What are common Node.js performance bottlenecks?"
+    ],
+    "evaluationCriteria": [
+      "starts with profiling and measurement",
+      "checks event loop database and external dependencies",
+      "avoids proposing scaling before identifying the bottleneck",
+      "suggests optimizations based on observed problems"
+    ],
+    "followUpConcepts": [
+      "Event Loop Blocking",
+      "Database Query Optimization"
+    ]
+  },
+  {
+    "topic": "Node.js Health Checks",
+    "difficulty": "medium",
+    "concepts": [
+      "health endpoints expose application status",
+      "liveness indicates whether the process is functioning",
+      "readiness indicates whether the application can serve traffic",
+      "dependency checks should be designed carefully",
+      "health checks support automated deployment and load balancing"
+    ],
+    "questionPatterns": [
+      "Why would your Node.js application expose a health endpoint?",
+      "What's the difference between liveness and readiness?"
+    ],
+    "evaluationCriteria": [
+      "distinguishes process health from readiness to serve requests",
+      "connects health checks to deployment infrastructure",
+      "avoids making health checks unnecessarily expensive"
+    ],
+    "followUpConcepts": [
+      "Graceful Shutdown",
+      "Production Deployment"
+    ]
+  },
+  {
+    "topic": "Logging in Node.js Applications",
+    "difficulty": "medium",
+    "concepts": [
+      "structured logs are easier to search and aggregate",
+      "log levels separate severity",
+      "request or correlation IDs connect related operations",
+      "sensitive information should not be logged",
+      "production logs should support centralized analysis"
+    ],
+    "questionPatterns": [
+      "How would you design logging for a production Node.js API?",
+      "Why are correlation IDs useful?"
+    ],
+    "evaluationCriteria": [
+      "prefers structured logging over random console output",
+      "uses appropriate log levels",
+      "understands request tracing across operations",
+      "avoids logging secrets and sensitive data"
+    ],
+    "followUpConcepts": [
+      "Monitoring and Observability",
+      "Express Middleware"
+    ]
+  },
+  {
+    "topic": "Testing Node.js APIs",
+    "difficulty": "medium",
+    "concepts": [
+      "unit tests isolate individual functions",
+      "integration tests verify components working together",
+      "API tests exercise HTTP endpoints",
+      "external dependencies may be mocked or replaced with test infrastructure",
+      "tests should cover success and failure paths"
+    ],
+    "questionPatterns": [
+      "How would you test an Express API?",
+      "What's the difference between a unit test and an integration test?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes testing levels",
+      "includes error and authorization cases",
+      "understands excessive mocking can hide integration problems"
+    ],
+    "followUpConcepts": [
+      "Dependency Injection",
+      "CI CD Testing"
+    ]
+  },
+  {
+    "topic": "REST API Idempotency",
+    "difficulty": "medium",
+    "concepts": [
+      "repeating an idempotent operation has the same intended effect as performing it once",
+      "GET PUT and DELETE are defined as idempotent by HTTP semantics",
+      "POST is generally not inherently idempotent",
+      "idempotency keys can protect retryable creation or payment-like operations"
+    ],
+    "questionPatterns": [
+      "What does idempotency mean in an API?",
+      "How would you prevent a retried request from creating the same resource twice?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains repeated effect",
+      "connects idempotency to retries",
+      "understands idempotency keys as one possible implementation strategy"
+    ],
+    "followUpConcepts": [
+      "REST API Design",
+      "Background Job Idempotency"
+    ]
   }
 ]

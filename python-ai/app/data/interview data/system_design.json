@@ -1,122 +1,1115 @@
 [
   {
-    "topic": "Horizontal vs Vertical Scaling",
+    "topic": "System Design Fundamentals",
     "difficulty": "easy",
-    "concepts": ["vertical: bigger machine", "horizontal: more machines", "horizontal scaling requires statelessness", "cost and complexity tradeoffs"],
-    "questionPatterns": ["Why is horizontal scaling generally preferred for web servers over vertical scaling?", "What does an application need architecturally to scale horizontally?"],
-    "evaluationCriteria": ["correctly explains both scaling approaches", "identifies statelessness as a prerequisite for horizontal scaling", "understands vertical scaling has a hard ceiling"],
-    "followUpConcepts": ["Load Balancer Types", "Database Sharding"]
+    "concepts": [
+      "system design defines architecture components data flow and interactions",
+      "functional requirements describe what the system must do",
+      "non-functional requirements describe qualities such as scalability availability latency and reliability",
+      "design decisions involve tradeoffs rather than universally correct solutions"
+    ],
+    "questionPatterns": [
+      "How do you approach a system design interview?",
+      "What's the difference between functional and non-functional requirements?"
+    ],
+    "evaluationCriteria": [
+      "starts by clarifying requirements",
+      "identifies important non-functional requirements",
+      "explains architectural decisions using tradeoffs"
+    ],
+    "followUpConcepts": [
+      "Capacity Estimation",
+      "High Level Design"
+    ]
   },
   {
-    "topic": "Load Balancer Types",
+    "topic": "Capacity Estimation",
     "difficulty": "medium",
-    "concepts": ["Layer 4 (transport) vs Layer 7 (application) load balancing", "round robin, least connections, IP hash algorithms", "health checks removing unhealthy instances"],
-    "questionPatterns": ["What's the difference between a Layer 4 and Layer 7 load balancer?", "How does a load balancer know to stop routing traffic to a crashed server?"],
-    "evaluationCriteria": ["correctly distinguishes L4 (routes on IP/port) from L7 (routes on content, e.g. URL path)", "names at least one balancing algorithm correctly", "explains health check mechanism"],
-    "followUpConcepts": ["Horizontal vs Vertical Scaling"]
+    "concepts": [
+      "estimate daily active users and request volume",
+      "requests per second can be estimated from daily traffic",
+      "peak traffic can be significantly higher than average traffic",
+      "storage requirements depend on data size and retention",
+      "bandwidth estimation helps identify network requirements"
+    ],
+    "questionPatterns": [
+      "How would you estimate the capacity requirements for a system?",
+      "Why should you consider peak traffic instead of only average requests per second?"
+    ],
+    "evaluationCriteria": [
+      "makes reasonable assumptions",
+      "estimates traffic storage and bandwidth",
+      "distinguishes average and peak load",
+      "uses estimates to influence architecture decisions"
+    ],
+    "followUpConcepts": [
+      "Scalability",
+      "Load Balancing"
+    ]
   },
   {
-    "topic": "Caching Layers (CDN Redis Browser)",
+    "topic": "Vertical vs Horizontal Scaling",
+    "difficulty": "easy",
+    "concepts": [
+      "vertical scaling increases resources of one machine",
+      "horizontal scaling adds more machines or application instances",
+      "vertical scaling has hardware limits",
+      "horizontal scaling introduces distributed system complexity",
+      "stateless services are generally easier to scale horizontally"
+    ],
+    "questionPatterns": [
+      "What's the difference between vertical and horizontal scaling?",
+      "Why is horizontal scaling commonly preferred for large distributed applications?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes scaling up from scaling out",
+      "understands horizontal scaling introduces coordination challenges",
+      "connects stateless architecture to easier horizontal scaling"
+    ],
+    "followUpConcepts": [
+      "Stateless Architecture",
+      "Load Balancing"
+    ]
+  },
+  {
+    "topic": "Load Balancing",
     "difficulty": "medium",
-    "concepts": ["CDN caches static assets at edge locations", "Redis caches computed/DB data server-side", "browser cache reduces repeat requests entirely", "cache-control headers"],
-    "questionPatterns": ["Where would you introduce caching in a typical web app's request path, from browser to database?", "What's the purpose of a CDN versus an in-memory cache like Redis?"],
-    "evaluationCriteria": ["identifies at least 2-3 caching layers correctly (browser, CDN, application/Redis)", "explains CDN's role in serving static assets close to users", "distinguishes CDN (static content) from Redis (dynamic/computed data)"],
-    "followUpConcepts": ["Caching Strategies (Redis)"]
+    "concepts": [
+      "load balancers distribute incoming traffic across multiple servers",
+      "common algorithms include round robin least connections and weighted routing",
+      "health checks prevent traffic from reaching unhealthy instances",
+      "load balancers can operate at different network layers",
+      "sticky sessions associate clients with particular servers"
+    ],
+    "questionPatterns": [
+      "Why do distributed systems use load balancers?",
+      "What's the difference between round robin and least connections?"
+    ],
+    "evaluationCriteria": [
+      "understands traffic distribution",
+      "mentions health checking",
+      "explains at least two balancing strategies",
+      "recognizes sticky sessions can complicate scaling"
+    ],
+    "followUpConcepts": [
+      "Reverse Proxy",
+      "Horizontal Scaling"
+    ]
+  },
+  {
+    "topic": "Reverse Proxy",
+    "difficulty": "medium",
+    "concepts": [
+      "reverse proxy sits between clients and backend servers",
+      "can route requests to application servers",
+      "can terminate TLS connections",
+      "can perform compression caching and rate limiting",
+      "hides internal backend infrastructure from clients"
+    ],
+    "questionPatterns": [
+      "What is a reverse proxy?",
+      "What's the difference between a forward proxy and reverse proxy?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains client-to-server proxying",
+      "provides realistic reverse proxy responsibilities",
+      "distinguishes reverse and forward proxies"
+    ],
+    "followUpConcepts": [
+      "Load Balancing",
+      "API Gateway"
+    ]
+  },
+  {
+    "topic": "Stateless vs Stateful Architecture",
+    "difficulty": "medium",
+    "concepts": [
+      "stateless servers do not depend on local request-specific session state between requests",
+      "stateful servers retain client-related state locally",
+      "stateless services are easier to distribute across instances",
+      "shared state can be stored in databases or distributed caches",
+      "WebSocket connections introduce stateful connection considerations"
+    ],
+    "questionPatterns": [
+      "Why are stateless APIs easier to scale?",
+      "What happens if user sessions are stored only in application server memory?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes stateful and stateless behavior",
+      "connects statelessness to horizontal scaling",
+      "recognizes persistent connections still require connection-aware infrastructure"
+    ],
+    "followUpConcepts": [
+      "Horizontal Scaling",
+      "Distributed Sessions"
+    ]
+  },
+  {
+    "topic": "Caching Fundamentals",
+    "difficulty": "medium",
+    "concepts": [
+      "cache stores frequently accessed data closer to consumers",
+      "caching reduces database load and response latency",
+      "cache hit returns cached data",
+      "cache miss requires retrieving data from the original source",
+      "cache invalidation is one of the major caching challenges"
+    ],
+    "questionPatterns": [
+      "Why would you introduce caching into a system?",
+      "What is a cache hit and cache miss?"
+    ],
+    "evaluationCriteria": [
+      "connects caching to latency and backend load reduction",
+      "understands stale data risks",
+      "recognizes not every type of data should be cached"
+    ],
+    "followUpConcepts": [
+      "Caching Strategies",
+      "Cache Invalidation"
+    ]
+  },
+  {
+    "topic": "Caching Strategies",
+    "difficulty": "hard",
+    "concepts": [
+      "cache-aside loads data into cache when needed",
+      "write-through updates cache alongside persistent storage",
+      "write-behind delays persistent storage updates",
+      "read-through delegates loading behavior to the cache layer",
+      "strategy selection depends on consistency and performance requirements"
+    ],
+    "questionPatterns": [
+      "Explain the cache-aside pattern.",
+      "What's the difference between write-through and write-behind caching?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains common caching patterns",
+      "discusses consistency tradeoffs",
+      "selects strategies based on workload requirements"
+    ],
+    "followUpConcepts": [
+      "Cache Invalidation",
+      "Redis"
+    ]
+  },
+  {
+    "topic": "Cache Invalidation",
+    "difficulty": "hard",
+    "concepts": [
+      "cached data can become stale when source data changes",
+      "TTL automatically expires cached entries",
+      "explicit invalidation removes or updates affected cache entries",
+      "cache consistency requirements depend on the application",
+      "cache stampede can occur when many requests regenerate the same expired data"
+    ],
+    "questionPatterns": [
+      "How would you keep cached data synchronized with the database?",
+      "What is a cache stampede?"
+    ],
+    "evaluationCriteria": [
+      "recognizes stale-data problems",
+      "explains TTL and explicit invalidation",
+      "understands concurrent cache misses can overload the source system"
+    ],
+    "followUpConcepts": [
+      "Caching Strategies",
+      "Distributed Locks"
+    ]
+  },
+  {
+    "topic": "Content Delivery Network",
+    "difficulty": "medium",
+    "concepts": [
+      "CDNs cache content at geographically distributed edge locations",
+      "users receive content from nearby edge servers",
+      "reduces latency and origin server load",
+      "commonly used for static assets images and video",
+      "cache-control policies determine content freshness"
+    ],
+    "questionPatterns": [
+      "What is a CDN and why would you use one?",
+      "How does a CDN reduce application latency?"
+    ],
+    "evaluationCriteria": [
+      "understands geographically distributed caching",
+      "connects CDN usage to reduced origin traffic",
+      "identifies appropriate content types"
+    ],
+    "followUpConcepts": [
+      "Caching Fundamentals",
+      "Object Storage"
+    ]
+  },
+  {
+    "topic": "Database Scaling",
+    "difficulty": "hard",
+    "concepts": [
+      "database scaling can involve replication partitioning and sharding",
+      "read replicas can distribute read traffic",
+      "vertical scaling improves a single database server",
+      "sharding distributes data across multiple database nodes",
+      "database scaling decisions depend heavily on access patterns"
+    ],
+    "questionPatterns": [
+      "How would you scale a database experiencing high traffic?",
+      "When would you introduce read replicas?"
+    ],
+    "evaluationCriteria": [
+      "identifies the actual database bottleneck before selecting a strategy",
+      "distinguishes read scaling from write scaling",
+      "understands distributed databases introduce operational complexity"
+    ],
+    "followUpConcepts": [
+      "Database Replication",
+      "Database Sharding"
+    ]
+  },
+  {
+    "topic": "Database Replication",
+    "difficulty": "medium",
+    "concepts": [
+      "replication maintains copies of data across multiple nodes",
+      "primary-replica architecture routes writes to a primary node",
+      "replicas can serve read traffic",
+      "asynchronous replication can introduce replication lag",
+      "replication improves availability and read scalability"
+    ],
+    "questionPatterns": [
+      "What is database replication?",
+      "What problem can replication lag cause?"
+    ],
+    "evaluationCriteria": [
+      "understands primary and replica responsibilities",
+      "recognizes eventual consistency for lagging replicas",
+      "connects replication to availability and read scaling"
+    ],
+    "followUpConcepts": [
+      "Database Scaling",
+      "Consistency Models"
+    ]
   },
   {
     "topic": "Database Sharding",
     "difficulty": "hard",
-    "concepts": ["splitting data across multiple database servers", "shard key selection", "hotspot risk with poor shard key choice", "cross-shard query complexity"],
-    "questionPatterns": ["How would you shard a users collection that's grown too large for one server?", "What makes a good shard key, and what happens if you pick a bad one?"],
-    "evaluationCriteria": ["explains sharding as horizontal data partitioning", "identifies shard key needs even distribution to avoid hotspots", "acknowledges cross-shard queries/joins become harder"],
-    "followUpConcepts": ["Horizontal vs Vertical Scaling", "Replication vs Sharding"]
+    "concepts": [
+      "sharding horizontally partitions data across multiple database nodes",
+      "shard key determines data placement",
+      "poor shard keys can create hotspots",
+      "cross-shard queries are more complex",
+      "resharding can be operationally expensive"
+    ],
+    "questionPatterns": [
+      "What is database sharding?",
+      "How would you choose a good shard key?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains horizontal partitioning",
+      "understands shard-key distribution",
+      "identifies hotspot and cross-shard query concerns"
+    ],
+    "followUpConcepts": [
+      "Consistent Hashing",
+      "Database Partitioning"
+    ]
+  },
+  {
+    "topic": "Database Partitioning",
+    "difficulty": "hard",
+    "concepts": [
+      "partitioning divides large datasets into smaller logical or physical segments",
+      "horizontal partitioning separates rows",
+      "vertical partitioning separates columns or related groups of attributes",
+      "partitioning can improve query and maintenance performance",
+      "partition strategy should align with access patterns"
+    ],
+    "questionPatterns": [
+      "What's the difference between horizontal and vertical partitioning?",
+      "How is partitioning related to sharding?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes partitioning approaches",
+      "understands sharding is distributed horizontal partitioning in common system-design usage",
+      "connects partition selection to query patterns"
+    ],
+    "followUpConcepts": [
+      "Database Sharding",
+      "Database Scaling"
+    ]
+  },
+  {
+    "topic": "SQL vs NoSQL in System Design",
+    "difficulty": "medium",
+    "concepts": [
+      "relational databases provide structured schemas and relational querying",
+      "NoSQL includes document key-value wide-column and graph databases",
+      "database selection depends on data model access patterns and consistency requirements",
+      "scalability alone is not a sufficient reason to automatically choose NoSQL"
+    ],
+    "questionPatterns": [
+      "When would you choose SQL versus NoSQL?",
+      "Would you use MongoDB for every highly scalable system?"
+    ],
+    "evaluationCriteria": [
+      "bases database selection on requirements",
+      "understands strengths of relational and non-relational models",
+      "avoids simplistic SQL versus NoSQL claims"
+    ],
+    "followUpConcepts": [
+      "Database Scaling",
+      "Data Modeling"
+    ]
+  },
+  {
+    "topic": "CAP Theorem",
+    "difficulty": "hard",
+    "concepts": [
+      "CAP discusses consistency availability and partition tolerance",
+      "during a network partition a distributed system must trade off between consistency and availability",
+      "partition tolerance is generally unavoidable for distributed systems spanning networked nodes",
+      "CAP does not mean a system permanently chooses only two properties in every situation"
+    ],
+    "questionPatterns": [
+      "Explain the CAP theorem.",
+      "What does choosing consistency during a network partition mean?"
+    ],
+    "evaluationCriteria": [
+      "correctly frames the tradeoff during partitions",
+      "does not simply say choose any two at all times",
+      "provides a practical distributed-system example"
+    ],
+    "followUpConcepts": [
+      "Consistency Models",
+      "Distributed Systems"
+    ]
+  },
+  {
+    "topic": "Consistency Models",
+    "difficulty": "hard",
+    "concepts": [
+      "strong consistency provides behavior where reads observe the latest committed state according to the system model",
+      "eventual consistency allows replicas to converge over time",
+      "read-after-write consistency ensures a user can observe their own completed writes under defined conditions",
+      "weaker consistency can improve availability or latency in some architectures",
+      "consistency requirements vary by feature"
+    ],
+    "questionPatterns": [
+      "What's the difference between strong and eventual consistency?",
+      "Would a social media like counter require the same consistency as a bank balance?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes consistency levels",
+      "selects consistency based on business requirements",
+      "understands systems can use different consistency models for different features"
+    ],
+    "followUpConcepts": [
+      "CAP Theorem",
+      "Database Replication"
+    ]
   },
   {
     "topic": "Message Queues",
     "difficulty": "medium",
-    "concepts": ["decoupling producers from consumers", "async processing of background work", "at-least-once vs exactly-once delivery", "use case: sending notification emails without blocking the request"],
-    "questionPatterns": ["Why would you put email sending on a message queue instead of doing it directly in the request handler?", "What's the difference between at-least-once and exactly-once delivery, and why does it matter?"],
-    "evaluationCriteria": ["explains decoupling and non-blocking benefit correctly", "gives a valid async-processing use case", "shows awareness that most queues guarantee at-least-once, requiring idempotent consumers"],
-    "followUpConcepts": ["Microservices vs Monolith"]
+    "concepts": [
+      "message queues decouple producers from consumers",
+      "enable asynchronous background processing",
+      "workers consume messages independently",
+      "queues can absorb temporary traffic spikes",
+      "delivery guarantees and failure handling must be considered"
+    ],
+    "questionPatterns": [
+      "Why would you use a message queue?",
+      "Why send an email through a queue instead of directly inside an API request?"
+    ],
+    "evaluationCriteria": [
+      "connects queues to decoupling and asynchronous work",
+      "understands producers and consumers",
+      "recognizes retries and duplicate processing concerns"
+    ],
+    "followUpConcepts": [
+      "Delivery Guarantees",
+      "Event Driven Architecture"
+    ]
   },
   {
-    "topic": "Microservices vs Monolith",
+    "topic": "Delivery Guarantees",
+    "difficulty": "hard",
+    "concepts": [
+      "at-most-once delivery may lose messages but avoids redelivery",
+      "at-least-once delivery can redeliver messages",
+      "exactly-once effects are difficult and often require application-level coordination",
+      "idempotent consumers make duplicate processing safer"
+    ],
+    "questionPatterns": [
+      "What's the difference between at-most-once and at-least-once delivery?",
+      "How would you handle a message being delivered twice?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains delivery semantics",
+      "connects duplicate delivery to idempotency",
+      "avoids casually claiming perfect exactly-once processing"
+    ],
+    "followUpConcepts": [
+      "Message Queues",
+      "Idempotency"
+    ]
+  },
+  {
+    "topic": "Idempotency",
     "difficulty": "medium",
-    "concepts": ["independent deployability vs simpler operations", "network overhead and distributed system complexity in microservices", "when a monolith is the right choice for a small team", "your own project split (Node backend + separate Python AI service)"],
-    "questionPatterns": ["Your project has a separate Python AI service alongside the Node backend — is that microservices, and why did you split it that way?", "What complexity does splitting a monolith into microservices introduce?"],
-    "evaluationCriteria": ["gives an honest, grounded answer about their own architecture rather than overclaiming 'microservices'", "names real distributed-system costs (network latency, partial failure, deployment complexity)", "justifies the split with a real reason (language/library needs, e.g. Python AI ecosystem)"],
-    "followUpConcepts": ["Message Queues", "API Gateway"]
+    "concepts": [
+      "repeating an idempotent operation produces the same intended effect as executing it once",
+      "important when requests or messages can be retried",
+      "idempotency keys can identify repeated operations",
+      "database uniqueness constraints can help prevent duplicate processing"
+    ],
+    "questionPatterns": [
+      "What is idempotency and why is it important in distributed systems?",
+      "How would you prevent duplicate payment processing?"
+    ],
+    "evaluationCriteria": [
+      "connects idempotency to retries",
+      "provides a practical deduplication strategy",
+      "understands idempotency does not necessarily mean identical HTTP responses"
+    ],
+    "followUpConcepts": [
+      "Delivery Guarantees",
+      "Distributed Transactions"
+    ]
+  },
+  {
+    "topic": "Event Driven Architecture",
+    "difficulty": "hard",
+    "concepts": [
+      "services communicate through events representing state changes",
+      "producers publish events without tightly coupling to consumers",
+      "multiple consumers can react independently",
+      "event-driven systems improve decoupling but complicate debugging and consistency",
+      "events should represent meaningful domain occurrences"
+    ],
+    "questionPatterns": [
+      "What is event-driven architecture?",
+      "What are the disadvantages of event-driven systems?"
+    ],
+    "evaluationCriteria": [
+      "understands asynchronous event-based communication",
+      "connects architecture to loose coupling",
+      "recognizes observability ordering and consistency challenges"
+    ],
+    "followUpConcepts": [
+      "Message Queues",
+      "Event Sourcing"
+    ]
   },
   {
     "topic": "API Gateway",
     "difficulty": "medium",
-    "concepts": ["single entry point for multiple backend services", "cross-cutting concerns: auth, rate limiting, logging", "routing requests to the right service"],
-    "questionPatterns": ["What problems does an API Gateway solve in a multi-service architecture?", "If you had five microservices, would clients call each directly or through a gateway, and why?"],
-    "evaluationCriteria": ["explains centralizing cross-cutting concerns as the main benefit", "understands it simplifies the client's view of a multi-service backend", "can reason about this even without direct prior implementation"],
-    "followUpConcepts": ["Microservices vs Monolith"]
+    "concepts": [
+      "API gateway provides a centralized entry point for backend services",
+      "can route requests to appropriate services",
+      "can handle authentication rate limiting and request transformation",
+      "reduces direct exposure of internal services",
+      "can become a bottleneck if poorly designed"
+    ],
+    "questionPatterns": [
+      "What is an API gateway?",
+      "Why use an API gateway in a microservices architecture?"
+    ],
+    "evaluationCriteria": [
+      "understands centralized request routing",
+      "identifies common cross-cutting responsibilities",
+      "recognizes gateway availability and performance concerns"
+    ],
+    "followUpConcepts": [
+      "Microservices Architecture",
+      "Reverse Proxy"
+    ]
   },
   {
-    "topic": "Rate Limiting Algorithms",
+    "topic": "Monolith vs Microservices",
     "difficulty": "medium",
-    "concepts": ["token bucket allows bursts up to a cap", "sliding window is more precise but costlier to compute", "fixed window is simplest but allows boundary bursts"],
-    "questionPatterns": ["What's the difference between a fixed window and sliding window rate limiter?", "Why might a fixed window rate limiter let through double the intended requests at a window boundary?"],
-    "evaluationCriteria": ["correctly explains the boundary-burst flaw of fixed window", "distinguishes at least two algorithms correctly", "can reason about the precision-vs-cost tradeoff between them"],
-    "followUpConcepts": ["Rate Limiting"]
+    "concepts": [
+      "monolith deploys application functionality as one primary deployable unit",
+      "microservices divide functionality into independently deployable services",
+      "microservices enable independent scaling and technology choices",
+      "microservices introduce networking deployment monitoring and consistency complexity",
+      "a modular monolith can be appropriate for many systems"
+    ],
+    "questionPatterns": [
+      "When would you choose microservices over a monolith?",
+      "Why shouldn't every startup begin with microservices?"
+    ],
+    "evaluationCriteria": [
+      "explains tradeoffs rather than declaring one architecture universally better",
+      "recognizes operational complexity",
+      "considers team size scale and domain boundaries"
+    ],
+    "followUpConcepts": [
+      "Microservices Communication",
+      "Service Discovery"
+    ]
+  },
+  {
+    "topic": "Microservices Communication",
+    "difficulty": "hard",
+    "concepts": [
+      "services can communicate synchronously or asynchronously",
+      "HTTP and RPC are common synchronous approaches",
+      "message brokers enable asynchronous communication",
+      "network calls can fail independently",
+      "timeouts retries and circuit breakers improve resilience"
+    ],
+    "questionPatterns": [
+      "How do microservices communicate with each other?",
+      "When would you choose asynchronous communication over HTTP?"
+    ],
+    "evaluationCriteria": [
+      "distinguishes synchronous and asynchronous communication",
+      "understands network failure concerns",
+      "selects communication style based on requirements"
+    ],
+    "followUpConcepts": [
+      "Circuit Breaker Pattern",
+      "Message Queues"
+    ]
+  },
+  {
+    "topic": "Service Discovery",
+    "difficulty": "hard",
+    "concepts": [
+      "service instances can change dynamically",
+      "service discovery maps logical service names to available instances",
+      "client-side discovery lets clients select instances",
+      "server-side discovery uses an intermediary such as a load balancer",
+      "container orchestration platforms often provide built-in discovery mechanisms"
+    ],
+    "questionPatterns": [
+      "How does one microservice find another when instances constantly change?",
+      "What is service discovery?"
+    ],
+    "evaluationCriteria": [
+      "understands dynamic service locations",
+      "distinguishes discovery approaches",
+      "connects discovery to modern orchestration platforms"
+    ],
+    "followUpConcepts": [
+      "Microservices Architecture",
+      "Load Balancing"
+    ]
+  },
+  {
+    "topic": "Circuit Breaker Pattern",
+    "difficulty": "hard",
+    "concepts": [
+      "circuit breaker prevents repeated calls to a failing dependency",
+      "closed state allows normal requests",
+      "open state rejects calls quickly",
+      "half-open state tests whether dependency recovered",
+      "helps prevent cascading failures"
+    ],
+    "questionPatterns": [
+      "What is the circuit breaker pattern?",
+      "How does a circuit breaker prevent cascading failures?"
+    ],
+    "evaluationCriteria": [
+      "explains closed open and half-open states",
+      "connects failure isolation to system resilience",
+      "distinguishes circuit breaking from simple retrying"
+    ],
+    "followUpConcepts": [
+      "Retry Strategies",
+      "Fault Tolerance"
+    ]
+  },
+  {
+    "topic": "Retry Strategies and Exponential Backoff",
+    "difficulty": "hard",
+    "concepts": [
+      "temporary failures may succeed when retried",
+      "immediate aggressive retries can worsen overload",
+      "exponential backoff increases delay between attempts",
+      "jitter randomizes delays to prevent synchronized retry storms",
+      "only safe or idempotent operations should be automatically retried without additional protection"
+    ],
+    "questionPatterns": [
+      "Why use exponential backoff when retrying failed requests?",
+      "What is a retry storm?"
+    ],
+    "evaluationCriteria": [
+      "understands retries can amplify failures",
+      "explains backoff and jitter",
+      "considers idempotency before retrying operations"
+    ],
+    "followUpConcepts": [
+      "Circuit Breaker Pattern",
+      "Idempotency"
+    ]
+  },
+  {
+    "topic": "Rate Limiting",
+    "difficulty": "medium",
+    "concepts": [
+      "rate limiting controls how frequently clients can perform operations",
+      "fixed window is simple but allows boundary bursts",
+      "sliding window provides smoother enforcement",
+      "token bucket supports controlled bursts",
+      "distributed rate limiting requires shared or coordinated state"
+    ],
+    "questionPatterns": [
+      "How would you design a distributed rate limiter?",
+      "What's the difference between token bucket and fixed window?"
+    ],
+    "evaluationCriteria": [
+      "explains common rate-limiting algorithms",
+      "recognizes distributed state requirements",
+      "connects rate limiting to abuse protection and resource management"
+    ],
+    "followUpConcepts": [
+      "Redis",
+      "Distributed Counters"
+    ]
   },
   {
     "topic": "Consistent Hashing",
     "difficulty": "hard",
-    "concepts": ["minimizes remapping when nodes are added/removed", "hash ring concept", "use case: distributed caching, sharding"],
-    "questionPatterns": ["Why is consistent hashing preferred over simple modulo hashing when scaling a distributed cache?", "What happens to key distribution when you add a node with consistent hashing versus modulo hashing?"],
-    "evaluationCriteria": ["explains modulo hashing requires remapping almost everything when node count changes", "describes the hash ring concept at a basic level", "understands the benefit: only a fraction of keys remap on node changes"],
-    "followUpConcepts": ["Database Sharding"]
+    "concepts": [
+      "consistent hashing distributes keys across a logical hash ring",
+      "adding or removing nodes moves only a subset of keys",
+      "virtual nodes improve distribution",
+      "commonly applied in distributed caching and partitioning systems"
+    ],
+    "questionPatterns": [
+      "What problem does consistent hashing solve?",
+      "Why are virtual nodes used?"
+    ],
+    "evaluationCriteria": [
+      "understands reduced redistribution when topology changes",
+      "explains the hash ring concept",
+      "connects virtual nodes to load distribution"
+    ],
+    "followUpConcepts": [
+      "Database Sharding",
+      "Distributed Caching"
+    ]
+  },
+  {
+    "topic": "Distributed Locks",
+    "difficulty": "hard",
+    "concepts": [
+      "distributed locks coordinate access across multiple processes or machines",
+      "locks require expiration to reduce permanent deadlock risk",
+      "lock ownership should be validated before release",
+      "network failures make distributed locking more complex than local mutexes",
+      "some workflows are better designed using idempotency rather than locking"
+    ],
+    "questionPatterns": [
+      "When would you need a distributed lock?",
+      "Why is implementing a distributed lock more difficult than using a normal mutex?"
+    ],
+    "evaluationCriteria": [
+      "understands cross-instance coordination",
+      "considers expiration and ownership",
+      "recognizes distributed failure scenarios"
+    ],
+    "followUpConcepts": [
+      "Distributed Systems",
+      "Idempotency"
+    ]
+  },
+  {
+    "topic": "Distributed Transactions",
+    "difficulty": "hard",
+    "concepts": [
+      "operations across multiple services cannot rely on one local database transaction",
+      "two-phase commit provides coordinated atomic commitment but has availability and complexity costs",
+      "Saga pattern coordinates multiple local transactions",
+      "compensating actions undo or offset completed steps",
+      "eventual consistency is common in distributed workflows"
+    ],
+    "questionPatterns": [
+      "How would you handle a transaction spanning multiple microservices?",
+      "What is the Saga pattern?"
+    ],
+    "evaluationCriteria": [
+      "understands limitations of local ACID transactions across services",
+      "explains Saga and compensation",
+      "recognizes distributed transaction tradeoffs"
+    ],
+    "followUpConcepts": [
+      "Saga Pattern",
+      "Event Driven Architecture"
+    ]
+  },
+  {
+    "topic": "WebSockets at Scale",
+    "difficulty": "hard",
+    "concepts": [
+      "WebSockets maintain persistent bidirectional connections",
+      "connections are held by particular server instances",
+      "horizontal scaling requires routing messages across instances",
+      "shared pub-sub infrastructure can coordinate message delivery",
+      "connection counts affect memory and load-balancing strategy"
+    ],
+    "questionPatterns": [
+      "How would you scale a WebSocket-based chat application?",
+      "How does one server send a message to a user connected to another server?"
+    ],
+    "evaluationCriteria": [
+      "identifies connection ownership problem",
+      "introduces cross-server messaging infrastructure",
+      "considers connection management and load balancing"
+    ],
+    "followUpConcepts": [
+      "Pub Sub Systems",
+      "Designing a Scalable Chat Application"
+    ]
+  },
+  {
+    "topic": "Long Polling vs WebSockets vs Server Sent Events",
+    "difficulty": "medium",
+    "concepts": [
+      "long polling repeatedly holds and renews HTTP requests",
+      "WebSockets provide bidirectional persistent communication",
+      "Server-Sent Events provide server-to-client streaming over HTTP",
+      "communication requirements determine the appropriate technology"
+    ],
+    "questionPatterns": [
+      "When would you choose WebSockets over Server-Sent Events?",
+      "What's the difference between long polling and WebSockets?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes communication direction",
+      "understands connection behavior",
+      "selects technology based on use case"
+    ],
+    "followUpConcepts": [
+      "WebSockets at Scale",
+      "Real Time Systems"
+    ]
+  },
+  {
+    "topic": "Object Storage",
+    "difficulty": "medium",
+    "concepts": [
+      "object storage is designed for files and large binary objects",
+      "objects are accessed using identifiers or keys",
+      "application databases commonly store metadata and object references",
+      "CDNs can distribute stored objects efficiently",
+      "direct client uploads can reduce application server bandwidth"
+    ],
+    "questionPatterns": [
+      "Where would you store millions of uploaded images?",
+      "Why shouldn't you normally store large video files directly inside your application database?"
+    ],
+    "evaluationCriteria": [
+      "selects object storage for large binary content",
+      "separates metadata from file storage",
+      "connects object storage with CDN delivery"
+    ],
+    "followUpConcepts": [
+      "Content Delivery Network",
+      "Pre Signed URLs"
+    ]
+  },
+  {
+    "topic": "Data Replication and Availability",
+    "difficulty": "hard",
+    "concepts": [
+      "replication creates redundant copies of data",
+      "redundancy allows service continuation after some failures",
+      "synchronous replication improves consistency but can increase latency",
+      "asynchronous replication improves write latency but can lose recent updates during failures",
+      "failover mechanisms promote healthy replicas when necessary"
+    ],
+    "questionPatterns": [
+      "How does replication improve availability?",
+      "What's the tradeoff between synchronous and asynchronous replication?"
+    ],
+    "evaluationCriteria": [
+      "connects redundancy to failure tolerance",
+      "understands latency and consistency tradeoffs",
+      "mentions failover"
+    ],
+    "followUpConcepts": [
+      "High Availability",
+      "Database Replication"
+    ]
+  },
+  {
+    "topic": "High Availability and Fault Tolerance",
+    "difficulty": "hard",
+    "concepts": [
+      "high availability minimizes service downtime",
+      "fault tolerance allows systems to continue operating despite failures",
+      "redundancy removes single points of failure",
+      "health checks and automatic failover support recovery",
+      "systems should expect component failures"
+    ],
+    "questionPatterns": [
+      "How would you design a highly available application?",
+      "What is a single point of failure?"
+    ],
+    "evaluationCriteria": [
+      "identifies and removes critical single points of failure",
+      "uses redundancy and failover appropriately",
+      "considers failures across application database and infrastructure layers"
+    ],
+    "followUpConcepts": [
+      "Disaster Recovery",
+      "Load Balancing"
+    ]
+  },
+  {
+    "topic": "Disaster Recovery",
+    "difficulty": "hard",
+    "concepts": [
+      "backups protect against data loss",
+      "RPO defines acceptable amount of data loss measured in time",
+      "RTO defines acceptable recovery duration",
+      "multi-region architecture can improve resilience",
+      "backups must be tested through restoration"
+    ],
+    "questionPatterns": [
+      "What's the difference between RPO and RTO?",
+      "Why isn't simply creating backups enough?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains RPO and RTO",
+      "mentions restore testing",
+      "aligns recovery strategy with business requirements"
+    ],
+    "followUpConcepts": [
+      "High Availability",
+      "Multi Region Architecture"
+    ]
+  },
+  {
+    "topic": "Observability",
+    "difficulty": "medium",
+    "concepts": [
+      "logs record discrete application events",
+      "metrics measure numerical system behavior over time",
+      "traces follow requests across distributed components",
+      "correlation IDs help connect related operations",
+      "monitoring and alerting should focus on meaningful service indicators"
+    ],
+    "questionPatterns": [
+      "What's the difference between logs metrics and traces?",
+      "How would you debug a slow request across multiple microservices?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes observability signals",
+      "connects distributed tracing to cross-service debugging",
+      "understands alerting should be actionable"
+    ],
+    "followUpConcepts": [
+      "Distributed Tracing",
+      "System Monitoring"
+    ]
+  },
+  {
+    "topic": "Single Point of Failure",
+    "difficulty": "medium",
+    "concepts": [
+      "a single point of failure can bring down an entire critical system path",
+      "redundancy reduces dependency on individual components",
+      "databases load balancers caches and message brokers can all become single points of failure",
+      "redundancy alone is insufficient without failover"
+    ],
+    "questionPatterns": [
+      "What is a single point of failure?",
+      "Your application has ten backend servers but one database. Is it fully highly available?"
+    ],
+    "evaluationCriteria": [
+      "identifies hidden infrastructure dependencies",
+      "understands end-to-end availability",
+      "includes failover rather than only duplicate components"
+    ],
+    "followUpConcepts": [
+      "High Availability and Fault Tolerance",
+      "Database Replication"
+    ]
   },
   {
     "topic": "Designing a URL Shortener",
     "difficulty": "medium",
-    "concepts": ["base62 encoding vs hashing for short codes", "collision handling", "read-heavy system, so caching/replication matters more than write scaling", "redirect status code choice (301 vs 302)"],
-    "questionPatterns": ["Walk me through how you'd design a URL shortener like bit.ly, focusing on how short codes are generated.", "Is a URL shortener read-heavy or write-heavy, and how does that shape your design?"],
-    "evaluationCriteria": ["proposes a reasonable short-code generation strategy (counter+base62, or hash+collision check)", "correctly identifies the system as read-heavy", "connects that to caching/replication being prioritized over write throughput"],
-    "followUpConcepts": ["Caching Layers (CDN Redis Browser)", "Consistent Hashing"]
-  },
-  {
-    "topic": "Designing a Rate Limiter",
-    "difficulty": "medium",
-    "concepts": ["where to enforce it: gateway vs per-service", "storing counters in Redis for distributed consistency", "algorithm choice tradeoff (token bucket vs sliding window)"],
-    "questionPatterns": ["How would you design a rate limiter that works correctly across multiple server instances?", "Why can't you just keep a rate limit counter in each server's local memory?"],
-    "evaluationCriteria": ["identifies the need for a shared store (Redis) across instances", "explains local in-memory counters break under horizontal scaling", "picks and justifies an algorithm"],
-    "followUpConcepts": ["Rate Limiting Algorithms", "Rate Limiting"]
-  },
-  {
-    "topic": "CAP Theorem in System Design Context",
-    "difficulty": "hard",
-    "concepts": ["applying CAP tradeoffs to real design decisions", "choosing AP vs CP based on product requirements", "example: chat delivery (AP) vs payment processing (CP)"],
-    "questionPatterns": ["Would you design a chat app's message delivery to favor consistency or availability, and why?", "Give an example of a feature where you'd deliberately choose availability over strict consistency."],
-    "evaluationCriteria": ["applies CAP correctly to a concrete product scenario, not just the abstract theorem", "justifies the choice with real user-experience reasoning", "shows they understand this is a deliberate design decision, not a default"],
-    "followUpConcepts": ["CAP Theorem", "Data Consistency Models"]
-  },
-  {
-    "topic": "Content Delivery Networks",
-    "difficulty": "easy",
-    "concepts": ["edge servers close to users reduce latency", "caching static assets", "origin server fallback on cache miss"],
-    "questionPatterns": ["How does a CDN reduce load time for users far from your origin server?", "What happens on a CDN cache miss?"],
-    "evaluationCriteria": ["explains edge-location proximity reducing latency correctly", "understands cache miss falls back to origin and then populates the edge cache", "gives a reasonable example of CDN-appropriate content (images, JS bundles)"],
-    "followUpConcepts": ["Caching Layers (CDN Redis Browser)"]
-  },
-  {
-    "topic": "Designing a Notification System",
-    "difficulty": "hard",
-    "concepts": ["fan-out on write vs fan-out on read", "queue-based async delivery", "multiple channels (email, push, in-app)", "your own wishlist/overdue-book notification cron experience"],
-    "questionPatterns": ["You built notification systems for book requests and wishlists — how would that design change at a much larger scale, say millions of users?", "What's the difference between fan-out on write and fan-out on read for delivering notifications?"],
-    "evaluationCriteria": ["connects the answer back to their real cron-based notification experience as a starting point", "explains fan-out tradeoff (write-heavy vs read-heavy) correctly", "proposes queue-based decoupling for scale"],
-    "followUpConcepts": ["Message Queues", "WebSockets vs Socket.io vs Polling"]
+    "concepts": [
+      "short code generation",
+      "key-value mapping from short code to original URL",
+      "read-heavy workload",
+      "caching popular URLs",
+      "database indexing and partitioning",
+      "redirect response behavior"
+    ],
+    "questionPatterns": [
+      "Design a URL shortening service like TinyURL.",
+      "How would you generate unique short URLs at scale?"
+    ],
+    "evaluationCriteria": [
+      "clarifies traffic and retention requirements",
+      "designs a unique ID strategy",
+      "recognizes read-heavy access patterns",
+      "introduces caching and scaling when justified"
+    ],
+    "followUpConcepts": [
+      "Base62 Encoding",
+      "Database Sharding"
+    ]
   },
   {
     "topic": "Designing a Scalable Chat Application",
     "difficulty": "hard",
-    "concepts": ["persistent WebSocket connections per user", "message delivery guarantees and ordering", "horizontal scaling challenge: routing a message to the right server holding that user's connection", "your own Socket.io experience as a starting point"],
-    "questionPatterns": ["You've used Socket.io for real-time notifications — how would you scale that to millions of concurrent connections across multiple servers?", "What problem arises when you horizontally scale a WebSocket server, and how would you solve it?"],
-    "evaluationCriteria": ["grounds the answer in their real Socket.io experience", "identifies the cross-server routing problem (a message needs to reach a specific server holding a specific connection)", "proposes a plausible solution (pub/sub layer like Redis, sticky sessions)"],
-    "followUpConcepts": ["WebSockets vs Socket.io vs Polling", "Load Balancer Types"]
+    "concepts": [
+      "persistent WebSocket connections",
+      "user connection management",
+      "message persistence",
+      "cross-server message routing",
+      "online presence",
+      "message ordering and delivery guarantees",
+      "offline message handling"
+    ],
+    "questionPatterns": [
+      "Design a scalable real-time chat application.",
+      "How would you deliver a message when the sender and receiver are connected to different servers?"
+    ],
+    "evaluationCriteria": [
+      "uses persistent connections appropriately",
+      "solves cross-instance routing",
+      "separates real-time delivery from durable message storage",
+      "discusses ordering delivery and offline users"
+    ],
+    "followUpConcepts": [
+      "WebSockets at Scale",
+      "Message Queues"
+    ]
+  },
+  {
+    "topic": "Designing a Notification System",
+    "difficulty": "hard",
+    "concepts": [
+      "supports channels such as push email and SMS",
+      "notification requests should be processed asynchronously",
+      "queues buffer workloads",
+      "workers interact with external providers",
+      "retry policies handle temporary failures",
+      "user preferences determine eligible channels",
+      "deduplication prevents repeated notifications"
+    ],
+    "questionPatterns": [
+      "Design a scalable notification system.",
+      "How would you handle millions of notifications during a traffic spike?"
+    ],
+    "evaluationCriteria": [
+      "uses asynchronous processing",
+      "separates notification creation from delivery",
+      "handles retries and duplicate processing",
+      "considers user preferences and provider failures"
+    ],
+    "followUpConcepts": [
+      "Message Queues",
+      "Rate Limiting"
+    ]
+  },
+  {
+    "topic": "Designing a File Upload System",
+    "difficulty": "hard",
+    "concepts": [
+      "large files should avoid unnecessary application-server buffering",
+      "object storage provides durable file storage",
+      "pre-signed URLs can enable direct client uploads",
+      "metadata is stored separately",
+      "background workers can process uploaded files",
+      "CDNs distribute processed content"
+    ],
+    "questionPatterns": [
+      "Design a scalable image or video upload system.",
+      "Why might you upload directly from the client to object storage?"
+    ],
+    "evaluationCriteria": [
+      "avoids routing every large file through application memory unnecessarily",
+      "uses object storage appropriately",
+      "supports asynchronous processing",
+      "considers security validation and upload authorization"
+    ],
+    "followUpConcepts": [
+      "Object Storage",
+      "Content Delivery Network"
+    ]
+  },
+  {
+    "topic": "Designing a Search Autocomplete System",
+    "difficulty": "hard",
+    "concepts": [
+      "prefix-based query retrieval",
+      "Trie can support prefix matching",
+      "popular suggestions can be precomputed",
+      "ranking can use frequency recency and personalization",
+      "caching improves latency for popular prefixes",
+      "updates can be processed asynchronously"
+    ],
+    "questionPatterns": [
+      "Design a search autocomplete system.",
+      "How would you return suggestions within a few milliseconds?"
+    ],
+    "evaluationCriteria": [
+      "recognizes low-latency requirement",
+      "proposes appropriate prefix retrieval structures",
+      "includes ranking strategy",
+      "considers caching and asynchronous updates"
+    ],
+    "followUpConcepts": [
+      "Trie",
+      "Caching Fundamentals"
+    ]
+  },
+  {
+    "topic": "Designing a Rate Limiter",
+    "difficulty": "hard",
+    "concepts": [
+      "rate limit key identifies user API key or IP",
+      "token bucket supports controlled bursts",
+      "sliding window provides more accurate rate tracking",
+      "distributed storage can coordinate limits across servers",
+      "atomic operations prevent race conditions"
+    ],
+    "questionPatterns": [
+      "Design a distributed API rate limiter.",
+      "Where would you store rate-limit counters when running multiple backend instances?"
+    ],
+    "evaluationCriteria": [
+      "selects an appropriate algorithm",
+      "handles distributed coordination",
+      "considers atomic counter updates",
+      "defines behavior when rate limit infrastructure fails"
+    ],
+    "followUpConcepts": [
+      "Rate Limiting",
+      "Distributed Counters"
+    ]
+  },
+  {
+    "topic": "System Design Tradeoffs",
+    "difficulty": "hard",
+    "concepts": [
+      "scalability can increase operational complexity",
+      "stronger consistency can increase latency or reduce availability during failures",
+      "caching improves performance but introduces stale-data concerns",
+      "replication improves availability but introduces synchronization concerns",
+      "microservices improve independent scaling but introduce distributed-system complexity",
+      "architecture should optimize for actual requirements rather than maximum theoretical scale"
+    ],
+    "questionPatterns": [
+      "What tradeoffs did you make in your design?",
+      "Why didn't you choose microservices or sharding from the beginning?"
+    ],
+    "evaluationCriteria": [
+      "explains why each major component exists",
+      "acknowledges disadvantages of chosen approaches",
+      "avoids unnecessary overengineering",
+      "connects architectural choices directly to stated requirements"
+    ],
+    "followUpConcepts": [
+      "System Design Fundamentals",
+      "Capacity Estimation"
+    ]
   }
 ]

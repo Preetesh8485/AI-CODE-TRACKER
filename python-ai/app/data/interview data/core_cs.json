@@ -2,161 +2,1197 @@
   {
     "topic": "Process vs Thread",
     "difficulty": "easy",
-    "concepts": ["separate memory space per process", "threads share memory within a process", "context switch cost differs", "IPC vs shared memory communication"],
-    "questionPatterns": ["What's the difference between a process and a thread?", "Why would you choose multithreading over multiprocessing for a given task?"],
-    "evaluationCriteria": ["mentions memory isolation vs sharing", "mentions context-switch overhead difference", "gives a concrete use case for each"],
-    "followUpConcepts": ["Deadlock", "Semaphore vs Mutex"]
+    "concepts": [
+      "processes have separate memory spaces",
+      "threads within a process share memory",
+      "threads have lower creation and context-switch overhead",
+      "process isolation provides stronger fault isolation"
+    ],
+    "questionPatterns": [
+      "What's the difference between a process and a thread?",
+      "Why are threads generally considered lighter than processes?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes separate versus shared memory",
+      "explains the relative overhead of processes and threads",
+      "understands the isolation versus communication tradeoff"
+    ],
+    "followUpConcepts": [
+      "Context Switching",
+      "Multithreading and Concurrency"
+    ]
   },
   {
-    "topic": "Deadlock",
+    "topic": "Context Switching",
     "difficulty": "medium",
-    "concepts": ["mutual exclusion", "hold and wait", "no preemption", "circular wait", "prevention vs avoidance vs detection"],
-    "questionPatterns": ["What conditions must hold for a deadlock to occur?", "How would you prevent deadlock in a system with multiple shared resources?"],
-    "evaluationCriteria": ["names at least 3 of the 4 necessary conditions", "proposes a concrete prevention strategy (lock ordering, timeout)", "distinguishes prevention from detection"],
-    "followUpConcepts": ["Semaphore vs Mutex", "CPU Scheduling"]
-  },
-  {
-    "topic": "Virtual Memory and Paging",
-    "difficulty": "medium",
-    "concepts": ["page table", "page fault", "demand paging", "thrashing", "translation lookaside buffer (TLB)"],
-    "questionPatterns": ["Explain how virtual memory allows a process to use more memory than physically available.", "What is thrashing and what causes it?"],
-    "evaluationCriteria": ["explains page fault handling correctly", "connects thrashing to excessive paging under memory pressure", "mentions TLB's role in speeding up translation"],
-    "followUpConcepts": ["CPU Scheduling", "Process vs Thread"]
+    "concepts": [
+      "CPU switches execution between processes or threads",
+      "execution state must be saved and restored",
+      "context switching introduces overhead",
+      "excessive switching can reduce performance"
+    ],
+    "questionPatterns": [
+      "What happens during a context switch?",
+      "Why can having too many threads hurt performance?"
+    ],
+    "evaluationCriteria": [
+      "explains saving and restoring execution state",
+      "recognizes context switching has computational overhead",
+      "connects excessive concurrency to possible performance degradation"
+    ],
+    "followUpConcepts": [
+      "Process vs Thread",
+      "CPU Scheduling Algorithms"
+    ]
   },
   {
     "topic": "CPU Scheduling Algorithms",
     "difficulty": "medium",
-    "concepts": ["FCFS", "round robin", "priority scheduling", "starvation", "preemptive vs non-preemptive"],
-    "questionPatterns": ["Compare round robin and priority scheduling.", "How does starvation happen and how is it typically avoided?"],
-    "evaluationCriteria": ["correctly explains at least two scheduling algorithms", "mentions aging as a starvation fix", "distinguishes preemptive from non-preemptive correctly"],
-    "followUpConcepts": ["Deadlock", "Process vs Thread"]
+    "concepts": [
+      "first come first served",
+      "shortest job first",
+      "round robin",
+      "priority scheduling",
+      "preemptive versus non-preemptive scheduling",
+      "starvation and fairness"
+    ],
+    "questionPatterns": [
+      "What's the difference between preemptive and non-preemptive scheduling?",
+      "Why is Round Robin commonly used in time-sharing systems?"
+    ],
+    "evaluationCriteria": [
+      "explains major scheduling approaches correctly",
+      "connects Round Robin to time slices and fairness",
+      "recognizes starvation as a possible scheduling problem"
+    ],
+    "followUpConcepts": [
+      "Context Switching",
+      "Starvation and Aging"
+    ]
   },
   {
-    "topic": "Semaphore vs Mutex",
+    "topic": "Multithreading and Concurrency",
     "difficulty": "medium",
-    "concepts": ["mutex is binary + ownership", "semaphore is counting, no ownership", "signaling vs mutual exclusion", "producer-consumer use case"],
-    "questionPatterns": ["What's the difference between a semaphore and a mutex?", "When would you use a semaphore instead of a mutex?"],
-    "evaluationCriteria": ["correctly states mutex has ownership, semaphore doesn't", "gives a producer-consumer or resource-pool example for semaphore", "doesn't conflate the two"],
-    "followUpConcepts": ["Deadlock", "Process vs Thread"]
+    "concepts": [
+      "multiple execution flows sharing resources",
+      "concurrency does not necessarily mean parallel execution",
+      "shared state introduces synchronization problems",
+      "race conditions can occur without coordination"
+    ],
+    "questionPatterns": [
+      "What's the difference between concurrency and parallelism?",
+      "What problems can occur when multiple threads modify shared data?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes concurrency from parallelism",
+      "identifies race conditions as a shared-state problem",
+      "understands synchronization is required around critical shared resources"
+    ],
+    "followUpConcepts": [
+      "Race Conditions and Critical Sections",
+      "Mutex vs Semaphore"
+    ]
+  },
+  {
+    "topic": "Race Conditions and Critical Sections",
+    "difficulty": "medium",
+    "concepts": [
+      "result depends on unpredictable execution ordering",
+      "critical section accesses shared mutable state",
+      "mutual exclusion protects critical sections",
+      "race conditions can produce intermittent bugs"
+    ],
+    "questionPatterns": [
+      "What is a race condition?",
+      "Two threads increment the same counter. Why might the final value be incorrect?"
+    ],
+    "evaluationCriteria": [
+      "explains that unsynchronized operations can interleave",
+      "identifies shared mutable state as the core issue",
+      "proposes appropriate synchronization"
+    ],
+    "followUpConcepts": [
+      "Mutex vs Semaphore",
+      "Deadlocks"
+    ]
+  },
+  {
+    "topic": "Mutex vs Semaphore",
+    "difficulty": "medium",
+    "concepts": [
+      "mutex provides mutual exclusion",
+      "binary ownership model for locking critical sections",
+      "semaphore maintains a permit count",
+      "semaphores can limit access to a finite resource pool"
+    ],
+    "questionPatterns": [
+      "What's the difference between a mutex and a semaphore?",
+      "When would you use a counting semaphore instead of a mutex?"
+    ],
+    "evaluationCriteria": [
+      "correctly connects mutexes to exclusive access",
+      "understands semaphores maintain available permits",
+      "provides a reasonable resource-pool use case"
+    ],
+    "followUpConcepts": [
+      "Race Conditions and Critical Sections",
+      "Deadlocks"
+    ]
+  },
+  {
+    "topic": "Deadlocks",
+    "difficulty": "medium",
+    "concepts": [
+      "mutual exclusion",
+      "hold and wait",
+      "no preemption",
+      "circular wait",
+      "deadlock prevention and avoidance"
+    ],
+    "questionPatterns": [
+      "What conditions must exist for a deadlock to occur?",
+      "How could two threads holding different locks deadlock each other?"
+    ],
+    "evaluationCriteria": [
+      "identifies the four Coffman conditions",
+      "can describe a concrete circular-wait scenario",
+      "suggests breaking at least one required condition as prevention"
+    ],
+    "followUpConcepts": [
+      "Mutex vs Semaphore",
+      "Starvation and Aging"
+    ]
+  },
+  {
+    "topic": "Deadlock vs Starvation",
+    "difficulty": "medium",
+    "concepts": [
+      "deadlock means blocked participants cannot make progress",
+      "starvation means one participant repeatedly fails to obtain resources",
+      "unfair scheduling can cause starvation",
+      "aging can reduce starvation"
+    ],
+    "questionPatterns": [
+      "What's the difference between deadlock and starvation?",
+      "Can a system continue running while one process is starving?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes total circular blocking from indefinite resource denial",
+      "understands other processes may continue during starvation",
+      "connects aging to starvation prevention"
+    ],
+    "followUpConcepts": [
+      "Deadlocks",
+      "CPU Scheduling Algorithms"
+    ]
+  },
+  {
+    "topic": "Virtual Memory",
+    "difficulty": "medium",
+    "concepts": [
+      "provides processes with a logical address space",
+      "maps virtual addresses to physical memory",
+      "allows programs larger than available physical memory",
+      "provides process memory isolation"
+    ],
+    "questionPatterns": [
+      "What is virtual memory and why do operating systems use it?",
+      "Can a program use more memory than the available RAM?"
+    ],
+    "evaluationCriteria": [
+      "explains logical versus physical memory",
+      "understands memory can be backed by secondary storage",
+      "mentions isolation as an important benefit"
+    ],
+    "followUpConcepts": [
+      "Paging and Page Faults",
+      "Memory Management"
+    ]
+  },
+  {
+    "topic": "Paging and Page Faults",
+    "difficulty": "medium",
+    "concepts": [
+      "memory divided into fixed-size pages and frames",
+      "page tables map virtual pages to physical frames",
+      "page fault occurs when required page is not currently available in physical memory",
+      "operating system loads the required page before execution continues"
+    ],
+    "questionPatterns": [
+      "What happens when a page fault occurs?",
+      "What's the purpose of a page table?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains virtual-to-physical address mapping",
+      "understands a page fault may require loading data from secondary storage",
+      "recognizes page faults are significantly more expensive than normal memory access"
+    ],
+    "followUpConcepts": [
+      "Virtual Memory",
+      "Page Replacement Algorithms"
+    ]
+  },
+  {
+    "topic": "Page Replacement Algorithms",
+    "difficulty": "hard",
+    "concepts": [
+      "FIFO replaces the oldest loaded page",
+      "LRU approximates replacing the least recently used page",
+      "optimal replacement removes the page needed furthest in the future",
+      "page replacement affects page fault frequency"
+    ],
+    "questionPatterns": [
+      "What's the difference between FIFO and LRU page replacement?",
+      "Why can't the optimal page replacement algorithm be implemented perfectly in practice?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains major replacement strategies",
+      "understands optimal replacement requires future knowledge",
+      "connects poor replacement decisions to increased page faults"
+    ],
+    "followUpConcepts": [
+      "Paging and Page Faults",
+      "Thrashing"
+    ]
+  },
+  {
+    "topic": "Thrashing",
+    "difficulty": "hard",
+    "concepts": [
+      "system spends excessive time handling page faults",
+      "insufficient physical frames for active working sets",
+      "frequent swapping reduces useful CPU work",
+      "reducing multiprogramming can help"
+    ],
+    "questionPatterns": [
+      "What is thrashing in an operating system?",
+      "Why can adding more processes sometimes reduce overall system performance?"
+    ],
+    "evaluationCriteria": [
+      "connects thrashing to excessive paging",
+      "understands insufficient memory for active working sets as a cause",
+      "recognizes the system remains busy while doing little useful work"
+    ],
+    "followUpConcepts": [
+      "Virtual Memory",
+      "Page Replacement Algorithms"
+    ]
+  },
+  {
+    "topic": "Stack vs Heap Memory",
+    "difficulty": "easy",
+    "concepts": [
+      "stack commonly stores function call frames and local variables",
+      "heap is used for dynamically allocated objects",
+      "stack allocation follows structured lifetime rules",
+      "heap allocation requires explicit or automatic memory management depending on language"
+    ],
+    "questionPatterns": [
+      "What's the difference between stack and heap memory?",
+      "Why is stack allocation generally faster than heap allocation?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes common stack and heap usage",
+      "understands stack lifetime follows function execution",
+      "recognizes dynamic allocation requires additional management"
+    ],
+    "followUpConcepts": [
+      "Memory Management",
+      "Recursion and Call Stack"
+    ]
   },
   {
     "topic": "TCP vs UDP",
     "difficulty": "easy",
-    "concepts": ["connection-oriented vs connectionless", "reliability and ordering guarantees", "three-way handshake", "latency vs reliability tradeoff"],
-    "questionPatterns": ["Why would a video call use UDP instead of TCP?", "Walk me through the TCP three-way handshake."],
-    "evaluationCriteria": ["correctly maps reliability tradeoff to real use case", "describes SYN, SYN-ACK, ACK accurately", "explains why UDP has lower latency"],
-    "followUpConcepts": ["HTTP vs HTTPS and TLS Handshake", "DNS Resolution"]
+    "concepts": [
+      "TCP is connection-oriented",
+      "TCP provides reliable ordered byte delivery",
+      "UDP is connectionless and does not guarantee delivery or ordering",
+      "latency versus reliability tradeoffs"
+    ],
+    "questionPatterns": [
+      "What's the difference between TCP and UDP?",
+      "Would you choose TCP or UDP for a live video call, and why?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes reliability and ordering guarantees",
+      "understands UDP generally has lower protocol overhead",
+      "selects protocols based on application requirements rather than claiming one is always better"
+    ],
+    "followUpConcepts": [
+      "TCP Three-Way Handshake",
+      "HTTP and HTTPS"
+    ]
   },
   {
-    "topic": "HTTP vs HTTPS and TLS Handshake",
+    "topic": "TCP Three-Way Handshake",
     "difficulty": "medium",
-    "concepts": ["symmetric vs asymmetric encryption", "certificate verification", "TLS handshake steps", "why HTTPS prevents MITM attacks"],
-    "questionPatterns": ["What happens during a TLS handshake?", "Why is HTTPS considered secure against man-in-the-middle attacks?"],
-    "evaluationCriteria": ["explains asymmetric key exchange followed by symmetric session encryption", "mentions certificate authority verification", "connects this to MITM prevention"],
-    "followUpConcepts": ["TCP vs UDP", "REST API Design Principles"]
+    "concepts": [
+      "SYN",
+      "SYN-ACK",
+      "ACK",
+      "establishing connection state",
+      "synchronizing initial sequence numbers"
+    ],
+    "questionPatterns": [
+      "Walk me through the TCP three-way handshake.",
+      "Why does TCP need a handshake before application data is exchanged?"
+    ],
+    "evaluationCriteria": [
+      "correctly states SYN, SYN-ACK and ACK sequence",
+      "understands both endpoints establish connection state",
+      "connects the handshake to reliable communication setup"
+    ],
+    "followUpConcepts": [
+      "TCP vs UDP",
+      "TCP Connection Termination"
+    ]
+  },
+  {
+    "topic": "OSI and TCP IP Models",
+    "difficulty": "easy",
+    "concepts": [
+      "layered networking architecture",
+      "application, transport, network and link responsibilities",
+      "HTTP operates at application layer",
+      "TCP and UDP operate at transport layer",
+      "IP handles network addressing and routing"
+    ],
+    "questionPatterns": [
+      "At which layers do HTTP, TCP and IP operate?",
+      "Why are networking protocols organized into layers?"
+    ],
+    "evaluationCriteria": [
+      "places common protocols in the correct conceptual layers",
+      "understands separation of responsibilities",
+      "can trace a web request through major layers at a high level"
+    ],
+    "followUpConcepts": [
+      "TCP vs UDP",
+      "HTTP Request Lifecycle"
+    ]
   },
   {
     "topic": "DNS Resolution",
+    "difficulty": "medium",
+    "concepts": [
+      "domain names mapped to IP addresses",
+      "browser and operating system caches",
+      "recursive DNS resolver",
+      "root, TLD and authoritative name servers"
+    ],
+    "questionPatterns": [
+      "What happens when you enter a domain name into your browser and the DNS result isn't cached?",
+      "Why does DNS use caching?"
+    ],
+    "evaluationCriteria": [
+      "explains DNS as name-to-address resolution",
+      "understands recursive resolution at a high level",
+      "connects caching to lower latency and reduced DNS traffic"
+    ],
+    "followUpConcepts": [
+      "HTTP Request Lifecycle",
+      "HTTP and HTTPS"
+    ]
+  },
+  {
+    "topic": "HTTP Request Lifecycle",
+    "difficulty": "medium",
+    "concepts": [
+      "DNS lookup",
+      "connection establishment",
+      "TLS handshake for HTTPS",
+      "HTTP request and response",
+      "browser processing and rendering"
+    ],
+    "questionPatterns": [
+      "What happens after you type a URL into a browser and press Enter?",
+      "Walk me through how a request reaches a web server."
+    ],
+    "evaluationCriteria": [
+      "provides a logically ordered high-level flow",
+      "includes DNS and network connection establishment",
+      "recognizes HTTPS introduces TLS before protected HTTP communication"
+    ],
+    "followUpConcepts": [
+      "DNS Resolution",
+      "HTTP and HTTPS"
+    ]
+  },
+  {
+    "topic": "HTTP and HTTPS",
     "difficulty": "easy",
-    "concepts": ["recursive vs iterative resolution", "DNS caching and TTL", "root, TLD, authoritative servers", "CNAME vs A record"],
-    "questionPatterns": ["Walk me through what happens between typing a URL and the browser getting an IP address.", "What's DNS caching and why does it matter?"],
-    "evaluationCriteria": ["describes the resolver → root → TLD → authoritative chain reasonably", "mentions caching reduces repeated lookups", "distinguishes record types if asked"],
-    "followUpConcepts": ["TCP vs UDP", "Load Balancing"]
+    "concepts": [
+      "HTTP transfers application-level web messages",
+      "HTTPS is HTTP protected using TLS",
+      "encryption protects confidentiality",
+      "authentication certificates help verify server identity",
+      "integrity protects against undetected modification"
+    ],
+    "questionPatterns": [
+      "What's the difference between HTTP and HTTPS?",
+      "What security guarantees does HTTPS provide?"
+    ],
+    "evaluationCriteria": [
+      "explains that HTTPS uses TLS rather than being an unrelated protocol",
+      "mentions encryption and server authentication",
+      "understands HTTPS protects data in transit"
+    ],
+    "followUpConcepts": [
+      "TLS and Certificates",
+      "HTTP Request Lifecycle"
+    ]
   },
   {
-    "topic": "Database Normalization",
+    "topic": "HTTP Methods and Idempotency",
     "difficulty": "medium",
-    "concepts": ["1NF, 2NF, 3NF", "removing redundancy", "functional dependency", "when denormalization is preferred"],
-    "questionPatterns": ["Explain normalization up to 3NF with an example.", "When would you deliberately denormalize a schema?"],
-    "evaluationCriteria": ["gives a correct example progressing through normal forms", "explains redundancy reduction as the core goal", "names a valid denormalization tradeoff (read performance)"],
-    "followUpConcepts": ["ACID Properties", "Database Indexing"]
+    "concepts": [
+      "GET retrieves resources",
+      "POST commonly creates or triggers non-idempotent operations",
+      "PUT commonly replaces a resource representation",
+      "PATCH applies partial modifications",
+      "DELETE removes resources",
+      "idempotency means repeating an operation has the same intended effect as performing it once"
+    ],
+    "questionPatterns": [
+      "What's the difference between PUT and PATCH?",
+      "What does it mean for an HTTP method to be idempotent?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes common HTTP method semantics",
+      "explains idempotency based on repeated effect",
+      "recognizes GET, PUT and DELETE are defined as idempotent while POST generally is not"
+    ],
+    "followUpConcepts": [
+      "REST API Design Principles",
+      "HTTP Status Codes"
+    ]
   },
   {
-    "topic": "ACID Properties",
-    "difficulty": "medium",
-    "concepts": ["atomicity", "consistency", "isolation", "durability", "real transaction example"],
-    "questionPatterns": ["Explain ACID with a bank transfer example.", "Which ACID property is most relevant to preventing double-spending?"],
-    "evaluationCriteria": ["correctly defines all four properties", "applies them to a concrete transaction scenario", "identifies atomicity/isolation as central to the double-spend example"],
-    "followUpConcepts": ["Transaction Isolation Levels", "Database Normalization"]
-  },
-  {
-    "topic": "Database Indexing",
-    "difficulty": "medium",
-    "concepts": ["B-Tree index structure", "read vs write tradeoff", "composite indexes", "when an index is NOT used by the query planner"],
-    "questionPatterns": ["How does an index speed up a query, and what does it cost you?", "Why might a query not use an existing index?"],
-    "evaluationCriteria": ["explains B-Tree lookup vs full table scan", "mentions write/insert overhead as the cost", "gives at least one reason an index gets skipped (low selectivity, function on column)"],
-    "followUpConcepts": ["Database Normalization", "Time and Space Complexity"]
-  },
-  {
-    "topic": "Transaction Isolation Levels",
-    "difficulty": "hard",
-    "concepts": ["read uncommitted", "read committed", "repeatable read", "serializable", "dirty read, non-repeatable read, phantom read"],
-    "questionPatterns": ["What's the difference between a dirty read and a phantom read?", "Which isolation level would you pick for a financial ledger and why?"],
-    "evaluationCriteria": ["correctly distinguishes dirty/non-repeatable/phantom reads", "maps isolation levels to which anomalies they prevent", "justifies a level choice with a tradeoff (consistency vs concurrency)"],
-    "followUpConcepts": ["ACID Properties", "Database Normalization"]
-  },
-  {
-    "topic": "Encapsulation and Abstraction",
+    "topic": "HTTP Status Codes",
     "difficulty": "easy",
-    "concepts": ["hiding internal state", "exposing behavior via interface", "difference between the two concepts", "real code example"],
-    "questionPatterns": ["What's the difference between encapsulation and abstraction?", "Give an example of encapsulation from a project you've built."],
-    "evaluationCriteria": ["doesn't conflate encapsulation with abstraction", "gives a concrete example (private fields, getters/setters, or interface)", "connects to why it improves maintainability"],
-    "followUpConcepts": ["Inheritance vs Composition", "SOLID Principles"]
+    "concepts": [
+      "2xx indicates successful handling",
+      "3xx indicates redirection",
+      "4xx indicates client-side request problems",
+      "5xx indicates server-side failures",
+      "common codes include 200, 201, 400, 401, 403, 404, 409 and 500"
+    ],
+    "questionPatterns": [
+      "What's the difference between 401 and 403?",
+      "What status code would you return after successfully creating a resource?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes authentication failure from insufficient authorization",
+      "uses 201 appropriately for resource creation",
+      "understands status-code categories rather than only memorizing numbers"
+    ],
+    "followUpConcepts": [
+      "HTTP Methods and Idempotency",
+      "REST API Design Principles"
+    ]
+  },
+  {
+    "topic": "Cookies Sessions and Tokens",
+    "difficulty": "medium",
+    "concepts": [
+      "cookies are browser-managed storage sent according to cookie rules",
+      "server-side sessions store authentication state on the server",
+      "session identifiers can be stored in cookies",
+      "tokens can carry claims and be validated without traditional server-side session storage"
+    ],
+    "questionPatterns": [
+      "What's the difference between cookie-based sessions and token-based authentication?",
+      "Are cookies and sessions the same thing?"
+    ],
+    "evaluationCriteria": [
+      "correctly separates the cookie storage/transport mechanism from server-side session state",
+      "understands session identifiers can be carried in cookies",
+      "avoids claiming token authentication is automatically more secure"
+    ],
+    "followUpConcepts": [
+      "Authentication vs Authorization",
+      "HTTP and HTTPS"
+    ]
+  },
+  {
+    "topic": "Authentication vs Authorization",
+    "difficulty": "easy",
+    "concepts": [
+      "authentication verifies identity",
+      "authorization determines allowed actions",
+      "authentication usually happens before authorization",
+      "role and permission checks are authorization concerns"
+    ],
+    "questionPatterns": [
+      "What's the difference between authentication and authorization?",
+      "A logged-in user tries to access an admin endpoint. Which security concern decides whether access is allowed?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes identity verification from permission checking",
+      "provides a valid example",
+      "understands being authenticated does not imply access to every resource"
+    ],
+    "followUpConcepts": [
+      "Cookies Sessions and Tokens",
+      "REST API Design Principles"
+    ]
+  },
+  {
+    "topic": "REST API Design Principles",
+    "difficulty": "medium",
+    "concepts": [
+      "resource-oriented URLs",
+      "HTTP methods communicate operation semantics",
+      "stateless requests",
+      "appropriate status codes",
+      "consistent API conventions"
+    ],
+    "questionPatterns": [
+      "What makes an API RESTful?",
+      "How would you design endpoints for managing users and their orders?"
+    ],
+    "evaluationCriteria": [
+      "uses resource-oriented endpoint naming",
+      "applies HTTP methods appropriately",
+      "understands statelessness",
+      "avoids putting every operation into verb-heavy URL paths"
+    ],
+    "followUpConcepts": [
+      "HTTP Methods and Idempotency",
+      "API Versioning"
+    ]
+  },
+  {
+    "topic": "OOP Four Pillars",
+    "difficulty": "easy",
+    "concepts": [
+      "encapsulation",
+      "abstraction",
+      "inheritance",
+      "polymorphism"
+    ],
+    "questionPatterns": [
+      "What are the four pillars of object-oriented programming?",
+      "Give a practical example of each major OOP principle."
+    ],
+    "evaluationCriteria": [
+      "correctly explains all four concepts",
+      "uses examples rather than only memorized definitions",
+      "distinguishes abstraction from encapsulation"
+    ],
+    "followUpConcepts": [
+      "Abstraction vs Encapsulation",
+      "Inheritance vs Composition"
+    ]
+  },
+  {
+    "topic": "Abstraction vs Encapsulation",
+    "difficulty": "medium",
+    "concepts": [
+      "abstraction hides unnecessary implementation complexity behind useful interfaces",
+      "encapsulation groups state and behavior while controlling access",
+      "both reduce complexity in different ways"
+    ],
+    "questionPatterns": [
+      "What's the difference between abstraction and encapsulation?",
+      "Give a practical example where both are used together."
+    ],
+    "evaluationCriteria": [
+      "does not treat the two concepts as identical",
+      "explains abstraction in terms of exposing essential behavior",
+      "explains encapsulation in terms of controlling internal state and implementation"
+    ],
+    "followUpConcepts": [
+      "OOP Four Pillars",
+      "Interfaces and Abstract Classes"
+    ]
   },
   {
     "topic": "Inheritance vs Composition",
     "difficulty": "medium",
-    "concepts": ["is-a vs has-a relationship", "tight coupling from inheritance", "flexibility of composition", "composition over inheritance principle"],
-    "questionPatterns": ["Why do people say 'favor composition over inheritance'?", "Give an example where composition is a better choice than inheritance."],
-    "evaluationCriteria": ["explains is-a vs has-a correctly", "identifies tight coupling / fragile base class problem with deep inheritance", "gives a plausible real example"],
-    "followUpConcepts": ["Encapsulation and Abstraction", "SOLID Principles"]
+    "concepts": [
+      "inheritance models an is-a relationship",
+      "composition builds behavior from contained collaborators",
+      "composition generally creates looser coupling",
+      "deep inheritance hierarchies can become rigid"
+    ],
+    "questionPatterns": [
+      "When would you prefer composition over inheritance?",
+      "Why is 'favor composition over inheritance' common design advice?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes is-a from has-a relationships",
+      "recognizes composition's flexibility",
+      "does not claim inheritance is always bad"
+    ],
+    "followUpConcepts": [
+      "OOP Four Pillars",
+      "SOLID Principles"
+    ]
   },
   {
     "topic": "Polymorphism",
     "difficulty": "easy",
-    "concepts": ["compile-time (overloading) vs runtime (overriding)", "interface-based polymorphism", "real use case"],
-    "questionPatterns": ["What's the difference between method overloading and overriding?", "Where have you used polymorphism in a real project?"],
-    "evaluationCriteria": ["correctly separates overloading from overriding", "gives a genuine example, not just textbook definition", "explains the benefit (extensibility, uniform interface)"],
-    "followUpConcepts": ["Inheritance vs Composition", "SOLID Principles"]
+    "concepts": [
+      "same interface with different implementations",
+      "method overriding as runtime polymorphism",
+      "method overloading where supported as compile-time polymorphism",
+      "programming against abstractions"
+    ],
+    "questionPatterns": [
+      "What is polymorphism? Give a practical example.",
+      "What's the difference between method overloading and overriding?"
+    ],
+    "evaluationCriteria": [
+      "explains polymorphism through interchangeable behavior",
+      "correctly distinguishes overriding from overloading",
+      "provides a meaningful example"
+    ],
+    "followUpConcepts": [
+      "OOP Four Pillars",
+      "Interfaces and Abstract Classes"
+    ]
   },
   {
     "topic": "SOLID Principles",
     "difficulty": "medium",
-    "concepts": ["single responsibility", "open/closed", "Liskov substitution", "interface segregation", "dependency inversion"],
-    "questionPatterns": ["Explain single responsibility principle with an example of violating it.", "What does the open/closed principle mean in practice?"],
-    "evaluationCriteria": ["can explain at least 3 of the 5 principles correctly", "gives a code-level example, not just definitions", "recognizes a violation when described one"],
-    "followUpConcepts": ["Inheritance vs Composition", "Encapsulation and Abstraction"]
+    "concepts": [
+      "single responsibility principle",
+      "open closed principle",
+      "Liskov substitution principle",
+      "interface segregation principle",
+      "dependency inversion principle"
+    ],
+    "questionPatterns": [
+      "What are the SOLID principles and why are they useful?",
+      "Give an example of violating the Single Responsibility Principle."
+    ],
+    "evaluationCriteria": [
+      "explains the purpose rather than only expanding the acronym",
+      "can explain at least several principles with examples",
+      "connects SOLID to maintainability and change management"
+    ],
+    "followUpConcepts": [
+      "Inheritance vs Composition",
+      "Coupling and Cohesion"
+    ]
   },
   {
-    "topic": "Time and Space Complexity",
+    "topic": "Coupling and Cohesion",
+    "difficulty": "medium",
+    "concepts": [
+      "low coupling reduces dependencies between modules",
+      "high cohesion keeps related responsibilities together",
+      "loosely coupled components are easier to replace and test",
+      "poor boundaries increase change propagation"
+    ],
+    "questionPatterns": [
+      "What do low coupling and high cohesion mean?",
+      "Why are they considered desirable properties of software design?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains both concepts",
+      "connects them to maintainability and testability",
+      "provides a reasonable module-level example"
+    ],
+    "followUpConcepts": [
+      "SOLID Principles",
+      "Inheritance vs Composition"
+    ]
+  },
+  {
+    "topic": "ACID Transactions",
+    "difficulty": "medium",
+    "concepts": [
+      "atomicity",
+      "consistency",
+      "isolation",
+      "durability",
+      "transactions preserve defined correctness guarantees across operations"
+    ],
+    "questionPatterns": [
+      "What does ACID stand for?",
+      "Why would transferring money between two accounts require a transaction?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains all four properties",
+      "connects atomicity to all-or-nothing execution",
+      "uses a practical multi-step operation example"
+    ],
+    "followUpConcepts": [
+      "Transaction Isolation Levels",
+      "Database Normalization"
+    ]
+  },
+  {
+    "topic": "Transaction Isolation Levels",
+    "difficulty": "hard",
+    "concepts": [
+      "read uncommitted",
+      "read committed",
+      "repeatable read",
+      "serializable",
+      "dirty reads",
+      "non-repeatable reads",
+      "phantom reads"
+    ],
+    "questionPatterns": [
+      "What problems do database isolation levels try to solve?",
+      "What's the tradeoff between stronger isolation and concurrency?"
+    ],
+    "evaluationCriteria": [
+      "understands isolation controls interactions between concurrent transactions",
+      "can explain common anomalies",
+      "recognizes stronger isolation can reduce concurrency or increase coordination cost"
+    ],
+    "followUpConcepts": [
+      "ACID Transactions",
+      "Database Locks"
+    ]
+  },
+  {
+    "topic": "Database Normalization",
+    "difficulty": "medium",
+    "concepts": [
+      "reducing unnecessary redundancy",
+      "avoiding update anomalies",
+      "first normal form",
+      "second normal form",
+      "third normal form",
+      "denormalization as a deliberate performance tradeoff"
+    ],
+    "questionPatterns": [
+      "Why do we normalize relational databases?",
+      "When might you intentionally denormalize data?"
+    ],
+    "evaluationCriteria": [
+      "connects normalization to reducing redundancy and anomalies",
+      "understands normalization is not simply splitting tables endlessly",
+      "recognizes denormalization can improve specific read patterns at the cost of duplication"
+    ],
+    "followUpConcepts": [
+      "ACID Transactions",
+      "Database Indexing"
+    ]
+  },
+  {
+    "topic": "Database Indexing",
+    "difficulty": "medium",
+    "concepts": [
+      "additional data structure used to accelerate lookups",
+      "B-tree style indexes support ordered searches",
+      "indexes improve reads but add storage and write overhead",
+      "not every column should automatically be indexed"
+    ],
+    "questionPatterns": [
+      "How does a database index improve query performance?",
+      "Why shouldn't you create indexes on every column?"
+    ],
+    "evaluationCriteria": [
+      "understands indexes reduce the amount of data that may need to be scanned",
+      "recognizes write and storage tradeoffs",
+      "understands index usefulness depends on actual query patterns"
+    ],
+    "followUpConcepts": [
+      "Database Normalization",
+      "Hashing and Hash Tables"
+    ]
+  },
+  {
+    "topic": "SQL Joins",
     "difficulty": "easy",
-    "concepts": ["Big-O notation", "best/average/worst case", "amortized complexity", "space-time tradeoff"],
-    "questionPatterns": ["What's the time complexity of your solution and can you reduce it?", "Explain amortized time complexity with an example like dynamic array resizing."],
-    "evaluationCriteria": ["states correct Big-O for their own code when asked", "understands amortized analysis isn't the same as worst-case", "can articulate a space-time tradeoff decision"],
-    "followUpConcepts": ["Hashing and Hash Tables", "Database Indexing"]
+    "concepts": [
+      "inner join",
+      "left join",
+      "right join",
+      "full outer join",
+      "combining related rows using join conditions"
+    ],
+    "questionPatterns": [
+      "What's the difference between an INNER JOIN and a LEFT JOIN?",
+      "Which join would you use if you wanted every user even when they had no orders?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains matching versus preserved rows",
+      "selects LEFT JOIN for preserving all rows from the left relation",
+      "can reason about missing matches"
+    ],
+    "followUpConcepts": [
+      "Database Normalization",
+      "Primary and Foreign Keys"
+    ]
+  },
+  {
+    "topic": "Primary and Foreign Keys",
+    "difficulty": "easy",
+    "concepts": [
+      "primary key uniquely identifies a row",
+      "foreign key references a key in another relation",
+      "referential integrity",
+      "relationships between tables"
+    ],
+    "questionPatterns": [
+      "What's the difference between a primary key and a foreign key?",
+      "How do foreign keys help maintain data integrity?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains identification versus reference",
+      "connects foreign keys to referential integrity",
+      "can provide a simple relational example"
+    ],
+    "followUpConcepts": [
+      "SQL Joins",
+      "Database Normalization"
+    ]
+  },
+  {
+    "topic": "Big O Time and Space Complexity",
+    "difficulty": "easy",
+    "concepts": [
+      "asymptotic growth rate",
+      "worst-case analysis commonly expressed with Big O",
+      "time versus auxiliary space complexity",
+      "constants and lower-order terms ignored asymptotically"
+    ],
+    "questionPatterns": [
+      "What does O(n log n) actually mean?",
+      "What's the time and space complexity of this algorithm?"
+    ],
+    "evaluationCriteria": [
+      "explains complexity as growth rather than exact runtime",
+      "distinguishes time from space complexity",
+      "can analyze simple loops and nested operations"
+    ],
+    "followUpConcepts": [
+      "Amortized Analysis",
+      "Common Algorithmic Paradigms"
+    ]
+  },
+  {
+    "topic": "Amortized Analysis",
+    "difficulty": "medium",
+    "concepts": [
+      "average cost over a sequence of operations",
+      "individual operations may occasionally be expensive",
+      "dynamic array resizing as a classic example",
+      "different from average-case probability analysis"
+    ],
+    "questionPatterns": [
+      "Why is appending to a dynamic array considered O(1) amortized if resizing can take O(n)?",
+      "What's the difference between amortized complexity and average-case complexity?"
+    ],
+    "evaluationCriteria": [
+      "explains spreading occasional expensive operations across many cheap ones",
+      "uses dynamic array growth correctly",
+      "does not confuse amortized analysis with probabilistic average-case analysis"
+    ],
+    "followUpConcepts": [
+      "Big O Time and Space Complexity",
+      "Dynamic Arrays"
+    ]
   },
   {
     "topic": "Hashing and Hash Tables",
     "difficulty": "medium",
-    "concepts": ["hash function properties", "collision handling (chaining, open addressing)", "average O(1) lookup", "load factor and resizing"],
-    "questionPatterns": ["How does a hash table achieve O(1) average lookup?", "How do you handle hash collisions?"],
-    "evaluationCriteria": ["explains hash function mapping to buckets", "names a collision resolution strategy correctly", "acknowledges worst-case degradation to O(n)"],
-    "followUpConcepts": ["Time and Space Complexity", "Database Indexing"]
+    "concepts": [
+      "hash function maps keys to bucket locations",
+      "collisions are unavoidable in finite tables",
+      "collision handling through chaining or open addressing",
+      "average constant-time lookup under suitable assumptions",
+      "load factor affects performance"
+    ],
+    "questionPatterns": [
+      "How does a hash table achieve average O(1) lookup?",
+      "What happens when two keys produce the same hash?"
+    ],
+    "evaluationCriteria": [
+      "understands hashing does not eliminate collisions",
+      "explains at least one collision-resolution strategy",
+      "connects high load factor to degraded performance"
+    ],
+    "followUpConcepts": [
+      "Hash Collisions",
+      "Big O Time and Space Complexity"
+    ]
   },
   {
-    "topic": "REST API Design Principles",
+    "topic": "Recursion and Call Stack",
     "difficulty": "easy",
-    "concepts": ["statelessness", "resource-based URLs", "proper HTTP verb usage", "idempotency"],
-    "questionPatterns": ["What makes an API RESTful?", "Which HTTP methods are idempotent and why does that matter?"],
-    "evaluationCriteria": ["explains statelessness correctly", "uses resource nouns not verbs in URL examples", "correctly identifies GET/PUT/DELETE as idempotent, POST as not"],
-    "followUpConcepts": ["HTTP vs HTTPS and TLS Handshake", "Load Balancing"]
+    "concepts": [
+      "recursive function calls itself on smaller subproblems",
+      "base case prevents infinite recursion",
+      "each call creates a call frame",
+      "deep recursion can cause stack overflow"
+    ],
+    "questionPatterns": [
+      "What happens internally when a recursive function is called?",
+      "Why is a base case necessary?"
+    ],
+    "evaluationCriteria": [
+      "explains the role of the base case",
+      "connects recursive calls to call-stack growth",
+      "understands excessive recursion depth can exhaust stack space"
+    ],
+    "followUpConcepts": [
+      "Stack vs Heap Memory",
+      "Dynamic Programming"
+    ]
   },
   {
-    "topic": "Load Balancing",
+    "topic": "Divide and Conquer",
     "difficulty": "medium",
-    "concepts": ["round robin", "least connections", "session persistence / sticky sessions", "health checks"],
-    "questionPatterns": ["How does a load balancer decide which server to route a request to?", "What problem do sticky sessions solve, and what tradeoff do they introduce?"],
-    "evaluationCriteria": ["names at least two load balancing algorithms", "explains sticky sessions correctly (same client to same server)", "identifies the tradeoff (uneven load distribution)"],
-    "followUpConcepts": ["REST API Design Principles", "DNS Resolution"]
+    "concepts": [
+      "divide problem into smaller independent subproblems",
+      "solve subproblems recursively",
+      "combine results",
+      "merge sort and binary search as examples"
+    ],
+    "questionPatterns": [
+      "What is the divide-and-conquer paradigm?",
+      "Why is merge sort considered divide and conquer?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains divide, solve and combine stages",
+      "provides a valid algorithm example",
+      "distinguishes independent subproblems from overlapping-subproblem dynamic programming"
+    ],
+    "followUpConcepts": [
+      "Dynamic Programming",
+      "Greedy Algorithms"
+    ]
+  },
+  {
+    "topic": "Dynamic Programming",
+    "difficulty": "medium",
+    "concepts": [
+      "overlapping subproblems",
+      "optimal substructure",
+      "memoization as top-down caching",
+      "tabulation as bottom-up computation"
+    ],
+    "questionPatterns": [
+      "When should you consider using dynamic programming?",
+      "What's the difference between memoization and tabulation?"
+    ],
+    "evaluationCriteria": [
+      "identifies overlapping subproblems and reusable results",
+      "correctly distinguishes top-down from bottom-up approaches",
+      "understands dynamic programming trades additional memory for avoiding repeated work"
+    ],
+    "followUpConcepts": [
+      "Recursion and Call Stack",
+      "Greedy Algorithms"
+    ]
+  },
+  {
+    "topic": "Greedy Algorithms",
+    "difficulty": "medium",
+    "concepts": [
+      "makes locally optimal choices",
+      "does not reconsider previous decisions",
+      "requires a correctness property specific to the problem",
+      "local optimum does not always produce global optimum"
+    ],
+    "questionPatterns": [
+      "What makes an algorithm greedy?",
+      "Why can't every optimization problem be solved using a greedy approach?"
+    ],
+    "evaluationCriteria": [
+      "explains local decision making",
+      "understands greedy correctness must be justified",
+      "can provide an example where greedy works or fails"
+    ],
+    "followUpConcepts": [
+      "Dynamic Programming",
+      "Divide and Conquer"
+    ]
+  },
+  {
+    "topic": "BFS vs DFS",
+    "difficulty": "easy",
+    "concepts": [
+      "BFS explores level by level using a queue",
+      "DFS explores deeply using recursion or a stack",
+      "BFS finds shortest path in an unweighted graph",
+      "space usage depends on graph shape"
+    ],
+    "questionPatterns": [
+      "What's the difference between BFS and DFS?",
+      "Which would you use to find the shortest path in an unweighted graph?"
+    ],
+    "evaluationCriteria": [
+      "correctly identifies queue versus stack behavior",
+      "selects BFS for unweighted shortest paths",
+      "understands traversal choice depends on problem requirements"
+    ],
+    "followUpConcepts": [
+      "Graph Representations",
+      "Tree Traversals"
+    ]
+  },
+  {
+    "topic": "Graph Representations",
+    "difficulty": "easy",
+    "concepts": [
+      "adjacency list",
+      "adjacency matrix",
+      "space complexity depends on vertices and edges",
+      "adjacency lists are typically efficient for sparse graphs",
+      "matrices provide constant-time edge existence checks"
+    ],
+    "questionPatterns": [
+      "What's the difference between an adjacency list and adjacency matrix?",
+      "Which representation would you choose for a sparse graph?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains both representations",
+      "connects sparse graphs to adjacency-list space efficiency",
+      "recognizes adjacency matrices allow direct edge lookup"
+    ],
+    "followUpConcepts": [
+      "BFS vs DFS",
+      "Graph Cycle Detection"
+    ]
+  },
+  {
+    "topic": "Tree Traversals",
+    "difficulty": "easy",
+    "concepts": [
+      "preorder",
+      "inorder",
+      "postorder",
+      "level order",
+      "different traversal orders support different use cases"
+    ],
+    "questionPatterns": [
+      "What's the difference between preorder, inorder and postorder traversal?",
+      "Which traversal of a binary search tree produces sorted values?"
+    ],
+    "evaluationCriteria": [
+      "correctly states traversal orders",
+      "identifies inorder traversal for sorted BST output",
+      "understands level-order traversal uses BFS"
+    ],
+    "followUpConcepts": [
+      "BFS vs DFS",
+      "Binary Search Trees"
+    ]
+  },
+  {
+    "topic": "Binary Search Trees",
+    "difficulty": "easy",
+    "concepts": [
+      "left subtree contains smaller keys and right subtree larger keys under a chosen ordering rule",
+      "average search can be logarithmic when reasonably balanced",
+      "worst-case unbalanced tree can degrade to linear height",
+      "balanced trees maintain controlled height"
+    ],
+    "questionPatterns": [
+      "What's the search complexity of a binary search tree?",
+      "Why can a BST degrade to O(n) lookup?"
+    ],
+    "evaluationCriteria": [
+      "distinguishes balanced and skewed cases",
+      "connects operation complexity to tree height",
+      "understands ordering enables directed search"
+    ],
+    "followUpConcepts": [
+      "Tree Traversals",
+      "Balanced Trees"
+    ]
+  },
+  {
+    "topic": "Heap and Priority Queue",
+    "difficulty": "medium",
+    "concepts": [
+      "heap maintains a partial ordering property",
+      "min heap exposes the smallest element",
+      "max heap exposes the largest element",
+      "priority queues are commonly implemented using heaps",
+      "insertion and removal of the top element are logarithmic"
+    ],
+    "questionPatterns": [
+      "What's the difference between a heap and a sorted array?",
+      "When would you use a priority queue?"
+    ],
+    "evaluationCriteria": [
+      "understands a heap is not globally sorted",
+      "correctly explains efficient access to the highest-priority element",
+      "provides a reasonable use case such as scheduling or top-k problems"
+    ],
+    "followUpConcepts": [
+      "Big O Time and Space Complexity",
+      "Tree Traversals"
+    ]
+  },
+  {
+    "topic": "Stack vs Queue",
+    "difficulty": "easy",
+    "concepts": [
+      "stack follows last in first out",
+      "queue follows first in first out",
+      "stacks support recursion and expression processing",
+      "queues support scheduling and breadth-first traversal"
+    ],
+    "questionPatterns": [
+      "What's the difference between a stack and a queue?",
+      "Why does BFS use a queue while DFS can use a stack?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains LIFO and FIFO behavior",
+      "connects data structure behavior to traversal order",
+      "provides practical use cases"
+    ],
+    "followUpConcepts": [
+      "BFS vs DFS",
+      "Recursion and Call Stack"
+    ]
+  },
+  {
+    "topic": "Array vs Linked List",
+    "difficulty": "easy",
+    "concepts": [
+      "arrays provide direct indexed access",
+      "linked lists use nodes connected by references",
+      "arrays typically have better cache locality",
+      "linked-list insertion can be constant time when the target node position is already known"
+    ],
+    "questionPatterns": [
+      "What's the difference between an array and a linked list?",
+      "Why are arrays often faster in practice despite some linked-list operations having better theoretical complexity?"
+    ],
+    "evaluationCriteria": [
+      "correctly compares access and insertion characteristics",
+      "mentions memory locality or pointer overhead",
+      "understands linked-list insertion complexity assumes the insertion location is already available"
+    ],
+    "followUpConcepts": [
+      "Big O Time and Space Complexity",
+      "Cache Locality"
+    ]
+  },
+  {
+    "topic": "Compiler vs Interpreter",
+    "difficulty": "easy",
+    "concepts": [
+      "compiler translates source into another executable or intermediate representation before or during execution pipeline",
+      "interpreter executes program instructions through a runtime",
+      "modern languages often combine compilation and interpretation techniques",
+      "JIT compilation happens during runtime"
+    ],
+    "questionPatterns": [
+      "What's the difference between a compiler and an interpreter?",
+      "Is JavaScript purely interpreted?"
+    ],
+    "evaluationCriteria": [
+      "explains the conceptual distinction without oversimplifying modern runtimes",
+      "recognizes JIT compilation",
+      "understands many modern execution systems use hybrid approaches"
+    ],
+    "followUpConcepts": [
+      "Memory Management",
+      "Process vs Thread"
+    ]
   }
 ]

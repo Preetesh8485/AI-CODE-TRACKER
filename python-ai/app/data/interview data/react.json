@@ -1,122 +1,1306 @@
 [
   {
-    "topic": "Virtual DOM and Reconciliation",
-    "difficulty": "medium",
-    "concepts": ["diffing algorithm", "why virtual DOM avoids costly real DOM writes", "keys used to identify list items during diffing", "batched updates"],
-    "questionPatterns": ["How does React decide what to re-render when state changes?", "Why does React batch multiple state updates together?"],
-    "evaluationCriteria": ["explains diffing between old and new virtual DOM trees", "connects batching to performance (fewer real DOM writes)", "understands this isn't 'magic', it's a reconciliation algorithm"],
-    "followUpConcepts": ["Key Prop and List Rendering", "Performance Optimization"]
+    "topic": "React Fundamentals",
+    "difficulty": "easy",
+    "concepts": [
+      "React is a library for building component-based user interfaces",
+      "components encapsulate reusable UI logic",
+      "React uses declarative rendering",
+      "UI is derived from application state and props",
+      "React updates the DOM when rendered output changes"
+    ],
+    "questionPatterns": [
+      "What is React and why would you use it?",
+      "What does declarative UI mean in React?"
+    ],
+    "evaluationCriteria": [
+      "explains component-based architecture",
+      "understands declarative rendering",
+      "connects UI output to state and props"
+    ],
+    "followUpConcepts": [
+      "Components",
+      "Virtual DOM and Reconciliation"
+    ]
   },
   {
-    "topic": "useState vs useRef",
+    "topic": "Functional Components",
     "difficulty": "easy",
-    "concepts": ["useState triggers re-render on change", "useRef persists value without re-rendering", "useRef for DOM references", "when to choose one over the other"],
-    "questionPatterns": ["Why wouldn't you use useState to store a value that shouldn't trigger a re-render?", "What's a practical use of useRef besides accessing a DOM node?"],
-    "evaluationCriteria": ["correctly explains the re-render trigger difference", "gives a non-DOM useRef example (storing previous value, interval ID)", "doesn't confuse the two"],
-    "followUpConcepts": ["useEffect Dependency Array", "Component Lifecycle"]
+    "concepts": [
+      "functional components are JavaScript functions that return renderable React elements",
+      "components receive inputs through props",
+      "hooks provide state and lifecycle-related capabilities",
+      "component names conventionally begin with uppercase letters"
+    ],
+    "questionPatterns": [
+      "What is a functional component in React?",
+      "Why must React component names start with an uppercase letter?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains functional components",
+      "understands props as component inputs",
+      "connects hooks to functional components"
+    ],
+    "followUpConcepts": [
+      "Props",
+      "React Hooks"
+    ]
+  },
+  {
+    "topic": "JSX",
+    "difficulty": "easy",
+    "concepts": [
+      "JSX provides HTML-like syntax inside JavaScript",
+      "JSX is transformed into JavaScript representing React elements",
+      "JavaScript expressions can be embedded using braces",
+      "JSX attributes generally use camelCase naming",
+      "components must return valid renderable structure"
+    ],
+    "questionPatterns": [
+      "What is JSX?",
+      "Does the browser directly understand JSX?"
+    ],
+    "evaluationCriteria": [
+      "understands JSX requires transformation",
+      "correctly explains expression embedding",
+      "does not describe JSX as HTML itself"
+    ],
+    "followUpConcepts": [
+      "React Elements",
+      "Rendering"
+    ]
+  },
+  {
+    "topic": "Props",
+    "difficulty": "easy",
+    "concepts": [
+      "props pass data from parent components to child components",
+      "props should be treated as read-only by the receiving component",
+      "callbacks can be passed through props",
+      "props enable component configuration and reuse"
+    ],
+    "questionPatterns": [
+      "What are props in React?",
+      "How can a child component communicate an event back to its parent?"
+    ],
+    "evaluationCriteria": [
+      "understands parent-to-child data flow",
+      "does not mutate props",
+      "explains callback props for child-to-parent communication"
+    ],
+    "followUpConcepts": [
+      "State",
+      "One Way Data Flow"
+    ]
+  },
+  {
+    "topic": "State",
+    "difficulty": "easy",
+    "concepts": [
+      "state represents data owned by a component that can change over time",
+      "state updates can trigger re-rendering",
+      "state should not be directly mutated",
+      "state should be placed at the lowest common owner that needs to manage it"
+    ],
+    "questionPatterns": [
+      "What's the difference between props and state?",
+      "Why shouldn't you directly mutate React state?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes props and state",
+      "understands state-driven rendering",
+      "uses state update mechanisms rather than direct mutation"
+    ],
+    "followUpConcepts": [
+      "useState",
+      "State Immutability"
+    ]
+  },
+  {
+    "topic": "useState",
+    "difficulty": "easy",
+    "concepts": [
+      "useState adds local state to functional components",
+      "returns the current state value and an updater function",
+      "updating state schedules rendering with the new state",
+      "functional updates are useful when new state depends on previous state",
+      "multiple state updates may be batched"
+    ],
+    "questionPatterns": [
+      "How does useState work?",
+      "Why would you use setCount(prev => prev + 1) instead of setCount(count + 1)?"
+    ],
+    "evaluationCriteria": [
+      "understands state updater usage",
+      "uses functional updates for previous-state-dependent logic",
+      "recognizes updates are scheduled rather than immediate variable mutations"
+    ],
+    "followUpConcepts": [
+      "React State Batching",
+      "State Immutability"
+    ]
+  },
+  {
+    "topic": "React State Batching",
+    "difficulty": "medium",
+    "concepts": [
+      "React can batch multiple state updates together",
+      "batching reduces unnecessary renders",
+      "state values inside a render behave like snapshots",
+      "multiple updates based on stale captured state can produce unexpected results",
+      "functional state updates process previous queued state correctly"
+    ],
+    "questionPatterns": [
+      "Why might calling setCount(count + 1) three times not increment the count by three?",
+      "What is state batching in React?"
+    ],
+    "evaluationCriteria": [
+      "understands render-time state snapshots",
+      "connects functional updates to queued state changes",
+      "explains batching as a rendering optimization"
+    ],
+    "followUpConcepts": [
+      "useState",
+      "React Rendering"
+    ]
+  },
+  {
+    "topic": "useEffect",
+    "difficulty": "medium",
+    "concepts": [
+      "useEffect synchronizes components with external systems",
+      "effects run after React commits updates",
+      "dependency arrays control when synchronization is repeated",
+      "effects can return cleanup functions",
+      "effects should not be used for values that can be calculated directly during rendering"
+    ],
+    "questionPatterns": [
+      "How does useEffect work?",
+      "When should you not use useEffect?"
+    ],
+    "evaluationCriteria": [
+      "understands effects as synchronization with external systems",
+      "correctly explains dependencies",
+      "uses cleanup for subscriptions timers and similar resources",
+      "avoids unnecessary effects for derived values"
+    ],
+    "followUpConcepts": [
+      "useEffect Dependency Array",
+      "Effect Cleanup"
+    ]
   },
   {
     "topic": "useEffect Dependency Array",
     "difficulty": "medium",
-    "concepts": ["empty array runs once on mount", "no array runs every render", "stale closures from missing dependencies", "cleanup function for unmounting/unsubscribing"],
-    "questionPatterns": ["Why did your useEffect keep using an old value of a state variable?", "When would you return a cleanup function from useEffect?"],
-    "evaluationCriteria": ["correctly diagnoses stale closure from missing dependency", "explains cleanup function use (unsubscribing, clearing intervals)", "understands the three dependency-array behaviors"],
-    "followUpConcepts": ["useState vs useRef", "Custom Hooks"]
+    "concepts": [
+      "no dependency array causes the effect to run after every relevant commit",
+      "empty dependency array means the effect does not rerun because of changing reactive dependencies",
+      "specified dependencies cause reruns when dependency values change according to React comparison",
+      "missing dependencies can create stale closures",
+      "object and function dependencies can cause additional reruns when their references change"
+    ],
+    "questionPatterns": [
+      "What's the difference between no dependency array and an empty dependency array?",
+      "Why is React warning that a dependency is missing?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes dependency behaviors",
+      "understands stale closure risks",
+      "does not blindly remove dependencies to suppress warnings"
+    ],
+    "followUpConcepts": [
+      "useEffect",
+      "Stale Closures"
+    ]
   },
   {
-    "topic": "Component Lifecycle",
+    "topic": "Effect Cleanup",
     "difficulty": "medium",
-    "concepts": ["mount, update, unmount phases", "class lifecycle methods vs hook equivalents", "componentDidMount maps to useEffect with empty array", "componentWillUnmount maps to cleanup function"],
-    "questionPatterns": ["How would you replicate componentDidMount and componentWillUnmount using hooks?", "What lifecycle phase would you fetch data in, and why?"],
-    "evaluationCriteria": ["correctly maps class lifecycle methods to hook equivalents", "justifies data fetching in mount phase", "understands update phase triggers (props/state change)"],
-    "followUpConcepts": ["useEffect Dependency Array"]
+    "concepts": [
+      "an effect can return a cleanup function",
+      "cleanup runs before relevant effect re-execution and when the component is removed",
+      "used for removing event listeners and subscriptions",
+      "used for clearing timers",
+      "can help prevent stale asynchronous work from affecting current UI"
+    ],
+    "questionPatterns": [
+      "Why does useEffect return a cleanup function?",
+      "How would you clean up an event listener inside useEffect?"
+    ],
+    "evaluationCriteria": [
+      "understands cleanup timing conceptually",
+      "provides realistic cleanup use cases",
+      "connects cleanup to avoiding leaked subscriptions and stale work"
+    ],
+    "followUpConcepts": [
+      "useEffect",
+      "Memory Leaks in React"
+    ]
+  },
+  {
+    "topic": "Stale Closures in React",
+    "difficulty": "hard",
+    "concepts": [
+      "functions created during a render capture values from that render",
+      "asynchronous callbacks can therefore observe older state or props",
+      "missing effect dependencies are a common cause",
+      "functional state updates can solve some stale-state problems",
+      "refs can store mutable current values when appropriate"
+    ],
+    "questionPatterns": [
+      "What is a stale closure in React?",
+      "Why might an interval callback keep seeing an old state value?"
+    ],
+    "evaluationCriteria": [
+      "connects stale closures to JavaScript lexical scoping",
+      "understands each render creates its own captured values",
+      "selects an appropriate solution rather than blindly adding refs"
+    ],
+    "followUpConcepts": [
+      "useEffect Dependency Array",
+      "useRef"
+    ]
+  },
+  {
+    "topic": "useRef",
+    "difficulty": "medium",
+    "concepts": [
+      "useRef returns a persistent mutable object",
+      "changing ref.current does not trigger a re-render",
+      "refs can reference DOM elements",
+      "refs can store values that should persist without affecting rendering"
+    ],
+    "questionPatterns": [
+      "What's the difference between useState and useRef?",
+      "When would you use useRef?"
+    ],
+    "evaluationCriteria": [
+      "understands refs persist between renders",
+      "knows ref mutations do not trigger rendering",
+      "provides DOM and non-rendering state use cases"
+    ],
+    "followUpConcepts": [
+      "DOM References",
+      "Stale Closures in React"
+    ]
+  },
+  {
+    "topic": "useMemo",
+    "difficulty": "medium",
+    "concepts": [
+      "useMemo caches the result of a calculation between renders",
+      "cached value is recalculated when dependencies change",
+      "useful for expensive calculations in appropriate cases",
+      "memoization itself has overhead",
+      "useMemo should primarily be treated as a performance optimization"
+    ],
+    "questionPatterns": [
+      "What does useMemo do?",
+      "Should you wrap every calculation in useMemo?"
+    ],
+    "evaluationCriteria": [
+      "understands value memoization",
+      "recognizes dependency behavior",
+      "avoids unnecessary premature memoization"
+    ],
+    "followUpConcepts": [
+      "useCallback",
+      "React.memo"
+    ]
+  },
+  {
+    "topic": "useCallback",
+    "difficulty": "medium",
+    "concepts": [
+      "useCallback caches a function reference between renders",
+      "function reference changes when dependencies change",
+      "can help when passing callbacks to memoized children",
+      "can stabilize function dependencies when appropriate",
+      "unnecessary useCallback adds complexity and overhead"
+    ],
+    "questionPatterns": [
+      "What's the difference between useMemo and useCallback?",
+      "When does useCallback actually help performance?"
+    ],
+    "evaluationCriteria": [
+      "distinguishes memoized values from memoized function references",
+      "connects useCallback to referential equality",
+      "does not recommend wrapping every function"
+    ],
+    "followUpConcepts": [
+      "React.memo",
+      "Referential Equality"
+    ]
+  },
+  {
+    "topic": "React.memo",
+    "difficulty": "medium",
+    "concepts": [
+      "React.memo can skip re-rendering a component when its props are unchanged according to comparison",
+      "object and function reference changes can defeat memoization",
+      "memoization is useful when rendering cost and update patterns justify it",
+      "memoization does not prevent all rendering in every situation"
+    ],
+    "questionPatterns": [
+      "What does React.memo do?",
+      "Why is a memoized child still re-rendering when you pass a callback?"
+    ],
+    "evaluationCriteria": [
+      "understands prop-based memoization",
+      "connects object identity to memoization behavior",
+      "recognizes memoization is a performance optimization"
+    ],
+    "followUpConcepts": [
+      "useCallback",
+      "Referential Equality"
+    ]
+  },
+  {
+    "topic": "Referential Equality",
+    "difficulty": "medium",
+    "concepts": [
+      "objects arrays and functions are compared by reference",
+      "new object literals create new references during rendering",
+      "reference changes can trigger effects or defeat memoization",
+      "stable references should only be introduced when they solve an actual problem"
+    ],
+    "questionPatterns": [
+      "Why does an object dependency cause useEffect to run repeatedly?",
+      "Why can passing an inline object cause a memoized child to re-render?"
+    ],
+    "evaluationCriteria": [
+      "understands reference identity",
+      "connects identity to dependency and memoization behavior",
+      "does not confuse referential equality with deep equality"
+    ],
+    "followUpConcepts": [
+      "useMemo",
+      "React.memo"
+    ]
+  },
+  {
+    "topic": "Virtual DOM",
+    "difficulty": "medium",
+    "concepts": [
+      "React elements form an in-memory description of the desired UI",
+      "React compares render results across updates",
+      "reconciliation determines which parts require updates",
+      "React commits necessary changes to the host environment",
+      "Virtual DOM is an abstraction rather than a literal duplicate DOM API"
+    ],
+    "questionPatterns": [
+      "What is the Virtual DOM?",
+      "Why doesn't React simply rebuild the entire browser DOM after every state change?"
+    ],
+    "evaluationCriteria": [
+      "understands render descriptions and reconciliation",
+      "connects React updates to selective DOM mutations",
+      "avoids claiming Virtual DOM is always inherently faster than direct DOM manipulation"
+    ],
+    "followUpConcepts": [
+      "Reconciliation",
+      "React Fiber"
+    ]
+  },
+  {
+    "topic": "Reconciliation",
+    "difficulty": "hard",
+    "concepts": [
+      "reconciliation determines how a new element tree relates to the previous tree",
+      "element type changes can cause subtree replacement",
+      "keys help React match list children across renders",
+      "component identity determines whether state is preserved or reset"
+    ],
+    "questionPatterns": [
+      "What is reconciliation in React?",
+      "How does React decide whether component state should be preserved?"
+    ],
+    "evaluationCriteria": [
+      "understands comparison between render outputs",
+      "connects type and position to component identity",
+      "explains the role of keys"
+    ],
+    "followUpConcepts": [
+      "Keys in React",
+      "React Fiber"
+    ]
+  },
+  {
+    "topic": "React Fiber",
+    "difficulty": "hard",
+    "concepts": [
+      "Fiber is React's internal architecture for representing and processing component work",
+      "rendering work can be organized into units",
+      "modern React can prioritize and interrupt certain rendering work",
+      "render phase and commit phase have different responsibilities",
+      "Fiber enables modern concurrent rendering capabilities"
+    ],
+    "questionPatterns": [
+      "What is React Fiber?",
+      "How does Fiber relate to concurrent rendering?"
+    ],
+    "evaluationCriteria": [
+      "understands Fiber as internal rendering architecture",
+      "distinguishes render work from DOM commit",
+      "connects Fiber to scheduling and prioritization"
+    ],
+    "followUpConcepts": [
+      "Render and Commit Phases",
+      "Concurrent Rendering"
+    ]
+  },
+  {
+    "topic": "Render and Commit Phases",
+    "difficulty": "hard",
+    "concepts": [
+      "render phase calculates what the UI should become",
+      "rendering should remain pure",
+      "React can restart or abandon some rendering work",
+      "commit phase applies completed changes",
+      "side effects should not be performed directly during rendering"
+    ],
+    "questionPatterns": [
+      "What's the difference between React's render and commit phases?",
+      "Why must component rendering remain pure?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes calculation from committing changes",
+      "understands rendering can occur without committing",
+      "avoids side effects during render"
+    ],
+    "followUpConcepts": [
+      "React Fiber",
+      "Concurrent Rendering"
+    ]
+  },
+  {
+    "topic": "Keys in React",
+    "difficulty": "medium",
+    "concepts": [
+      "keys identify siblings across renders",
+      "keys should be stable and unique among siblings",
+      "array indexes can cause identity problems when lists reorder insert or delete items",
+      "keys influence component state preservation"
+    ],
+    "questionPatterns": [
+      "Why does React require keys when rendering lists?",
+      "Why can using an array index as a key cause bugs?"
+    ],
+    "evaluationCriteria": [
+      "understands keys represent identity rather than only removing warnings",
+      "recognizes problems with unstable keys",
+      "connects keys to reconciliation and state preservation"
+    ],
+    "followUpConcepts": [
+      "Reconciliation",
+      "Component Identity"
+    ]
   },
   {
     "topic": "Controlled vs Uncontrolled Components",
-    "difficulty": "easy",
-    "concepts": ["controlled: value driven by React state", "uncontrolled: value read via ref", "tradeoffs: validation ease vs performance for large forms"],
-    "questionPatterns": ["What's the difference between a controlled and uncontrolled input?", "Why might a large form use uncontrolled inputs for performance?"],
-    "evaluationCriteria": ["correctly defines both patterns", "explains re-render cost of controlled inputs on every keystroke", "gives a valid reason to pick each"],
-    "followUpConcepts": ["useState vs useRef", "Performance Optimization"]
-  },
-  {
-    "topic": "React Context API",
     "difficulty": "medium",
-    "concepts": ["avoiding prop drilling", "Provider and Consumer pattern", "re-render implications when context value changes", "not a full state management replacement"],
-    "questionPatterns": ["When would you reach for Context instead of prop drilling?", "What's a downside of overusing Context for frequently changing state?"],
-    "evaluationCriteria": ["correctly explains prop drilling avoidance", "identifies that all consumers re-render when context value changes", "recognizes Context isn't ideal for high-frequency updates"],
-    "followUpConcepts": ["Redux vs Context API", "Prop Drilling and Solutions"]
-  },
-  {
-    "topic": "Redux vs Context API",
-    "difficulty": "medium",
-    "concepts": ["Redux: predictable state via reducers/actions", "Context: simpler, built-in, less tooling", "Redux DevTools and middleware ecosystem", "when app complexity justifies Redux"],
-    "questionPatterns": ["Why did you choose Redux Toolkit over Context for state management in your project?", "What does Redux give you that Context doesn't?"],
-    "evaluationCriteria": ["gives a real justification tied to their own project, not just textbook", "mentions middleware/devtools/predictability as Redux advantages", "acknowledges Context is sufficient for simpler cases"],
-    "followUpConcepts": ["React Context API", "Redux Toolkit Thunks and Slices"]
-  },
-  {
-    "topic": "Redux Toolkit Thunks and Slices",
-    "difficulty": "medium",
-    "concepts": ["createSlice reduces boilerplate", "createAsyncThunk for async logic", "pending/fulfilled/rejected action states", "immutability handled via Immer under the hood"],
-    "questionPatterns": ["Walk me through how you handled an async API call with Redux Toolkit.", "How does Redux Toolkit let you write 'mutating' code that's actually immutable?"],
-    "evaluationCriteria": ["correctly describes thunk pending/fulfilled/rejected flow", "can explain Immer's role in enabling draft-style mutation syntax", "references their actual project experience"],
-    "followUpConcepts": ["Redux vs Context API"]
-  },
-  {
-    "topic": "Memoization: useMemo useCallback React.memo",
-    "difficulty": "medium",
-    "concepts": ["useMemo caches computed values", "useCallback caches function references", "React.memo prevents re-render if props unchanged", "premature memoization can hurt more than help"],
-    "questionPatterns": ["When would useCallback actually matter for performance?", "Why doesn't wrapping every component in React.memo automatically make an app faster?"],
-    "evaluationCriteria": ["correctly distinguishes useMemo (value) from useCallback (function reference)", "explains React.memo's shallow prop comparison", "acknowledges overuse adds overhead without benefit"],
-    "followUpConcepts": ["Virtual DOM and Reconciliation", "Performance Optimization"]
-  },
-  {
-    "topic": "Key Prop and List Rendering",
-    "difficulty": "easy",
-    "concepts": ["keys help React identify which items changed", "using array index as key can cause bugs", "keys must be stable and unique"],
-    "questionPatterns": ["Why is using array index as a key sometimes a bad idea?", "What goes wrong in a list if keys aren't stable?"],
-    "evaluationCriteria": ["explains index-as-key bug with reordering/insertion/deletion", "understands keys should be stable unique identifiers (like an id)", "connects this to reconciliation correctness"],
-    "followUpConcepts": ["Virtual DOM and Reconciliation"]
-  },
-  {
-    "topic": "Custom Hooks",
-    "difficulty": "medium",
-    "concepts": ["extracting reusable stateful logic", "must start with 'use' prefix", "composing built-in hooks inside a custom hook"],
-    "questionPatterns": ["Have you written a custom hook? Walk me through what it did and why.", "What are the rules around naming and using custom hooks?"],
-    "evaluationCriteria": ["gives a real example from their own project if they have one", "understands custom hooks are just composition of existing hooks", "knows the naming convention and why it matters (lint rules)"],
-    "followUpConcepts": ["useEffect Dependency Array", "Prop Drilling and Solutions"]
+    "concepts": [
+      "controlled inputs derive their current value from React state",
+      "input changes update state through handlers",
+      "uncontrolled inputs retain their current value primarily in the DOM",
+      "refs can access uncontrolled input values",
+      "choice depends on validation and interaction requirements"
+    ],
+    "questionPatterns": [
+      "What's the difference between controlled and uncontrolled inputs?",
+      "When would you use an uncontrolled form input?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes source of truth",
+      "understands controlled form flow",
+      "provides appropriate use cases for both approaches"
+    ],
+    "followUpConcepts": [
+      "Forms in React",
+      "useRef"
+    ]
   },
   {
     "topic": "Lifting State Up",
     "difficulty": "easy",
-    "concepts": ["moving shared state to closest common ancestor", "passing state and setters down as props", "alternative to duplicated/desynced state"],
-    "questionPatterns": ["Two sibling components need to share state — how do you handle it?", "What problem does lifting state up solve?"],
-    "evaluationCriteria": ["correctly identifies moving state to common parent", "explains the problem it solves (state desync between siblings)", "recognizes when this doesn't scale (leads to Context/Redux)"],
-    "followUpConcepts": ["React Context API", "Prop Drilling and Solutions"]
+    "concepts": [
+      "shared state can be moved to the closest common ancestor",
+      "parent passes data and callbacks to children",
+      "creates a single source of truth for shared state",
+      "lifting state too high can cause unnecessary complexity"
+    ],
+    "questionPatterns": [
+      "What does lifting state up mean?",
+      "How would two sibling components share state?"
+    ],
+    "evaluationCriteria": [
+      "identifies the closest common owner",
+      "uses props and callbacks correctly",
+      "does not automatically move all state globally"
+    ],
+    "followUpConcepts": [
+      "Props",
+      "Context API"
+    ]
   },
   {
-    "topic": "React Router and Protected Routes",
-    "difficulty": "medium",
-    "concepts": ["client-side routing without full page reload", "route guards for authentication", "redirecting unauthenticated users", "nested routes"],
-    "questionPatterns": ["How did you implement protected routes in your authentication project?", "What happens on a hard refresh with client-side routing, and how do you handle it?"],
-    "evaluationCriteria": ["describes a real protected-route pattern (wrapper component checking auth state)", "understands server needs to serve the SPA shell for any route on refresh", "references actual implementation if it's on their resume"],
-    "followUpConcepts": ["JWT Authentication"]
-  },
-  {
-    "topic": "Performance Optimization in React",
-    "difficulty": "hard",
-    "concepts": ["code splitting with lazy/Suspense", "virtualization for long lists", "avoiding unnecessary re-renders", "bundle size analysis"],
-    "questionPatterns": ["How would you improve the load time of a React app with a large bundle?", "How would you render a list of 10,000 items without freezing the UI?"],
-    "evaluationCriteria": ["mentions code splitting / lazy loading for bundle size", "mentions list virtualization for large lists", "shows awareness of measuring before optimizing (profiler, bundle analyzer)"],
-    "followUpConcepts": ["Memoization", "Virtual DOM and Reconciliation"]
-  },
-  {
-    "topic": "Prop Drilling and Solutions",
+    "topic": "Prop Drilling",
     "difficulty": "easy",
-    "concepts": ["passing props through intermediate components that don't need them", "solutions: Context, state management libraries, component composition"],
-    "questionPatterns": ["What is prop drilling and why is it considered a problem?", "Besides Context, how else could you avoid prop drilling?"],
-    "evaluationCriteria": ["correctly defines prop drilling", "names Context and/or a state library as solutions", "can also mention composition (children props) as an underused alternative"],
-    "followUpConcepts": ["React Context API", "Lifting State Up"]
+    "concepts": [
+      "prop drilling passes data through intermediate components",
+      "intermediate components may not directly need the data",
+      "component composition can sometimes avoid prop drilling",
+      "Context can help with broadly shared values",
+      "global state libraries may be appropriate for complex shared application state"
+    ],
+    "questionPatterns": [
+      "What is prop drilling?",
+      "Does every prop drilling problem require Redux?"
+    ],
+    "evaluationCriteria": [
+      "correctly identifies the problem",
+      "considers composition and Context before unnecessary global state",
+      "selects solutions based on state scope"
+    ],
+    "followUpConcepts": [
+      "Context API",
+      "Redux Toolkit"
+    ]
+  },
+  {
+    "topic": "Context API",
+    "difficulty": "medium",
+    "concepts": [
+      "Context provides values to descendants without explicitly passing props through every level",
+      "Provider supplies a context value",
+      "useContext reads the nearest matching context value",
+      "consumers can re-render when the provided value changes",
+      "Context is not automatically a replacement for every state management solution"
+    ],
+    "questionPatterns": [
+      "How does Context API solve prop drilling?",
+      "Why can putting all application state into one Context cause performance problems?"
+    ],
+    "evaluationCriteria": [
+      "understands Provider and consumer relationships",
+      "recognizes context updates affect consumers",
+      "selects Context for appropriate shared state"
+    ],
+    "followUpConcepts": [
+      "useContext",
+      "Redux Toolkit"
+    ]
+  },
+  {
+    "topic": "useReducer",
+    "difficulty": "medium",
+    "concepts": [
+      "useReducer manages state through reducer functions and dispatched actions",
+      "reducer receives current state and action",
+      "reducer returns the next state",
+      "useful for complex related state transitions",
+      "reducers should remain pure"
+    ],
+    "questionPatterns": [
+      "When would you choose useReducer instead of useState?",
+      "How does useReducer work?"
+    ],
+    "evaluationCriteria": [
+      "understands reducer and dispatch flow",
+      "connects reducers to complex state transitions",
+      "keeps reducer logic pure"
+    ],
+    "followUpConcepts": [
+      "Redux Fundamentals",
+      "State Management"
+    ]
+  },
+  {
+    "topic": "Custom Hooks",
+    "difficulty": "medium",
+    "concepts": [
+      "custom hooks extract reusable stateful logic",
+      "custom hook names begin with use",
+      "custom hooks can call other hooks",
+      "each invocation receives independent hook state unless shared external state is used",
+      "custom hooks reuse logic rather than automatically sharing state"
+    ],
+    "questionPatterns": [
+      "What is a custom hook?",
+      "Do two components using the same custom hook automatically share state?"
+    ],
+    "evaluationCriteria": [
+      "understands logic reuse",
+      "follows Rules of Hooks",
+      "does not confuse custom hooks with shared global state"
+    ],
+    "followUpConcepts": [
+      "Rules of Hooks",
+      "React Hooks"
+    ]
+  },
+  {
+    "topic": "Rules of Hooks",
+    "difficulty": "medium",
+    "concepts": [
+      "hooks should be called at the top level of React components or custom hooks",
+      "hooks should not be conditionally called in normal component logic",
+      "consistent hook ordering allows React to associate hook state correctly",
+      "lint tooling helps enforce hook rules"
+    ],
+    "questionPatterns": [
+      "Why can't hooks normally be called inside an if statement?",
+      "What are the Rules of Hooks?"
+    ],
+    "evaluationCriteria": [
+      "connects hook ordering to state association",
+      "knows hooks belong in components and custom hooks",
+      "understands why conditional hook calls are problematic"
+    ],
+    "followUpConcepts": [
+      "Custom Hooks",
+      "React Rendering"
+    ]
+  },
+  {
+    "topic": "React Router",
+    "difficulty": "medium",
+    "concepts": [
+      "client-side routing maps URLs to UI without full document reloads",
+      "routes define matching UI",
+      "route parameters represent dynamic URL segments",
+      "nested routes support hierarchical layouts",
+      "navigation can be performed declaratively or programmatically"
+    ],
+    "questionPatterns": [
+      "How does client-side routing work in React?",
+      "What's the difference between route parameters and query parameters?"
+    ],
+    "evaluationCriteria": [
+      "understands SPA navigation",
+      "correctly distinguishes dynamic route segments and query strings",
+      "can explain nested routing"
+    ],
+    "followUpConcepts": [
+      "Protected Routes",
+      "Code Splitting"
+    ]
+  },
+  {
+    "topic": "Protected Routes",
+    "difficulty": "medium",
+    "concepts": [
+      "protected routes control frontend navigation based on authentication state",
+      "frontend route protection improves user experience",
+      "frontend protection does not secure backend APIs",
+      "backend authorization must independently validate requests"
+    ],
+    "questionPatterns": [
+      "How would you implement protected routes in React?",
+      "Are protected React routes enough to secure an application?"
+    ],
+    "evaluationCriteria": [
+      "understands client-side routing protection",
+      "requires backend authorization for actual security",
+      "does not trust frontend authentication state as security enforcement"
+    ],
+    "followUpConcepts": [
+      "JWT Authentication",
+      "React Router"
+    ]
+  },
+  {
+    "topic": "Redux Fundamentals",
+    "difficulty": "medium",
+    "concepts": [
+      "Redux stores shared application state centrally",
+      "actions describe state transitions",
+      "reducers calculate next state",
+      "dispatch sends actions",
+      "selectors read derived or selected state"
+    ],
+    "questionPatterns": [
+      "How does Redux work?",
+      "What happens after you dispatch a Redux action?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains action dispatch reducer store flow",
+      "understands reducers should be predictable",
+      "recognizes not all state belongs in Redux"
+    ],
+    "followUpConcepts": [
+      "Redux Toolkit",
+      "Redux Async Thunks"
+    ]
+  },
+  {
+    "topic": "Redux Toolkit",
+    "difficulty": "medium",
+    "concepts": [
+      "Redux Toolkit is the standard recommended approach for writing Redux logic",
+      "configureStore simplifies store configuration",
+      "createSlice generates reducers and action creators",
+      "Immer allows reducer code that appears mutative while producing immutable updates",
+      "createAsyncThunk can model common asynchronous request lifecycles"
+    ],
+    "questionPatterns": [
+      "Why use Redux Toolkit instead of writing Redux manually?",
+      "How can Redux Toolkit allow state.push even though Redux state should be immutable?"
+    ],
+    "evaluationCriteria": [
+      "understands createSlice and configureStore",
+      "explains Immer-backed immutable updates",
+      "connects Redux Toolkit to reduced boilerplate"
+    ],
+    "followUpConcepts": [
+      "Redux Async Thunks",
+      "Immer"
+    ]
+  },
+  {
+    "topic": "Redux Async Thunks",
+    "difficulty": "medium",
+    "concepts": [
+      "createAsyncThunk creates an asynchronous thunk action",
+      "common lifecycle actions are pending fulfilled and rejected",
+      "extraReducers handles lifecycle states",
+      "loading success and error state can be modeled explicitly",
+      "rejected values can carry controlled error payloads"
+    ],
+    "questionPatterns": [
+      "Explain the createAsyncThunk lifecycle.",
+      "How would you handle loading and errors for an API call in Redux Toolkit?"
+    ],
+    "evaluationCriteria": [
+      "correctly explains pending fulfilled and rejected",
+      "connects extraReducers to async lifecycle handling",
+      "handles errors deliberately"
+    ],
+    "followUpConcepts": [
+      "Redux Toolkit",
+      "API State Management"
+    ]
+  },
+  {
+    "topic": "Local State vs Global State",
+    "difficulty": "medium",
+    "concepts": [
+      "state should remain local when only a small component subtree needs it",
+      "global state is useful when many distant parts of the application require shared state",
+      "server state and client state have different management requirements",
+      "unnecessary global state increases coupling"
+    ],
+    "questionPatterns": [
+      "When should state go into Redux?",
+      "Should every useState variable be moved into a global store?"
+    ],
+    "evaluationCriteria": [
+      "bases state placement on ownership and usage",
+      "avoids unnecessary global state",
+      "recognizes server data differs from purely client-owned UI state"
+    ],
+    "followUpConcepts": [
+      "Redux Toolkit",
+      "Server State vs Client State"
+    ]
+  },
+  {
+    "topic": "Server State vs Client State",
+    "difficulty": "medium",
+    "concepts": [
+      "server state originates from remote backend systems",
+      "server state can become stale",
+      "server state involves fetching caching synchronization and invalidation",
+      "client state represents local application and UI state",
+      "different tools can be appropriate for each category"
+    ],
+    "questionPatterns": [
+      "What's the difference between server state and client state?",
+      "Why is API data management more complicated than a normal useState value?"
+    ],
+    "evaluationCriteria": [
+      "distinguishes remote and local ownership",
+      "recognizes caching and synchronization concerns",
+      "selects state management strategies based on data type"
+    ],
+    "followUpConcepts": [
+      "Data Fetching",
+      "Redux Toolkit"
+    ]
+  },
+  {
+    "topic": "Data Fetching in React",
+    "difficulty": "medium",
+    "concepts": [
+      "data fetching requires loading success and failure handling",
+      "requests may need cancellation or stale-result protection",
+      "manual fetching can be implemented using effects",
+      "dedicated server-state libraries can provide caching deduplication and revalidation",
+      "fetching strategy depends on application architecture"
+    ],
+    "questionPatterns": [
+      "How would you fetch API data in React?",
+      "What problems can occur when a component makes multiple overlapping requests?"
+    ],
+    "evaluationCriteria": [
+      "handles loading and errors",
+      "recognizes race conditions and stale responses",
+      "avoids assuming every API request requires global Redux state"
+    ],
+    "followUpConcepts": [
+      "Race Conditions in React",
+      "Server State vs Client State"
+    ]
+  },
+  {
+    "topic": "Race Conditions in React",
+    "difficulty": "hard",
+    "concepts": [
+      "multiple asynchronous requests can complete in a different order than they started",
+      "older responses can overwrite newer state",
+      "requests can be cancelled using AbortController when supported",
+      "effect cleanup can mark outdated work as irrelevant",
+      "server-state libraries can manage stale request behavior"
+    ],
+    "questionPatterns": [
+      "What happens if a user searches quickly and an older API request finishes last?",
+      "How would you prevent stale API responses from updating the UI?"
+    ],
+    "evaluationCriteria": [
+      "identifies out-of-order completion",
+      "provides cancellation or stale-response protection",
+      "connects cleanup to request lifecycle"
+    ],
+    "followUpConcepts": [
+      "useEffect",
+      "Data Fetching in React"
+    ]
+  },
+  {
+    "topic": "Error Boundaries",
+    "difficulty": "medium",
+    "concepts": [
+      "error boundaries catch certain rendering errors in descendant component trees",
+      "they display fallback UI instead of crashing the entire affected tree",
+      "traditional error boundaries are implemented using class component APIs",
+      "they do not catch every category of application error"
+    ],
+    "questionPatterns": [
+      "What is an error boundary?",
+      "Will an error boundary catch an error inside every asynchronous event handler?"
+    ],
+    "evaluationCriteria": [
+      "understands render-tree error handling",
+      "recognizes limitations",
+      "connects boundaries to graceful fallback UI"
+    ],
+    "followUpConcepts": [
+      "React Error Handling",
+      "Suspense"
+    ]
+  },
+  {
+    "topic": "Lazy Loading and Code Splitting",
+    "difficulty": "medium",
+    "concepts": [
+      "code splitting divides JavaScript into smaller chunks",
+      "React.lazy can load components dynamically",
+      "Suspense can display fallback UI while lazy components load",
+      "route-level splitting can reduce initial bundle size",
+      "excessive tiny chunks can introduce additional network overhead"
+    ],
+    "questionPatterns": [
+      "How would you reduce the initial bundle size of a React application?",
+      "How do React.lazy and Suspense work together?"
+    ],
+    "evaluationCriteria": [
+      "connects code splitting to initial load performance",
+      "understands lazy component loading",
+      "recognizes appropriate splitting boundaries"
+    ],
+    "followUpConcepts": [
+      "Suspense",
+      "React Performance Optimization"
+    ]
+  },
+  {
+    "topic": "Suspense",
+    "difficulty": "hard",
+    "concepts": [
+      "Suspense displays fallback content while supported child work is suspended",
+      "commonly used with lazy-loaded components",
+      "modern React frameworks and compatible data sources can integrate Suspense with data loading",
+      "Suspense itself does not automatically turn arbitrary useEffect fetching into Suspense-enabled fetching"
+    ],
+    "questionPatterns": [
+      "What is Suspense in React?",
+      "Can you wrap any useEffect API request in Suspense and automatically get loading behavior?"
+    ],
+    "evaluationCriteria": [
+      "understands fallback boundaries",
+      "correctly explains lazy-loading use case",
+      "does not overstate automatic data-fetching behavior"
+    ],
+    "followUpConcepts": [
+      "Lazy Loading and Code Splitting",
+      "Concurrent Rendering"
+    ]
+  },
+  {
+    "topic": "StrictMode",
+    "difficulty": "medium",
+    "concepts": [
+      "StrictMode enables additional development-only checks",
+      "development behavior can intentionally expose unsafe side effects",
+      "some component logic and effects can appear to run additional times during development checks",
+      "production behavior is not identical to these development checks"
+    ],
+    "questionPatterns": [
+      "Why does my useEffect appear to run twice in React development?",
+      "What is React StrictMode?"
+    ],
+    "evaluationCriteria": [
+      "understands development-only checking behavior",
+      "does not immediately remove StrictMode as the primary fix",
+      "recognizes effects should tolerate setup and cleanup correctly"
+    ],
+    "followUpConcepts": [
+      "useEffect",
+      "Component Purity"
+    ]
+  },
+  {
+    "topic": "Component Lifecycle",
+    "difficulty": "medium",
+    "concepts": [
+      "components are mounted updated and unmounted",
+      "functional components express synchronization behavior using effects",
+      "effects are not exact one-to-one replacements for every class lifecycle method",
+      "cleanup handles relevant teardown behavior"
+    ],
+    "questionPatterns": [
+      "Explain the React component lifecycle.",
+      "How do functional components handle mount and unmount-related behavior?"
+    ],
+    "evaluationCriteria": [
+      "understands mount update and unmount phases",
+      "uses effects and cleanup appropriately",
+      "avoids treating useEffect as a universal direct lifecycle translation"
+    ],
+    "followUpConcepts": [
+      "useEffect",
+      "Render and Commit Phases"
+    ]
+  },
+  {
+    "topic": "State Immutability",
+    "difficulty": "medium",
+    "concepts": [
+      "state objects and arrays should be replaced rather than directly mutated",
+      "immutable updates create new references for changed data",
+      "spread syntax performs shallow copying",
+      "nested updates require copying relevant nested structures",
+      "libraries such as Immer can simplify immutable update logic"
+    ],
+    "questionPatterns": [
+      "Why shouldn't you directly push into an array stored in React state?",
+      "Why did changing a nested object also modify the previous state?"
+    ],
+    "evaluationCriteria": [
+      "understands reference-based update detection",
+      "performs immutable array and object updates",
+      "recognizes spread syntax only performs shallow copies"
+    ],
+    "followUpConcepts": [
+      "Shallow vs Deep Copy",
+      "Redux Toolkit"
+    ]
+  },
+  {
+    "topic": "React Performance Optimization",
+    "difficulty": "hard",
+    "concepts": [
+      "measure performance before optimizing",
+      "React DevTools Profiler can identify expensive renders",
+      "state should be placed close to where it is needed",
+      "memoization can reduce unnecessary expensive work",
+      "large lists may require virtualization",
+      "code splitting can improve initial loading performance"
+    ],
+    "questionPatterns": [
+      "How would you optimize a slow React application?",
+      "A component re-renders frequently. Does that automatically mean there is a performance problem?"
+    ],
+    "evaluationCriteria": [
+      "starts with profiling",
+      "distinguishes rendering from expensive rendering",
+      "selects optimization based on measured bottlenecks",
+      "avoids excessive premature memoization"
+    ],
+    "followUpConcepts": [
+      "React.memo",
+      "List Virtualization"
+    ]
+  },
+  {
+    "topic": "List Virtualization",
+    "difficulty": "hard",
+    "concepts": [
+      "virtualization renders only visible or nearby list items",
+      "reduces DOM node count",
+      "useful for very large lists and tables",
+      "scroll position determines which items are rendered",
+      "variable item sizes can increase implementation complexity"
+    ],
+    "questionPatterns": [
+      "How would you efficiently render a list containing 100000 items?",
+      "What is list virtualization?"
+    ],
+    "evaluationCriteria": [
+      "avoids rendering all large-list items simultaneously",
+      "connects virtualization to reduced DOM work",
+      "recognizes additional complexity"
+    ],
+    "followUpConcepts": [
+      "React Performance Optimization",
+      "Pagination"
+    ]
+  },
+  {
+    "topic": "React Portals",
+    "difficulty": "medium",
+    "concepts": [
+      "portals render children into a different DOM container",
+      "component remains part of the same React tree",
+      "React event propagation follows the React tree",
+      "commonly used for modals tooltips and overlays"
+    ],
+    "questionPatterns": [
+      "What are React portals?",
+      "Why would you use a portal for a modal?"
+    ],
+    "evaluationCriteria": [
+      "understands DOM placement differs from React tree placement",
+      "provides appropriate overlay use cases",
+      "understands React event behavior conceptually"
+    ],
+    "followUpConcepts": [
+      "Modal Design",
+      "Event Propagation"
+    ]
+  },
+  {
+    "topic": "SSR vs CSR",
+    "difficulty": "medium",
+    "concepts": [
+      "client-side rendering primarily renders application UI in the browser",
+      "server-side rendering generates initial HTML on the server",
+      "SSR can improve initial content delivery and search-engine accessibility for some applications",
+      "hydration attaches React behavior to server-rendered output",
+      "SSR introduces server rendering and hydration complexity"
+    ],
+    "questionPatterns": [
+      "What's the difference between client-side and server-side rendering?",
+      "What is hydration?"
+    ],
+    "evaluationCriteria": [
+      "correctly distinguishes rendering locations",
+      "understands hydration",
+      "discusses tradeoffs rather than claiming SSR is always better"
+    ],
+    "followUpConcepts": [
+      "Hydration",
+      "React Server Components"
+    ]
+  },
+  {
+    "topic": "React Server Components",
+    "difficulty": "hard",
+    "concepts": [
+      "Server Components execute in a server environment",
+      "can access server-side resources without shipping their component code to the browser",
+      "Client Components handle browser interactivity and client-side hooks",
+      "Server Components and SSR are related but distinct concepts",
+      "framework support is commonly used to implement Server Component architectures"
+    ],
+    "questionPatterns": [
+      "What are React Server Components?",
+      "What's the difference between Server Components and server-side rendering?"
+    ],
+    "evaluationCriteria": [
+      "distinguishes server execution from initial HTML rendering",
+      "understands client components are needed for client-side interactivity",
+      "does not describe Server Components as simply backend API routes"
+    ],
+    "followUpConcepts": [
+      "SSR vs CSR",
+      "Hydration"
+    ]
+  },
+  {
+    "topic": "Concurrent Rendering",
+    "difficulty": "hard",
+    "concepts": [
+      "modern React can prepare some rendering work without immediately committing it",
+      "rendering work can be prioritized",
+      "some rendering work can be interrupted or restarted",
+      "concurrent rendering does not mean JavaScript components execute simultaneously on multiple CPU threads"
+    ],
+    "questionPatterns": [
+      "What does concurrent rendering mean in React?",
+      "Does concurrent React mean components render in parallel CPU threads?"
+    ],
+    "evaluationCriteria": [
+      "understands interruptible and prioritized rendering",
+      "does not confuse concurrency with multithreaded JavaScript execution",
+      "connects concurrent capabilities to React scheduling"
+    ],
+    "followUpConcepts": [
+      "React Fiber",
+      "useTransition"
+    ]
+  },
+  {
+    "topic": "useTransition",
+    "difficulty": "hard",
+    "concepts": [
+      "transitions mark selected state updates as non-urgent",
+      "urgent interactions can remain responsive while transition work is prepared",
+      "useTransition provides pending state",
+      "transitions do not make expensive JavaScript computation itself disappear"
+    ],
+    "questionPatterns": [
+      "What is useTransition used for?",
+      "How can React keep an input responsive while rendering expensive filtered results?"
+    ],
+    "evaluationCriteria": [
+      "distinguishes urgent and non-urgent updates",
+      "understands transition scheduling",
+      "does not describe useTransition as a replacement for worker threads"
+    ],
+    "followUpConcepts": [
+      "Concurrent Rendering",
+      "useDeferredValue"
+    ]
+  },
+  {
+    "topic": "useDeferredValue",
+    "difficulty": "hard",
+    "concepts": [
+      "useDeferredValue allows a value used by slower UI to lag behind a more urgent value",
+      "helps keep urgent interactions responsive",
+      "deferred values are useful for expensive dependent rendering",
+      "it is different from debounce because it does not use a fixed time delay"
+    ],
+    "questionPatterns": [
+      "What's the difference between useDeferredValue and debounce?",
+      "When would you use useDeferredValue?"
+    ],
+    "evaluationCriteria": [
+      "understands deferred rendering priority",
+      "distinguishes scheduling from time-based debouncing",
+      "provides an appropriate expensive-render use case"
+    ],
+    "followUpConcepts": [
+      "useTransition",
+      "Concurrent Rendering"
+    ]
+  },
+  {
+    "topic": "React Authentication State",
+    "difficulty": "medium",
+    "concepts": [
+      "authentication state represents the client's current understanding of the user session",
+      "application startup may require checking an existing server session",
+      "loading state prevents incorrect protected-route decisions before authentication status is known",
+      "authentication state should be cleared when the server session becomes invalid",
+      "backend remains the authority for authorization"
+    ],
+    "questionPatterns": [
+      "How would you persist authentication after a page refresh?",
+      "Why do protected routes sometimes briefly redirect before user authentication finishes loading?"
+    ],
+    "evaluationCriteria": [
+      "handles initial authentication loading state",
+      "distinguishes client authentication state from backend authorization",
+      "supports secure session validation"
+    ],
+    "followUpConcepts": [
+      "Protected Routes",
+      "HTTP Only Cookies"
+    ]
+  },
+  {
+    "topic": "Optimistic UI Updates",
+    "difficulty": "hard",
+    "concepts": [
+      "UI updates immediately before the server confirms success",
+      "successful responses confirm the optimistic state",
+      "failed requests require rollback or reconciliation",
+      "temporary identifiers may be required for newly created resources",
+      "appropriate when failure probability and rollback complexity are manageable"
+    ],
+    "questionPatterns": [
+      "What is an optimistic UI update?",
+      "How would you implement an optimistic like button?"
+    ],
+    "evaluationCriteria": [
+      "understands immediate local update",
+      "handles server failure",
+      "considers reconciliation with authoritative server state"
+    ],
+    "followUpConcepts": [
+      "Server State vs Client State",
+      "Redux Async Thunks"
+    ]
+  },
+  {
+    "topic": "Memory Leaks in React",
+    "difficulty": "hard",
+    "concepts": [
+      "forgotten subscriptions can continue unnecessary work",
+      "timers should be cleared when no longer needed",
+      "event listeners should be removed when manually registered",
+      "stale asynchronous operations can cause unwanted updates or resource usage",
+      "effect cleanup should mirror effect setup"
+    ],
+    "questionPatterns": [
+      "What can cause memory leaks or resource leaks in a React application?",
+      "How would you clean up a WebSocket connection when a component no longer needs it?"
+    ],
+    "evaluationCriteria": [
+      "identifies realistic cleanup problems",
+      "uses effect cleanup correctly",
+      "understands subscriptions and external resources have independent lifecycles"
+    ],
+    "followUpConcepts": [
+      "Effect Cleanup",
+      "useEffect"
+    ]
+  },
+  {
+    "topic": "React Project Architecture",
+    "difficulty": "hard",
+    "concepts": [
+      "components should have focused responsibilities",
+      "features can group related UI state hooks and API logic",
+      "shared components should represent genuinely reusable behavior",
+      "business logic can be separated from presentation where useful",
+      "architecture should scale with project complexity rather than follow rigid folder rules"
+    ],
+    "questionPatterns": [
+      "How would you structure a large React application?",
+      "How do you decide whether logic belongs in a component custom hook or Redux?"
+    ],
+    "evaluationCriteria": [
+      "separates concerns appropriately",
+      "organizes code around maintainable boundaries",
+      "avoids unnecessary abstraction",
+      "explains architectural decisions based on application needs"
+    ],
+    "followUpConcepts": [
+      "Custom Hooks",
+      "State Management"
+    ]
   }
 ]
